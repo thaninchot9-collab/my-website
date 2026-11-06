@@ -1,0 +1,9 @@
+{
+  "name": "mtts-exam-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "แอปข้อสอบ MTTS พร้อมติวเตอร์ AI (ซ่อน API Key ไว้ที่ server)",
+  "main": "server.js",
+  "scripts": { "start": "node --env-file-if-exists=.env server.js" },
+  "engines": { "node": ">=20.6" }
+}
