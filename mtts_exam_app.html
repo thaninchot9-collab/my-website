@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MTTS EXAM - White & Purple Edition</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap">
+<style>
+:root{
+ --bg:#f7f5fb;--card:#ffffff;--ink:#302344;--muted:#6f6280;--line:#e5daf5;
+ --purple:#7545b5;--deep:#4c287f;--light:#f3edff;--onpurple:#ffffff;
+ --soft:#eee5f8;--softink:#4c287f;--hdr1:#ffffff;--hdr2:#eee4ff;
+ --green:#23865a;--greenbg:#e7f7ed;--greenink:#17633e;
+ --red:#d44c65;--redbg:#fff0f2;--redink:#a52f46;--track:#eee8f5;
+ --gold:#f59e0b;--goldbg:#fef3c7;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+ --bg:#17121f;--card:#221a2e;--ink:#ece5f6;--muted:#a597b8;--line:#3a2d4d;
+ --purple:#9a6fe0;--deep:#c9b0f5;--light:#2d2240;--onpurple:#ffffff;
+ --soft:#33264a;--softink:#d9c8f7;--hdr1:#221a2e;--hdr2:#2d2240;
+ --green:#4cc38a;--greenbg:#173626;--greenink:#8fe0b6;
+ --red:#e5738a;--redbg:#3b1b25;--redink:#f2a3b2;--track:#33264a;
+ --gold:#fbbf24;--goldbg:#3a2e15;color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#17121f;--card:#221a2e;--ink:#ece5f6;--muted:#a597b8;--line:#3a2d4d;
+ --purple:#9a6fe0;--deep:#c9b0f5;--light:#2d2240;--onpurple:#ffffff;
+ --soft:#33264a;--softink:#d9c8f7;--hdr1:#221a2e;--hdr2:#2d2240;
+ --green:#4cc38a;--greenbg:#173626;--greenink:#8fe0b6;
+ --red:#e5738a;--redbg:#3b1b25;--redink:#f2a3b2;--track:#33264a;
+ --gold:#fbbf24;--goldbg:#3a2e15;color-scheme:dark}
+
+*{box-sizing:border-box;transition:background-color 0.2s, border-color 0.2s, transform 0.1s}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Thai',Arial,sans-serif;
+ padding-block:12px 24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{background:linear-gradient(135deg,var(--hdr1),var(--hdr2));padding:24px 15px;text-align:center;border:1px solid var(--line);border-radius:17px;max-width:850px;margin:0 auto;box-shadow:0 4px 15px rgba(0,0,0,0.03)}
+header h1{margin:0;color:var(--deep);font-size:29px;letter-spacing:1px}
+header p{color:var(--muted);margin:8px 0}
+main{max-width:850px;margin:auto;padding:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:20px;margin:15px 0;box-shadow:0 2px 10px rgba(0,0,0,0.02)}
+h2,h3{color:var(--deep);margin-top:0}
+button,select,input{font:inherit;font-size:15px;border-radius:10px;padding:12px}
+button{border:0;background:var(--purple);color:var(--onpurple);font-weight:bold;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;user-select:none}
+button:hover{filter:brightness(1.08)}
+button:active{transform:scale(0.97)}
+button.soft{background:var(--soft);color:var(--softink)}
+button.danger{background:var(--red);color:#fff}
+button.gold{background:var(--gold);color:#000}
+button:disabled{opacity:.45;cursor:default;transform:none}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--purple);outline-offset:2px}
+select,input{width:100%;border:1px solid var(--line);background:var(--card);color:var(--ink);margin:4px 0 10px}
+.wide{width:100%;margin-top:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.stat{background:var(--light);padding:12px;border-radius:10px;min-width:0;text-align:center}
+.stat b{display:block;color:var(--deep);margin-top:5px;font-size:18px}
+.muted{color:var(--muted);font-size:13px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.badge{display:inline-block;background:var(--light);color:var(--deep);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:bold}
+.hidden{display:none!important}
+.progress{height:9px;background:var(--track);border-radius:10px;overflow:hidden;margin:12px 0}
+#bar{height:100%;width:0;background:var(--purple);transition:width .3s ease}
+#question{font-size:19px;line-height:1.7;margin:20px 0;overflow-wrap:anywhere;font-weight:500}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);margin:9px 0;font-weight:normal;overflow-wrap:anywhere;border-radius:12px;padding:14px;cursor:pointer}
+.opt:hover{border-color:var(--purple);background:var(--light)}
+.opt:active{transform:scale(0.98)}
+.opt.chosen{background:var(--light);border:2px solid var(--purple);color:var(--deep);font-weight:bold}
+.opt.correct{background:var(--greenbg);border-color:var(--green);color:var(--greenink);font-weight:bold}
+.opt.wrong{background:var(--redbg);border-color:var(--red);color:var(--redink)}
+.confirm{background:var(--light);padding:15px;border-radius:12px;margin-top:12px;line-height:1.7;border:1px solid var(--line)}
+.confirm p{margin:0 0 8px}
+.nav{display:flex;gap:10px;margin-top:15px}
+.nav button{flex:1}
+#timer{color:var(--deep);font-weight:bold;font-variant-numeric:tabular-nums;font-size:18px}
+.review-item{border-bottom:1px solid var(--line);padding:14px 0;line-height:1.7;overflow-wrap:anywhere}
+.review-item:last-child{border-bottom:0}
+.scoreText{color:var(--purple);font-size:36px;margin:10px 0;text-align:center}
+.good{color:var(--green);font-weight:bold}
+.bad{color:var(--red);font-weight:bold}
+.copyright{max-width:850px;margin:20px auto 0;text-align:center;color:var(--muted);font-size:13px}
+.lbl{display:block;font-size:13px;color:var(--muted);margin-top:8px;font-weight:500}
+.tabs{display:flex;gap:8px;margin:12px 0}
+.tab{flex:1;background:var(--soft);color:var(--softink);border-radius:10px;padding:10px}
+.tab.on{background:var(--purple);color:var(--onpurple)}
+.msg{min-height:1.4em;margin:8px 0 0;color:var(--red);font-size:14px}
+.msg.ok{color:var(--green)}
+.sumList{margin:6px 0 14px;padding-left:22px;line-height:1.8}
+.sumList li{overflow-wrap:anywhere;margin-bottom:6px}
+.eyebrow{margin:0;color:var(--purple);font-weight:bold;font-size:13px;letter-spacing:.5px}
+.welcome{position:relative}
+.avatar-box{display:flex;align-items:center;gap:15px;margin-bottom:15px}
+.avatar-img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--purple);background:var(--light);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0}
+.avatar-img img{width:100%;height:100%;object-fit:cover}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.chip{background:var(--soft);color:var(--softink);padding:8px 14px;font-size:14px;border-radius:20px;cursor:pointer}
+.chip.on{background:var(--purple);color:var(--onpurple)}
+.sec{border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:0 14px;background:var(--card)}
+.sec summary{cursor:pointer;padding:14px 0;font-weight:bold;color:var(--deep);line-height:1.5;overflow-wrap:anywhere}
+.sec summary:focus-visible{outline:3px solid var(--purple);outline-offset:2px;border-radius:6px}
+.sec[open] summary{border-bottom:1px solid var(--line);margin-bottom:8px}
+.toolrow{display:flex;gap:8px;flex-wrap:wrap}
+.toolrow button{flex:1;min-width:120px}
+.rank-table{width:100%;border-collapse:collapse;margin-top:10px}
+.rank-table th,.rank-table td{padding:10px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}
+.rank-table th{color:var(--deep);background:var(--light)}
+.rank-badge{display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;font-weight:bold;font-size:12px}
+.r-1{background:#f59e0b;color:#fff}
+.r-2{background:#94a3b8;color:#fff}
+.r-3{background:#b45309;color:#fff}
+.file-upload-btn{position:relative;overflow:hidden;display:inline-block}
+.file-upload-btn input[type=file]{position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer}
+</style>
+</head>
+<body>
+
+<header>
+<h1>MTTS EXAM</h1>
+<p>คลังข้อสอบจำลองและสรุปเนื้อหาโรงเรียนช่างฝีมือทหาร (ม.1 - ม.5)</p>
+<span class="badge">WHITE &amp; PURPLE EDITION</span>
+</header>
+
+<main>
+<section id="home">
+<div class="card welcome" id="welcomeCard">
+<div class="avatar-box">
+<div class="avatar-img" id="userAvatar">🎖️</div>
+<div>
+<p class="eyebrow" id="greetTime"></p>
+<h2 id="greetName" style="margin:2px 0 4px"></h2>
+<span id="schoolBadge" class="badge" style="font-size:11px;padding:3px 8px"></span>
+</div>
+</div>
+<p class="muted" id="greetSub" role="status"></p>
+<div class="grid" id="welcomeStats"></div>
+</div>
+
+<div class="card hidden" id="introCard">
+<h3>เริ่มต้นใช้งานใน 4 ขั้นตอน</h3>
+<ol class="sumList">
+<li>สมัครสมาชิกด้วยชื่อผู้ใช้ PIN และสังกัดโรงเรียน หรือข้ามไปทำแบบผู้เยี่ยมชม</li>
+<li>อ่านสรุปเนื้อหาลึกซึ้ง 5 วิชา (ม.1-ม.5) ก่อนทำสอบ พร้อมช่องค้นหา Real-time</li>
+<li>เลือกชุดข้อสอบไดนามิกไม่ซ้ำ 200 ข้อ แล้วกดเริ่ม (เวลา 3 ชั่วโมง)</li>
+<li>ส่งข้อสอบ ดูคะแนน วิเคราะห์วิชาอ่อน-แข็ง และเช็กอันดับใน Leaderboard</li>
+</ol>
+<button class="wide" onclick="dismissIntro()">เข้าใจแล้ว เริ่มเลย</button>
+</div>
+
+<div class="card" id="accountCard">
+<h3>บัญชีผู้ใช้ &amp; โปรไฟล์</h3>
+<div id="loggedOut">
+<p class="muted">สมัครสมาชิกง่ายๆ ไม่ต้องใช้อีเมล เลือกรูปโปรไฟล์จากอัลบั้มรูปในมือถือได้ทันที ข้อมูลเก็บบนเครื่องปลอดภัย</p>
+<div class="tabs">
+<button id="tabLogin" class="tab on" onclick="authMode('login')">เข้าสู่ระบบ</button>
+<button id="tabReg" class="tab" onclick="authMode('register')">สมัครสมาชิก</button>
+</div>
+<label class="lbl" for="uName">ชื่อผู้ใช้ (3-20 ตัวอักษร)</label>
+<input id="uName" autocomplete="username" maxlength="20" placeholder="เช่น somchai_mtts">
+<label class="lbl" for="uPin">รหัส PIN (ตัวเลข 4-6 หลัก)</label>
+<input id="uPin" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password">
+<div id="regFields" class="hidden">
+<label class="lbl" for="uPin2">ยืนยันรหัส PIN</label>
+<input id="uPin2" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password">
+<label class="lbl" for="uSchool">สังกัดโรงเรียน / สถาบัน</label>
+<select id="uSchool">
+<option value="โรงเรียนช่างฝีมือทหาร (MTTS)">โรงเรียนช่างฝีมือทหาร (MTTS)</option>
+<option value="โรงเรียนเตรียมทหาร (AFAPS)">โรงเรียนเตรียมทหาร (AFAPS)</option>
+<option value="โรงเรียนนายร้อยพระจุลจอมเกล้า (CRMA)">โรงเรียนนายร้อยพระจุลจอมเกล้า (CRMA)</option>
+<option value="โรงเรียนนายเรือ / นายเรืออากาศ">โรงเรียนนายเรือ / นายเรืออากาศ</option>
+<option value="โรงเรียนตำรวจตรี / เตรียมตำรวจ">โรงเรียนเตรียมตำรวจ</option>
+<option value="นักเรียนทั่วไป / โรงเรียนมัธยม">นักเรียนทั่วไป / โรงเรียนมัธยม</option>
+</select>
+<label class="lbl">รูปโปรไฟล์ (อัปโหลดจากอัลบั้มมือถือ)</label>
+<div class="file-upload-btn wide">
+<button type="button" class="wide soft">📷 เลือกรูปจากเครื่อง / อัลบั้ม</button>
+<input type="file" id="uAvatarFile" accept="image/*" onchange="previewUploadAvatar(this)">
+</div>
+<div id="uploadPrevBox" style="text-align:center;margin:10px 0" class="hidden">
+<img id="uploadPrevImg" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid var(--purple)">
+</div>
+</div>
+<button class="wide" id="authBtn" onclick="submitAuth()">เข้าสู่ระบบ</button>
+<p id="authMsg" class="msg" role="status"></p>
+</div>
+<div id="loggedIn" class="hidden">
+<div class="row">
+<div style="display:flex;align-items:center;gap:10px">
+<div class="avatar-img" id="loggedInAvatar" style="width:45px;height:45px;font-size:20px">🎖️</div>
+<div>
+<span style="font-weight:bold;display:block" id="whoName"></span>
+<span class="muted" id="whoSchool" style="font-size:12px"></span>
+</div>
+</div>
+<button class="soft" onclick="logout()">ออกจากระบบ</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>เลือกชุดข้อสอบ</h2>
+<p class="muted">200 ข้อต่อชุด ทุกข้อเป็นโจทย์ต่างกัน ไม่ซ้ำกัน มี 3 ระดับความยาก</p>
+<select id="setSelect">
+<option value="0">ชุดที่ 1 — แนวข้อสอบจำลอง ปี 2562</option>
+<option value="1">ชุดที่ 2 — แนวข้อสอบจำลอง ปี 2563</option>
+<option value="2">ชุดที่ 3 — แนวข้อสอบจำลอง ปี 2564</option>
+<option value="3">ชุดที่ 4 — แนวข้อสอบจำลอง ปี 2565</option>
+<option value="4">ชุดที่ 5 — แนวข้อสอบจำลอง ปี 2566</option>
+</select>
+<label class="lbl" for="lvSelect">ระดับความยากของข้อสอบ</label>
+<select id="lvSelect"><option value="0">ผสมทุกระดับ (เรียงง่าย → ยาก)</option><option value="1">ระดับง่าย</option><option value="2">ระดับปานกลาง</option><option value="3">ระดับยาก</option></select>
+<div class="grid" style="margin-top:15px">
+<div class="stat">คณิตศาสตร์<b>50 ข้อ</b></div>
+<div class="stat">วิทยาศาสตร์<b>50 ข้อ</b></div>
+<div class="stat">ภาษาอังกฤษ<b>50 ข้อ</b></div>
+<div class="stat">ภาษาไทย<b>25 ข้อ</b></div>
+<div class="stat">สังคมศึกษา<b>25 ข้อ</b></div>
+<div class="stat">รวม<b>200 ข้อ</b></div>
+</div>
+<button class="wide" onclick="startExam()">เริ่มทำข้อสอบ (3 ชม.)</button>
+</div>
+
+<div class="card">
+<h3>🏆 กระดานอันดับ (Leaderboard)</h3>
+<p class="muted">อันดับผู้สอบได้คะแนนสูงสุดเรียงตาม % คะแนน และเวลาที่ใช้</p>
+<div style="overflow-x:auto">
+<table class="rank-table">
+<thead>
+<tr>
+<th>อันดับ</th>
+<th>ผู้สอบ</th>
+<th>สังกัดโรงเรียน</th>
+<th>ชุดที่</th>
+<th>คะแนน</th>
+<th>เวลา</th>
+</tr>
+</thead>
+<tbody id="leaderboardBody">
+<tr><td colspan="6" style="text-align:center" class="muted">ยังไม่มีข้อมูลอันดับ</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<h3>📖 สรุปเนื้อหาเจาะลึก 5 วิชา</h3>
+<p class="muted">รวบรวมเนื้อหาสำคัญแน่นๆ แยกหมวดหมู่ ม.1-ม.5 ค้นหาได้เรียลไทม์</p>
+<div class="grid" id="sumButtons"></div>
+</div>
+
+<div class="card">
+<h3>ประวัติการสอบของคุณ</h3>
+<div id="history" class="muted">ยังไม่มีประวัติ</div>
+<button class="wide soft" id="clearBtn" onclick="clearHistory()">ล้างประวัติ</button>
+</div>
+</section>
+
+<section id="summary" class="hidden">
+<div class="card">
+<h2 id="sumTitle"></h2>
+<div class="chips" id="sumChips"></div>
+<label class="lbl" for="sumSearch">ค้นหาหัวข้อ / คีย์เวิร์ดในสรุปเนื้อหา</label>
+<input id="sumSearch" type="search" placeholder="เช่น พีทาโกรัส, ตรีโกณมิติ, passive voice, อริยสัจ, กฎของโอห์ม" oninput="renderSummary()">
+<p class="muted" id="sumCount" role="status"></p>
+<div class="toolrow">
+<button class="soft" onclick="toggleSections(true)">ขยายทั้งหมด</button>
+<button class="soft" onclick="toggleSections(false)">ย่อทั้งหมด</button>
+</div>
+<div id="sumBody"></div>
+<button class="wide" onclick="goHome()">กลับหน้าหลัก</button>
+</div>
+</section>
+
+<section id="exam" class="hidden">
+<div class="card">
+<div class="row">
+<strong id="setTitle"></strong>
+<strong id="timer">03:00:00</strong>
+</div>
+<div class="progress"><div id="bar"></div></div>
+<div class="row">
+<span id="subjectName" class="badge"></span>
+<span id="gradeName" class="badge"></span>
+<span id="counter" class="muted"></span>
+</div>
+<div id="question"></div>
+<div id="options"></div>
+<div id="feedback" class="hidden"></div>
+<div class="nav">
+<button id="prevBtn" class="soft" onclick="move(-1)">ย้อนกลับ</button>
+<button id="nextBtn" onclick="move(1)">ข้อถัดไป</button>
+</div>
+<div id="confirmBox" class="confirm hidden"><p id="confirmText"></p><div class="nav"><button class="soft" onclick="cancelFinish()">ทำต่อ</button><button class="danger" onclick="doFinish(false)">ส่งข้อสอบ</button></div></div>
+<p id="submitHint" class="muted" style="text-align:center;margin:12px 0 0">ปุ่มส่งข้อสอบจะแสดงที่ข้อสุดท้าย</p>
+<button id="submitBtn" class="wide danger hidden" onclick="finish()">ส่งข้อสอบทันที</button>
+</div>
+</section>
+
+<section id="result" class="hidden">
+<div class="card">
+<div style="text-align:center;margin-bottom:15px">
+<div class="avatar-img" id="resultAvatar" style="margin:0 auto 10px;width:70px;height:70px;font-size:32px">🎖️</div>
+<h2 style="margin:0">ผลการทดสอบ</h2>
+<span id="resultUserSchool" class="badge" style="margin-top:5px"></span>
+</div>
+<h1 id="score" class="scoreText"></h1>
+<p id="timeUsed" class="muted" style="text-align:center"></p>
+<div id="subjectScores"></div>
+<button class="wide" onclick="showReview()">ดูเฉลยละเอียดทุกข้อ</button>
+<button class="wide soft" onclick="goHome()">กลับหน้าหลัก</button>
+</div>
+</section>
+
+<section id="review" class="hidden">
+<div class="card">
+<h2>เฉลยและตรวจคำตอบ</h2>
+<div id="reviewList"></div>
+<button class="wide" onclick="goHome()">กลับหน้าหลัก</button>
+</div>
+</section>
+</main>
+
+<footer class="copyright">© MTTS EXAM System · สงวนลิขสิทธิ์</footer>
+
+<script>
+const SUBJECTS=["คณิตศาสตร์","วิทยาศาสตร์","ภาษาอังกฤษ","ภาษาไทย","สังคมศึกษา"];
+const YEARS=[2562,2563,2564,2565,2566];
+const COUNTS=[50,50,50,25,25];
+const TOTAL_SECONDS=10800;
+
+let questions=[],answers=[],current=0;
+let seconds=TOTAL_SECONDS,timer=null,setNo=0,finished=false;
+let uploadedAvatarBase64 = "";
+
+/* อัปโหลดรูปโปรไฟล์ */
+function previewUploadAvatar(input){
+ if(input.files && input.files[0]){
+  const reader = new FileReader();
+  reader.onload = function(e){
+   uploadedAvatarBase64 = e.target.result;
+   $("uploadPrevImg").src = uploadedAvatarBase64;
+   $("uploadPrevBox").classList.remove("hidden");
+  };
+  reader.readAsDataURL(input.files[0]);
+ }
+}
+
+/* ===== คลังโจทย์: ทุกข้อไม่ซ้ำกัน มี 3 ระดับ ===== */
+const S=s=>s.split("|");
+function R(n,k){return Math.abs(Math.sin(n*12.9898+k*78.233)*43758.5453)%1}
+function sh(a,seed){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(R(seed,i)*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const LV=["","ง่าย","ปานกลาง","ยาก"];
+const POOL={},SEEN=new Set();
+function add(s,g,l,t,c,w,e){
+ c=String(c);if(SEEN.has(s+t))return;SEEN.add(s+t);
+ w=sh(w.map(String).filter((x,i,r)=>x!==c&&r.indexOf(x)===i),t.length).slice(0,3);
+ for(let k=1;w.length<3;k++){let x=isNaN(Number(c))?c+" ("+k+")":String(Number(c)+k*3);if(x!==c&&!w.includes(x))w.push(x)}
+ (POOL[s]=POOL[s]||[]).push({s,g,l,t,c,w,e});
+}
+const nw=c=>[c+1,c-1,c+10,c*2,c-10,c+2];
+/* คณิตศาสตร์: [ระดับ, ม., ฟังก์ชัน(a,b)->[โจทย์,คำตอบ,เฉลย,ตัวลวง?]] */
+const MT=[
+[1,1,(a,b)=>[`${a*7+b} + ${b*13} มีค่าเท่าใด`,a*7+b+b*13,"นำสองจำนวนมาบวกกัน"]],
+[1,1,(a,b)=>[`${a} × ${b+6} มีค่าเท่าใด`,a*(b+6),"คูณตามหลักการคูณ"]],
+[1,1,(a,b)=>[`ห.ร.ม. ของ ${a*6} และ ${a*9} คือข้อใด`,a*3,"ตัวประกอบร่วมที่มากที่สุดคือ 3 × "+a]],
+[1,2,(a,b)=>[`ร้อยละ ${b*10} ของ ${a*50} เท่ากับเท่าใด`,a*b*5,"(ร้อยละ ÷ 100) × จำนวนทั้งหมด"]],
+[1,1,(a,b)=>[`สี่เหลี่ยมจัตุรัสยาวด้านละ ${a} ซม. มีพื้นที่กี่ ตร.ซม.`,a*a,"พื้นที่ = ด้าน × ด้าน"]],
+[1,1,(a,b)=>[`ถ้า x − ${a} = ${b} แล้ว x เท่ากับเท่าใด`,a+b,"บวก "+a+" ทั้งสองข้างของสมการ"]],
+[2,2,(a,b)=>[`ถ้า ${a}x − ${a*b} = ${a*3} แล้ว x เท่ากับเท่าใด`,b+3,"ย้ายข้างแล้วหารด้วย "+a]],
+[2,2,(a,b)=>[`สามเหลี่ยมมุมฉากมีด้านประกอบมุมฉากยาว ${a*3} และ ${a*4} หน่วย ด้านตรงข้ามมุมฉากยาวเท่าใด`,a*5,"พีทาโกรัส c² = a² + b²"]],
+[2,2,(a,b)=>[`ค่าเฉลี่ยของ ${a}, ${a+b} และ ${a+2*b} คือเท่าใด`,a+b,"ผลรวม ÷ จำนวนข้อมูล"]],
+[2,2,(a,b)=>[`ลูกบาศก์ยาวด้านละ ${a} ซม. มีปริมาตรกี่ ลบ.ซม.`,a**3,"V = ด้าน³"]],
+[2,2,(a,b)=>[`ซื้อสินค้า ${a*100} บาท ขายได้ ${a*125} บาท ได้กำไรร้อยละเท่าใด`,"25%","(25a ÷ 100a) × 100 = 25%",["20%","15%","125%"]]],
+[2,1,(a,b)=>[`ค.ร.น. ของ ${a} และ ${a+1} คือข้อใด`,a*(a+1),"จำนวนที่อยู่ติดกันไม่มีตัวหารร่วม ค.ร.น. = ผลคูณ"]],
+[3,4,(a,b)=>[`แยกตัวประกอบ x² − ${a*a}`,`(x − ${a})(x + ${a})`,"ผลต่างกำลังสอง",[`(x − ${a})²`,`(x + ${a})²`,`x(x − ${a})`]]],
+[3,3,(a,b)=>{let m=a+b+1;return[`รากของสมการ x² − ${a+m}x + ${a*m} = 0 คือข้อใด`,`${a} และ ${m}`,`ผลบวกราก ${a+m} ผลคูณราก ${a*m}`,[`${a} และ −${m}`,`−${a} และ ${m}`,`${a+m} และ ${a*m}`]]}],
+[3,4,(a,b)=>[`ลำดับเลขคณิต a₁ = ${a}, d = ${b} พจน์ที่ ${a+8} มีค่าเท่าใด`,a+(a+7)*b,"aₙ = a₁ + (n − 1)d"]],
+[3,5,(a,b)=>{let n=a+10;return[`ผลบวก 1 + 2 + … + ${n} เท่ากับเท่าใด`,n*(n+1)/2,"n(n+1)/2"]}],
+[3,4,(a,b)=>[`log₂ ${2**(b+1)} เท่ากับเท่าใด`,b+1,`2^${b+1} = ${2**(b+1)}`]],
+[3,4,(a,b)=>[`กล่องมีลูกบอลแดง ${a} ลูก ขาว ${b} ลูก สุ่มหยิบ 1 ลูก ความน่าจะเป็นที่ได้ลูกขาวคือข้อใด`,`${b}/${a+b}`,"P(E) = n(E) ÷ n(S)",[`${a}/${a+b}`,`${b}/${a}`,`1/${a+b}`]]],
+[3,5,(a,b)=>[`อนุกรมเรขาคณิต 1 + 2 + 4 + … มี ${b+3} พจน์ ผลบวกเท่ากับเท่าใด`,2**(b+3)-1,"S = 2ⁿ − 1 เมื่อ r = 2"]],
+[3,5,(a,b)=>[`จุดยอดของพาราโบลา y = (x − ${a})² + ${b} คือข้อใด`,`(${a}, ${b})`,"รูป y = (x − h)² + k จุดยอด (h, k)",[`(−${a}, ${b})`,`(${a}, −${b})`,`(${b}, ${a})`]]]
+];
+MT.forEach(([l,g,f],t)=>{for(let p=0;p<24;p++){let a=3+(p*7+t*3)%18,b=2+(p*5+t)%9,r=f(a,b);add("คณิตศาสตร์",g,l,r[0],r[1],r[3]||nw(Number(r[1])),r[2])}});
+/* วิทยาศาสตร์ */
+const SC=[
+[1,2,(a,b)=>[`วัตถุเคลื่อนที่ ${a*b} เมตรใน ${b} วินาที ความเร็วเฉลี่ยกี่ เมตร/วินาที`,a,"v = s ÷ t"]],
+[2,3,(a,b)=>[`วัตถุมวล ${a} กก. มีความเร่ง ${b} ม./วินาที² แรงลัพธ์กี่นิวตัน`,a*b,"F = ma"]],
+[2,3,(a,b)=>[`ตัวต้านทาน ${b} โอห์ม มีกระแสไหลผาน ${a} แอมแปร์ แรงดันตกคร่อมกี่โวลต์`,a*b,"V = IR"]],
+[2,3,(a,b)=>[`ออกแรง ${a*5} นิวตัน ทำให้วัตถุเคลื่อนที่ ${b} เมตรตามแนวแรง ทำงานกี่จูล`,a*5*b,"W = F × s"]],
+[3,3,(a,b)=>[`วัตถุมวล ${2*a} กก. ความเร็ว ${b} ม./วินาที มีพลังงานจลน์กี่จูล`,a*b*b,"Ek = ½mv²"]],
+[1,1,(a,b)=>[`โลหะมวล ${a*b} กรัม ปริมาตร ${b} ลบ.ซม. ความหนาแน่นกี่ กรัม/ลบ.ซม.`,a,"d = m ÷ v"]],
+[2,3,(a,b)=>[`ทำงาน ${a*b*10} จูลใน ${b} วินาที กำลังกี่วัตต์`,a*10,"P = W ÷ t"]],
+[2,3,(a,b)=>[`ตัวต้านทาน ${a} และ ${b} โอห์ม ต่ออนุกรมกัน ความต้านทานรวมกี่โอห์ม`,a+b,"อนุกรม: R = R₁ + R₂"]],
+[3,3,(a,b)=>[`ตัวต้านทาน ${a*2} โอห์ม จำนวน 2 ตัว ต่อขนานกัน ความต้านทานรวมกี่โอห์ม`,a,"ขนาน: 1/R = 1/R₁ + 1/R₂"]]
+];
+SC.forEach(([l,g,f],t)=>{for(let p=0;p<16;p++){let a=2+(p*3+t)%12,b=2+(p*5+t*2)%9,r=f(a,b);add("วิทยาศาสตร์",g,l,r[0],r[1],nw(Number(r[1])),r[2])}});
+const EL=S("H ไฮโดรเจน 1|He ฮีเลียม 2|Li ลิเทียม 3|C คาร์บอน 6|N ไนโตรเจน 7|O ออกซิเจน 8|F ฟลูออรีน 9|Ne นีออน 10|Na โซเดียม 11|Mg แมกนีเซียม 12|Al อะลูมิเนียม 13|Si ซิลิคอน 14|P ฟอสฟอรัส 15|S กำมะถัน 16|Cl คลอรีน 17|K โพแทสเซียม 19|Ca แคลเซียม 20|Fe เหล็ก 26|Cu ทองแดง 29|Zn สังกะสี 30|Ag เงิน 47|Au ทอง 79|Hg ปรอท 80|Pb ตะกั่ว 82").map(x=>x.split(" "));
+EL.forEach(([y,n,z])=>{
+ add("วิทยาศาสตร์",1,1,`ธาตุ${n}มีสัญลักษณ์ธาตุตามข้อใด`,y,EL.map(e=>e[0]),`ธาตุ${n} = ${y}`);
+ add("วิทยาศาสตร์",3,2,`ธาตุ${n}มีเลขอะตอมเท่าใด`,z,EL.map(e=>e[2]),`เลขอะตอมของ ${y} = ${z}`);
+ add("วิทยาศาสตร์",4,3,`ธาตุที่มีเลขอะตอม ${z} คือธาตุใด`,n,EL.map(e=>e[1]),`เลขอะตอม ${z} คือ ${n} (${y})`);
+});
+S("ออร์แกเนลล์ที่สร้าง ATP ในเซลล์คือ|ไมโทคอนเดรีย|ไรโบโซม|ไลโซโซม|กอลจิบอดี|หายใจระดับเซลล์เกิดที่ไมโทคอนเดรีย|1|1~เลือดจากร่างกายกลับเข้าหัวใจห้องใดก่อน|ห้องบนขวา|ห้องล่างซ้าย|ห้องบนซ้าย|ห้องล่างขวา|เลือดเสียเข้าห้องบนขวา|2|2~เอนไซม์เพปซินย่อยสารอาหารชนิดใด|โปรตีน|แป้ง|ไขมัน|วิตามิน|ทำงานในกระเพาะอาหาร|2|2~คู่เบสใดเป็นคู่สมใน DNA|A กับ T|A กับ G|C กับ T|G กับ T|A-T และ G-C|4|3~มนุษย์มีโครโมโซมร่างกาย (ออโตโซม) กี่คู่|22 คู่|23 คู่|44 คู่|46 คู่|มีโครโมโซมเพศอีก 1 คู่|3|2~แสงสีใดที่พืชใช้สังเคราะห์ด้วยแสงน้อยที่สุด|สีเขียว|สีแดง|สีน้ำเงิน|สีม่วง|ใบพืชสะท้อนแสงสีเขียว|1|3~ท่อลำเลียงน้ำของพืชคือ|ไซเลม|โฟลเอ็ม|แคมเบียม|คอร์เทกซ์|ไซเลมลำเลียงน้ำและแร่ธาตุ|1|1").forEach(x=>{});
+"ออร์แกเนลล์ที่สร้าง ATP ในเซลล์คือ|ไมโทคอนเดรีย|ไรโบโซม|ไลโซโซม|กอลจิบอดี|หายใจระดับเซลล์เกิดที่ไมโทคอนเดรีย|1|1~เลือดจากร่างกายกลับเข้าหัวใจห้องใดก่อน|ห้องบนขวา|ห้องล่างซ้าย|ห้องบนซ้าย|ห้องล่างขวา|เลือดเสียเข้าห้องบนขวา|2|2~เอนไซม์เพปซินย่อยสารอาหารชนิดใด|โปรตีน|แป้ง|ไขมัน|วิตามิน|ทำงานในกระเพาะอาหาร|2|2~คู่เบสใดเป็นคู่สมใน DNA|A กับ T|A กับ G|C กับ T|G กับ T|A-T และ G-C|4|3~มนุษย์มีโครโมโซมร่างกาย (ออโตโซม) กี่คู่|22 คู่|23 คู่|44 คู่|46 คู่|มีโครโมโซมเพศอีก 1 คู่|3|2~ท่อลำเลียงน้ำของพืชคือ|ไซเลม|โฟลเอ็ม|แคมเบียม|คอร์เทกซ์|ไซเลมลำเลียงน้ำและแร่ธาตุ|1|1".split("~").forEach(r=>{r=r.split("|");add("วิทยาศาสตร์",+r[6],+r[7],r[0],r[1],[r[2],r[3],r[4]],r[5])});
+/* ภาษาอังกฤษ */
+const IV=S("go went gone|eat ate eaten|see saw seen|write wrote written|take took taken|give gave given|know knew known|drive drove driven|speak spoke spoken|break broke broken|choose chose chosen|begin began begun|swim swam swum|sing sang sung|drink drank drunk|run ran run|buy bought bought|bring brought brought|teach taught taught|catch caught caught|fly flew flown|grow grew grown|draw drew drawn|wear wore worn|steal stole stolen|forget forgot forgotten|ride rode ridden|rise rose risen|throw threw thrown|fall fell fallen").map(x=>x.split(" "));
+IV.forEach(([a,b,c])=>{
+ add("ภาษาอังกฤษ",1,1,`Past Simple (V2) of the verb "${a}" is ___.`,b,IV.map(v=>v[1]),`${a} → ${b} → ${c}`);
+ add("ภาษาอังกฤษ",2,2,`Past Participle (V3) of the verb "${a}" is ___.`,c,IV.map(v=>v[2]),`${a} → ${b} → ${c}`);
+});
+const VO=S("ancient โบราณ|brave กล้าหาญ|honest ซื่อสัตย์|generous ใจกว้าง|reluctant ไม่เต็มใจ|ambitious ทะเยอทะยาน|fragile เปราะบาง|ordinary ธรรมดา|scarce ขาดแคลน|abundant อุดมสมบูรณ์|humble ถ่อมตัว|obvious ชัดเจน|vital สำคัญยิ่ง|prevent ป้องกัน|achieve บรรลุ|conserve อนุรักษ์|reduce ลด|improve พัฒนา|ignore เพิกเฉย|conclude สรุป").map(x=>x.split(" "));
+VO.forEach(([e,t])=>{
+ add("ภาษาอังกฤษ",3,2,`The word "${e}" means ___.`,t,VO.map(v=>v[1]),`${e} = ${t}`);
+ add("ภาษาอังกฤษ",4,3,`Which English word means "${t}"?`,e,VO.map(v=>v[0]),`${t} = ${e}`);
+});
+"Yesterday, he ___ to Chiang Mai.|went|goes|go|going|yesterday ใช้ Past Simple (V2)|1|1~I have never ___ sushi.|eaten|ate|eat|eating|Present Perfect: have + V3|2|2~If I ___ rich, I would travel the world.|were|am|will be|was being|If-clause Type 2 ใช้ were|3|3~The window ___ by the boy yesterday.|was broken|broke|is broken|has broke|Passive Past: was + V3|3|2~She asked me where I ___.|lived|live|am living|do live|Reported speech ถอยเทนส์|4|3~Hardly had he arrived ___ it began to rain.|when|than|then|while|Hardly ... when|5|3~He is ___ than his brother.|taller|tallest|more tall|tall|Comparative adjective|2|1~By next year, she ___ here for ten years.|will have worked|works|worked|is working|Future Perfect|5|3".split("~").forEach(r=>{r=r.split("|");add("ภาษาอังกฤษ",+r[6],+r[7],r[0],r[1],[r[2],r[3],r[4]],r[5])});
+/* ภาษาไทย */
+const RS=S("กิน เสวย|นอน บรรทม|ตาย สวรรคต|ไป เสด็จ|มือ พระหัตถ์|เท้า พระบาท|ตา พระเนตร|หู พระกรรณ|ปาก พระโอษฐ์|ผม พระเกศา|เสื้อ ฉลองพระองค์|บ้าน พระตำหนัก|ป่วย ประชวร|หัวเราะ ทรงพระสรวล|ร้องไห้ ทรงพระกันแสง").map(x=>x.split(" "));
+RS.forEach(([a,b])=>{
+ add("ภาษาไทย",1,1,`ราชาศัพท์ของคำว่า "${a}" คือข้อใด`,b,RS.map(r=>r[1]),`${a} → ${b}`);
+ add("ภาษาไทย",3,2,`คำว่า "${b}" เป็นราชาศัพท์ของคำใด`,a,RS.map(r=>r[0]),`${b} คือราชาศัพท์ของ ${a}`);
+});
+"ข้อใดสะกดถูกต้อง|อนุญาต|อนุญาติ|สังเกตุ|ผัดไทย์|อนุญาตไม่มีสระอิ|1|1~ขี่ช้างจับตั๊กแตน หมายถึง|ลงทุนมากแต่ได้ผลน้อย|ทำงานเกินกำลัง|พูดดีแต่ใจร้าย|รอโอกาสดี|สำนวนไทย|2|2~เข็นครกขึ้นภูเขา หมายถึง|ทำสิ่งที่ยากเกินกำลัง|ลงทุนมาก|เอาเปรียบผู้อื่น|ฉวยโอกาส|สำนวนไทย|2|2~คำใดเป็นคำสมาส|ราชการ|พ่อแม่|ลูกน้อง|รถไฟ|ราชา + การ สมาสตามบาลีสันสกฤต|3|3~อักษรใดเป็นอักษรกลาง|จ|ข|ช|ส|อักษรกลาง: ก จ ฎ ฏ ด ต บ ป อ|1|1~ข้อใดเป็นประโยคความซ้อน|ครูชมนักเรียนที่ขยัน|พ่อและแม่อ่านหนังสือ|เขาร้องเพลง|ฉันกินข้าว|มีอนุประโยคขยาย (ที่)|4|3~คำว่า \"ฝูง\" ใน \"ฝูงนก\" เป็นคำนามชนิดใด|สมุหนาม|สามานยนาม|วิสามานยนาม|ลักษณนาม|นามบอกหมวดหมู่|3|2~ข้อใดเป็นคำที่มาจากภาษาเขมร|ถนน|ศาลา|เจดีย์|ก๋วยเตี๋ยว|ถนน มาจากเขมร|4|3".split("~").forEach(r=>{r=r.split("|");add("ภาษาไทย",+r[6],+r[7],r[0],r[1],[r[2],r[3],r[4]],r[5])});
+/* สังคมศึกษา */
+const AS=S("ไทย กรุงเทพมหานคร|ลาว เวียงจันทน์|กัมพูชา พนมเปญ|เมียนมา เนปยีดอ|เวียดนาม ฮานอย|มาเลเซีย กัวลาลัมเปอร์|อินโดนีเซีย จาการ์ตา|ฟิลิปปินส์ มะนิลา|บรูไน บันดาร์เสรีเบกาวัน|ติมอร์-เลสเต ดิลี").map(x=>x.split(" "));
+AS.forEach(([c,k])=>{
+ add("สังคมศึกษา",2,1,`เมืองหลวงของประเทศ${c}คือข้อใด`,k,AS.map(r=>r[1]),`เมืองหลวงของ${c} คือ ${k}`);
+ add("สังคมศึกษา",3,2,`${k}เป็นเมืองหลวงของประเทศใด`,c,AS.map(r=>r[0]),`${k} เป็นเมืองหลวงของ${c}`);
+});
+"วันอาสาฬหบูชาระลึกถึงเหตุการณ์ใด|แสดงปฐมเทศนา|ตรัสรู้|ประสูติ|ปรินิพพาน|ธัมมจักกัปปวัตนสูตร|1|1~ผู้ใช้อำนาจบริหารของไทยคือ|คณะรัฐมนตรี|รัฐสภา|ศาล|องค์กรอิสระ|อำนาจบริหาร|2|1~กฎหมายใดมีศักดิ์สูงสุด|รัฐธรรมนูญ|พ.ร.บ.|พระราชกฤษฎีกา|กฎกระทรวง|รัฐธรรมนูญเป็นกฎหมายสูงสุด|3|2~อริยสัจ 4 ข้อ \"นิโรธ\" คือ|ความดับทุกข์|เหตุแห่งทุกข์|ความทุกข์|ทางดับทุกข์|นิโรธ = ดับทุกข์|1|1~แผนที่มาตราส่วน 1:50,000 ระยะ 1 ซม. ในแผนที่คือเท่าใดในจริง|500 เมตร|50 เมตร|5 กิโลเมตร|50 กิโลเมตร|50,000 ซม. = 500 ม.|3|3~เปลี่ยนชื่อประเทศจากสยามเป็นไทยสมัยใคร|จอมพล ป. พิบูลสงคราม|ปรีดี พนมยงค์|พระยาพหลฯ|สฤษดิ์ ธนะรัชต์|พ.ศ. 2482|4|2~เมื่อราคาสินค้าสูงขึ้น ปริมาณซื้อจะเป็นอย่างไร|ลดลง|เพิ่มขึ้น|คงที่|ไม่เกี่ยวกัน|กฎอุปสงค์|2|2~เส้นลองจิจูดใช้บอกอะไร|เวลา|ภูมิอากาศ|ความสูง|ความหนาแน่น|แนวตั้ง ใช้คำนวณเวลา|3|3".split("~").forEach(r=>{r=r.split("|");add("สังคมศึกษา",+r[6],+r[7],r[0],r[1],[r[2],r[3],r[4]],r[5])});
+
+function makeQ(p,id){
+ let ch=sh([p.c,...p.w],id*13+7);
+ return {subject:p.s,grade:p.g,lv:p.l,text:p.t,choices:ch,answer:ch.indexOf(p.c),explain:p.e,id};
+}
+function buildSet(set){
+ let lv=parseInt($("lvSelect").value,10)||0,list=[];
+ SUBJECTS.forEach((s,si)=>{
+  let N=COUNTS[si],all=sh(POOL[s],777+si),hit=lv?all.filter(x=>x.l===lv):all;
+  let arr=(lv&&hit.length<N)?hit.concat(all.filter(x=>x.l!==lv)):hit,L=arr.length,st=(set*N)%L,sel=[];
+  for(let i=0;i<N;i++)sel.push(arr[(st+i)%L]);
+  sel.sort((x,y)=>x.l-y.l||x.g-y.g).forEach((p,i)=>list.push(makeQ(p,si*100000+set*1000+i)));
+ });
+ return list;
+}
+
+function $(id){return document.getElementById(id)}
+function show(id){
+ ["home","summary","exam","result","review"].forEach(s=>$(s).classList.add("hidden"));
+ $(id).classList.remove("hidden");
+ window.scrollTo(0,0);
+}
+function fmt(sec){
+ let h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;
+ return [h,m,s].map(v=>String(v).padStart(2,"0")).join(":");
+}
+function esc(t){
+ return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+/* LocalStorage & Users */
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}
+function lsDel(k){try{localStorage.removeItem(k)}catch(e){}}
+
+let currentUser=null,authModeVal="login";
+function getUsers(){try{return JSON.parse(lsGet("mtts_users")||"{}")}catch(e){return {}}}
+function saveUsers(u){return lsSet("mtts_users",JSON.stringify(u))}
+
+function authMsg(t,ok){const m=$("authMsg");m.textContent=t||"";m.className="msg"+(ok?" ok":"")}
+function authMode(m){
+ authModeVal=m;
+ $("tabLogin").classList.toggle("on",m==="login");
+ $("tabReg").classList.toggle("on",m==="register");
+ $("regFields").classList.toggle("hidden",m!=="register");
+ $("authBtn").textContent=m==="login"?"เข้าสู่ระบบ":"สมัครสมาชิก";
+ authMsg("");
+}
+
+async function submitAuth(){
+ const name=$("uName").value.trim(),pin=$("uPin").value;
+ if(!/^[\p{L}\p{N}_]{3,20}$/u.test(name)){authMsg("ชื่อผู้ใช้ต้องยาว 3-20 ตัวอักษร");return}
+ if(!/^\d{4,6}$/.test(pin)){authMsg("PIN ต้องเป็นตัวเลข 4-6 หลัก");return}
+ const key=name.toLowerCase(),users=getUsers();
+ 
+ if(authModeVal==="register"){
+  if(users[key]){authMsg("ชื่อผู้ใช้นี้มีในระบบแล้ว");return}
+  if($("uPin2").value!==pin){authMsg("รหัส PIN ไม่ตรงกัน");return}
+  const school = $("uSchool").value;
+  users[key]={name,pin,school,avatar:uploadedAvatarBase64||"🎖️",created:Date.now()};
+  saveUsers(users);
+ }else{
+  const u=users[key];
+  if(!u||u.pin!==pin){authMsg("ชื่อผู้ใช้หรือ PIN ไม่ถูกต้อง");return}
+ }
+ lsSet("mtts_session",key);
+ currentUser=key;
+ welcomeFlash="เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ!";
+ $("uPin").value="";authMsg("");
+ updateAccountUI();renderHistory();renderLeaderboard();
+}
+
+function logout(){
+ lsDel("mtts_session");currentUser=null;welcomeFlash=null;
+ $("uName").value="";
+ updateAccountUI();renderHistory();
+}
+
+function updateAccountUI(){
+ const u=currentUser?getUsers()[currentUser]:null;
+ $("loggedOut").classList.toggle("hidden",!!u);
+ $("loggedIn").classList.toggle("hidden",!u);
+ if(u){
+  $("whoName").textContent=u.name;
+  $("whoSchool").textContent=u.school||"นักเรียน MTTS";
+  const av = $("loggedInAvatar");
+  if(u.avatar && u.avatar.startsWith("data:image")){
+   av.innerHTML = `<img src="${u.avatar}" alt="profile">`;
+  }else{
+   av.textContent = u.avatar || "🎖️";
+  }
+ }
+}
+
+function initAuth(){
+ const s=lsGet("mtts_session");
+ if(s&&getUsers()[s])currentUser=s;
+ updateAccountUI();
+}
+function histKey(){return currentUser?"mtts_history_u_"+currentUser:"mtts_history"}
+
+/* สรุปเนื้อหา 5 วิชาอย่างละเอียด */
+const SUMMARY=[
+{subject:"คณิตศาสตร์",sections:[
+ {h:"1. ระบบจำนวนเต็ม และการดำเนินการ (ม.1)",items:[
+  "จำนวนเต็มแบ่งเป็น 3 ชนิด: จำนวนเต็มบวก (1,2,3...), จำนวนเต็มศูนย์ (0), และจำนวนเต็มลบ (-1,-2,-3...)",
+  "การบวกลบจำนวนเต็ม: เครื่องหมายเดียวกันนำมาบวกกันใช้เครื่องหมายเดิม / เครื่องหมายต่างกันนำค่าสัมบูรณ์มาลบกันแล้วใช้เครื่องหมายตามตัวที่มีค่ามากกว่า",
+  "การคูณหาร: เครื่องหมายเหมือนกันคูณ/หารกันได้บวก (+) / เครื่องหมายต่างกันได้ลบ (-)",
+  "สมบัติของจำนวนเต็ม: สลับที่การบวก/คูณ (a+b=b+a), เปลี่ยนหมู่ ((a+b)+c=a+(b+c)), แจกแจง (a(b+c)=ab+ac)"
+ ]},
+ {h:"2. ตัวประกอบ ห.ร.ม. และ ค.ร.น. (ม.1)",items:[
+  "จำนวนเฉพาะคือจำนวนที่มีตัวประกอบเพียง 2 ตัว คือ 1 และตัวมันเอง (เช่น 2, 3, 5, 7, 11, 13, 17, 19, 23)",
+  "ห.ร.ม. (หารร่วมมาก): จำนวนที่มากที่สุดที่นำไปหารทุกจำนวนได้ลงตัว (เลือกตัวประกอบร่วมที่กำลังน้อยที่สุด)",
+  "ค.ร.น. (คูณร่วมน้อย): จำนวนน้อยที่สุดที่ถูกทุกจำนวนหารได้ลงตัว (เลือกตัวประกอบทั้งหมดที่กำลังมากที่สุด)",
+  "ความสัมพันธ์: ห.ร.ม. × ค.ร.น. = ผลคูณของสองจำนวนนั้น (a × b)"
+ ]},
+ {h:"3. สมการและอสมการเชิงเส้นตัวแปรเดียว (ม.1 - ม.3)",items:[
+  "สมการคือประโยคสัญลักษณ์ที่มีเครื่องหมายเท่ากับ (=)",
+  "การแก้สมการ: ใช้สมบัติการเท่ากัน (บวก ลบ คูณ หาร สองข้างด้วยจำนวนเดียวกัน)",
+  "อสมการ: ใช้เครื่องหมาย ≠, <, >, ≤, ≥",
+  "ข้อควรระวังของอสมการ: เมื่อนำจำนวนลบมาคูณหรือหาร ต้องกลับทิศทางเครื่องหมายอสมการเสมอ!"
+ ]},
+ {h:"4. อัตราส่วน ร้อยละ และสัดส่วน (ม.2)",items:[
+  "อัตราส่วน a : b เขียนในรูปเศษส่วน a/b",
+  "สัดส่วนคือประโยคที่แสดงการเท่ากันของอัตราส่วนสองอัตราส่วน ใช้การคูณไขว้เพื่อแก้หาตัวแปร",
+  "ร้อยละ (Percentage): การเทียบปริมาณกับ 100 เช่น ร้อยละ 20 = 20/100",
+  "สูตรกำไร-ขาดทุน: กำไร = ราคาขาย - ต้นทุน / %กำไร = (กำไร ÷ ต้นทุน) × 100"
+ ]},
+ {h:"5. ทฤษฎีบทพีทาโกรัสและเรขาคณิต (ม.2 - ม.3)",items:[
+  "ทฤษฎีบทพีทาโกรัส: ในสามเหลี่ยมมุมฉาก c² = a² + b² (เมื่อ c คือด้านตรงข้ามมุมฉาก)",
+  "ชุดตัวเลขพีทาโกรัสยอดนิยม: (3,4,5), (5,12,13), (7,24,25), (8,15,17), (9,40,41)",
+  "พื้นที่รูปสามเหลี่ยม = ½ × ฐาน × สูง",
+  "พื้นที่รูปสี่เหลี่ยมผืนผ้า = กว้าง × ยาว / สี่เหลี่ยมจัตุรัส = ด้าน²"
+ ]},
+ {h:"6. พหุนามและการแยกตัวประกอบ (ม.2 - ม.4)",items:[
+  "สูตรกำลังสองสมบูรณ์: (A + B)² = A² + 2AB + B² / (A - B)² = A² - 2AB + B²",
+  "สูตรผลต่างกำลังสอง: A² - B² = (A - B)(A + B)",
+  "สูตรผลบวก/ผลต่างกำลังสาม: A³ + B³ = (A + B)(A² - AB + B²) / A³ - B³ = (A - B)(A² + AB + B²)"
+ ]},
+ {h:"7. ตรีโกณมิติพื้นฐาน (ม.3 - ม.4)",items:[
+  "ข้ามฉาก ชิดฉาก ข้ามชิด: sin θ = ข้าม/ฉาก, cos θ = ชิด/ฉาก, tan θ = ข้าม/ชิด",
+  "มุมมาตรฐาน 30°, 45°, 60°: sin 30° = 1/2, cos 30° = √3/2, tan 30° = 1/√3",
+  "เอกลักษณ์ตรีโกณมิติ: sin²θ + cos²θ = 1, tan θ = sin θ / cos θ"
+ ]},
+ {h:"8. ลำดับ อนุกรม และความน่าจะเป็น (ม.4 - ม.5)",items:[
+  "ลำดับเลขคณิต: aₙ = a₁ + (n - 1)d (โดย d คือผลต่างร่วม)",
+  "ความน่าจะเป็น P(E) = n(E) / n(S) มีค่าระหว่าง 0 ถึง 1 เสมอ"
+ ]}
+]},
+{subject:"วิทยาศาสตร์",sections:[
+ {h:"1. เซลล์และการทำงานของพืช (ม.1)",items:[
+  "นิวเคลียส: ควบคุมการทำงานของเซลล์และบรรจุสารพันธุกรรม (DNA)",
+  "ไมโทคอนเดรีย: แหล่งสร้างพลังงานสูงให้แก่เซลล์ (ATP)",
+  "คลอโรพลาสต์: พบเฉพาะในพืช มีสารคลอโรฟิลล์ใช้ในกระบวนการสังเคราะห์ด้วยแสง",
+  "กระบวนการสังเคราะห์ด้วยแสง: 6CO₂ + 6H₂O + แสงแดด → C₆H₁₂O₆ + 6O₂",
+  "ท่อลำเลียง: ไซเลม (Xylem) ลำเลียงน้ำและแร่ธาตุขึ้นจากราก / โฟลเอ็ม (Phloem) ลำเลียงอาหารจากใบ"
+ ]},
+ {h:"2. สาร การแยกสาร และสถานะของสสาร (ม.1 - ม.2)",items:[
+  "สถานะสสาร: ของแข็ง (รูปร่าง/ปริมาตรคงที่), ของเหลว (ปริมาตรคงที่ รูปร่างตามภาชนะ), แก๊ส (ฟุ้งกระจาย)",
+  "การแยกสาร: การกรอง (ของแข็งไม่ละลายในของเหลว), การกลั่น (สารละลายที่จุดเดือดต่างกัน), โครมาโทกราฟี (ความสามารถในการละลายและถูกดูดซับต่างกัน)"
+ ]},
+ {h:"3. ระบบอวัยวะในร่างกายมนุษย์ (ม.2)",items:[
+  "ระบบหมุนเวียนเลือด: หัวใจ 4 ห้อง (บนรับ ล่างส่ง) / เลือดเสียเข้าห้องบนขวา → ล่างขวา → ปอด → บนซ้าย → ล่างซ้ายสูบฉีดทั่วร่างกาย",
+  "ระบบหายใจ: ถุงลมปอด (Alveoli) แลกเปลี่ยน O₂ และ CO₂ ผ่านเส้นเลือดฝอย",
+  "ระบบย่อยอาหาร: ปาก (ย่อยแป้ง) → กระเพาะ (ย่อยโปรตีนด้วยเพปซิน) → ลำไส้เล็ก (ย่อยและดูดซึมสารอาหารทุกชนิด)"
+ ]},
+ {h:"4. แรง การเคลื่อนที่ และงานพลังงาน (ม.2 - ม.3)",items:[
+  "กฎการเคลื่อนที่ของนิวตัน: ข้อ 1 กฎความเฉื่อย (F=0) / ข้อ 2 F = ma / ข้อ 3 แรงกิริยาเท่ากับแรงปฏิกิริยา (Action = Reaction)",
+  "ความหนาแน่น d = m / v (มวล ÷ ปริมาตร)",
+  "งาน (Work) W = F × s (แรง × ระยะทางตามแนวแรง) หน่วยเป็น จูล (J)"
+ ]},
+ {h:"5. ไฟฟ้าและอิเล็กทรอนิกส์ (ม.3)",items:[
+  "กฎของโอห์ม: V = IR (แรงดันไฟฟ้า = กระแสไฟฟ้า × ความต้านทาน)",
+  "วงจรอนุกรม: กระแสเท่ากันทั้งวงจร (Iรวม = I₁ = I₂) / วงจรขนาน: แรงดันเท่ากันทั้งวงจร (Vรวม = V₁ = V₂)"
+ ]},
+ {h:"6. พันธุศาสตร์และวิวัฒนาการ (ม.3 - ม.4)",items:[
+  "DNA และยีน: ยีนเป็นช่วงของ DNA ที่ควบคุมลักษณะทางพันธุกรรม อยู่บนโครโมโซม",
+  "มนุษย์มีโครโมโซม 46 แท่ง (23 คู่) เป็นออโตโซม 22 คู่ และโครโมโซมเพศ 1 คู่ (XX = หญิง, XY = ชาย)"
+ ]}
+]},
+{subject:"ภาษาอังกฤษ",sections:[
+ {h:"1. 12 English Tenses Summary",items:[
+  "Present Simple (S + V1/V-s,es): เหตุการณ์ที่เป็นจริง กิจวัตรประจำวัน (Always, usually, every day)",
+  "Present Continuous (S + is/am/are + V-ing): กำลังเกิดขึ้นในขณะนี้ (Now, at the moment)",
+  "Present Perfect (S + has/have + V3): เกิดขึ้นในอดีต ดำเนินมาถึงปัจจุบัน (Since, for, already, just, yet)",
+  "Past Simple (S + V2): เหตุการณ์ที่จบลงแล้วในอดีต (Yesterday, last week, ago)",
+  "Future Simple (S + will + V1): เหตุการณ์ที่จะเกิดขึ้นในอนาคต (Tomorrow, next year)"
+ ]},
+ {h:"2. Passive Voice",items:[
+  "โครงสร้างหลัก: Subject + be + V3 (+ by Agent)",
+  "Present Simple Passive: S + is/am/are + V3 (e.g. English is spoken worldwide.)",
+  "Past Simple Passive: S + was/were + V3 (e.g. The car was repaired yesterday.)"
+ ]},
+ {h:"3. If-Clauses (Conditional Sentences)",items:[
+  "Type 0 (ความจริงธรรมชาติ): If + Pres.Simple, Pres.Simple",
+  "Type 1 (เป็นไปได้ในอนาคต): If + Pres.Simple, Will + V1",
+  "Type 2 (ไม่จริงในปัจจุบัน): If + Past.Simple, Would + V1 (ใช้ were กับทุกประธาน)",
+  "Type 3 (ตรงข้ามกับอดีต): If + Past Perfect (had+V3), Would have + V3"
+ ]},
+ {h:"4. Articles & Quantifiers",items:[
+  "A / An: ใช้นำหน้านามนับได้เอกพจน์ไม่เจาะจง (An ใช้หน้าเสียงสระ a, e, i, o, u)",
+  "The: ใช้นำหน้านามที่เจาะจง หรือมีสิ่งเดียวในโลก",
+  "Many / Few / A few: ใช้กับนามนับได้พหูพจน์ / Much / Little / A little: ใช้กับนามนับไม่ได้"
+ ]}
+]},
+{subject:"ภาษาไทย",sections:[
+ {h:"1. อักขรวิธีและชนิดของคำ",items:[
+  "อักษร 3 หมู่ (ไตรยางศ์): อักษรสูง (ข ข ฃ ฉ ฐ ถ ผ ฝ ส ห ฬ ฮ) / อักษรกลาง (ก จ ด ต บ ป อ ฎ ฏ) / อักษรต่ำ",
+  "ชนิดของคำ 7 ชนิด: คำนาม, คำสรรพนาม, คำกริยา, คำวิเศษณ์, คำบุพบท, คำสันธาน, คำอุทาน"
+ ]},
+ {h:"2. คำมาตราตัวสะกดและการประสมคำ",items:[
+  "แม่กกา (ไม่มีตัวสะกด), แม่กก, แม่กด, แม่กบ, แม่กง, แม่กน, แม่กม, แม่เกย, แม่เกอว",
+  "คำสมาส-สนธิ: สมาสชน สนธิเชื่อม (คำที่มาจากภาษาบาลี-สันสกฤต)"
+ ]},
+ {h:"3. สำนวน สุภาษิต คำพังเพย",items:[
+  "ขี่ช้างจับตั๊กแตน: ลงทุนมากแต่ได้ผลประโยชน์น้อย",
+  "เข็นครกขึ้นภูเขา: ทำทำงานที่ยากลำบากเกินความสามารถ",
+  "ปากหวานก้นเปรี้ยว: พูดจาอ่อนหวานแต่ใจคิดร้าย"
+ ]}
+]},
+{subject:"สังคมศึกษา",sections:[
+ {h:"1. ศาสนา ศีลธรรม จริยธรรม",items:[
+  "อริยสัจ 4: ทุกข์ (ความไม่สบายกายใจ), สมุทัย (สาเหตุแห่งทุกข์), นิโรธ (การดับทุกข์), มรรค (ข้อปฏิบัติให้พ้นทุกข์)",
+  "วันสำคัญทางศาสนาพุทธ: มาฆบูชา (โอวาทปาติโมกข์), วิสาขบูชา (ประสูติ ตรัสรู้ ปรินิพพาน), อาสาฬหบูชา (พระรัตนตรัยครบ 3)"
+ ]},
+ {h:"2. หน้าที่พลเมืองและการปกครอง",items:[
+  "อำนาจอธิปไตยเป็นของปวงชนชาวไทย แบ่งเป็น 3 ฝ่าย: นิติบัญญัติ (รัฐสภา), บริหาร (คณะรัฐมนตรี), ตุลาการ (ศาล)",
+  "ลำดับศักดิ์ของกฎหมาย: รัฐธรรมนูญ → พ.ร.บ. / พ.ร.ก. → พระราชกฤษฎีกา → กฎกระทรวง"
+ ]},
+ {h:"3. เศรษฐศาสตร์เบื้องต้น",items:[
+  "อุปสงค์ (Demand): ปริมาณความต้องการซื้อ (ราคาสูง ความต้องการซื้อลดลง - แปรผกผัน)",
+  "อุปทาน (Supply): ปริมาณความต้องการขาย (ราคาสูง ความต้องการขายเพิ่มขึ้น - แปรผันตรง)",
+  "ระบบเศรษฐกิจไทย: แบบผสม (กลไกราคาทำงานร่วมกับการแทรกแซงของรัฐ)"
+ ]},
+ {h:"4. ภูมิศาสตร์และแผนที่",items:[
+  "เส้นละติจูด (Latitude): เส้นแนวนอนบอกแนวกระแสอากาศและภูมิอากาศ / ลองจิจูด (Longitude): เส้นแนวตั้งบอกเวลา",
+  "มาตราส่วนแผนที่: 1 : 100,000 หมายถึง 1 ซม. ในแผนที่เท่ากับ 100,000 ซม. (1 กม.) ในพื้นที่จริง"
+ ]}
+]}
+];
+
+function X(i,h,t){SUMMARY[i].sections.push({h,items:t.split("|")})}
+X(0,"9. เซตและตรรกศาสตร์เบื้องต้น (ม.4)","เซต คือกลุ่มของสิ่งที่กำหนดได้ชัดเจน เขียนแบบแจกแจงสมาชิกหรือแบบบอกเงื่อนไข|n(A∪B) = n(A) + n(B) − n(A∩B)|จำนวนสับเซตของเซตที่มีสมาชิก n ตัว = 2ⁿ|นิเสธของ 'ทุกตัว' คือ 'บางตัวไม่' และนิเสธของ 'บางตัว' คือ 'ทุกตัวไม่'|p → q เป็นเท็จได้กรณีเดียว คือ p จริง q เท็จ");
+X(0,"10. เลขยกกำลังและลอการิทึม (ม.4)","aᵐ × aⁿ = aᵐ⁺ⁿ, aᵐ ÷ aⁿ = aᵐ⁻ⁿ, (aᵐ)ⁿ = aᵐⁿ, a⁰ = 1|log(AB) = log A + log B, log(A/B) = log A − log B, log Aⁿ = n log A|log_a a = 1, log_a 1 = 0|สูตรเปลี่ยนฐาน: log_a b = log b ÷ log a");
+X(0,"11. สถิติและเรขาคณิตวิเคราะห์ (ม.4 - ม.5)","มัธยฐานคือค่ากลางของข้อมูลที่เรียงลำดับแล้ว ฐานนิยมคือค่าที่ซ้ำมากที่สุด|ส่วนเบี่ยงเบนมาตรฐานวัดการกระจายของข้อมูล|ระยะห่างสองจุด d = √[(x₂−x₁)² + (y₂−y₁)²]|จุดกึ่งกลาง M = ((x₁+x₂)/2, (y₁+y₂)/2)|ความชัน m = (y₂−y₁)/(x₂−x₁) เส้นขนานมีความชันเท่ากัน เส้นตั้งฉาก m₁m₂ = −1|สูตรหาค่าสมการกำลังสอง x = [−b ± √(b²−4ac)] ÷ 2a");
+X(1,"7. ธาตุและตารางธาตุ (ม.3)","เลขอะตอม = จำนวนโปรตอน, เลขมวล = โปรตอน + นิวตรอน|หมู่ IA โลหะอัลคาไล, VIIA เฮโลเจน, VIIIA แก๊สเฉื่อย|ธาตุ H=1 He=2 C=6 N=7 O=8 Na=11 Cl=17 Fe=26 Cu=29 Au=79|พันธะไอออนิกเกิดระหว่างโลหะกับอโลหะ พันธะโคเวเลนต์เกิดระหว่างอโลหะกับอโลหะ");
+X(1,"8. กรด-เบส ปฏิกิริยาเคมี (ม.3 - ม.4)","pH < 7 เป็นกรด, pH = 7 กลาง, pH > 7 เป็นเบส|กรด + เบส → เกลือ + น้ำ (ปฏิกิริยาสะเทิน)|การเผาไหม้ต้องมีเชื้อเพลิง ออกซิเจน และความร้อน|กฎอนุรักษ์มวล: มวลสารก่อนและหลังปฏิกิริยาเท่ากัน");
+X(1,"9. ฟิสิกส์: พลังงาน คลื่น แสง เสียง (ม.4 - ม.5)","Ek = ½mv², Ep = mgh, P = W ÷ t|เสียงเดินทางในของแข็งเร็วกว่าของเหลวและแก๊ส ความเร็วเสียงในอากาศประมาณ 340 ม./วินาที|v = fλ (ความเร็ว = ความถี่ × ความยาวคลื่น)|กฎการสะท้อน: มุมตกกระทบ = มุมสะท้อน|วงจรอนุกรม Rรวม = R₁ + R₂, วงจรขนาน 1/Rรวม = 1/R₁ + 1/R₂");
+X(2,"5. Reported Speech & Relative Clauses","Reported Speech ถอยเทนส์ 1 ขั้น: is → was, will → would, V1 → V2|today → that day, tomorrow → the next day, here → there|who ใช้กับคน, which ใช้กับสิ่งของ, whose แสดงความเป็นเจ้าของ|Non-defining clause ต้องมีเครื่องหมายจุลภาคคั่น");
+X(2,"6. Irregular Verbs & Vocabulary ที่ออกบ่อย","go-went-gone, eat-ate-eaten, write-wrote-written, take-took-taken, begin-began-begun|choose-chose-chosen, break-broke-broken, fly-flew-flown, draw-drew-drawn|ancient = โบราณ, brave = กล้าหาญ, scarce = ขาดแคลน, abundant = อุดมสมบูรณ์|Comparative เติม -er หรือ more, Superlative เติม -est หรือ most (ใช้ the นำหน้า)");
+X(3,"4. ราชาศัพท์","กิน = เสวย, นอน = บรรทม, ตาย = สวรรคต, ไป = เสด็จ, ป่วย = ประชวร|มือ = พระหัตถ์, เท้า = พระบาท, ตา = พระเนตร, หู = พระกรรณ, ปาก = พระโอษฐ์|ใช้ 'ทรง' นำหน้าคำนามหรือกริยาสามัญเพื่อทำเป็นกริยาราชาศัพท์ เช่น ทรงงาน ทรงดนตรี");
+X(3,"5. ประโยค และ การเขียนคำให้ถูก","ประโยคความเดียว มีกริยาหลักเดียว / ความรวม เชื่อมด้วยและ แต่ หรือ / ความซ้อน มีอนุประโยคขยาย เช่น ที่ ซึ่ง อัน|คำที่มักเขียนผิด: อนุญาต (ไม่ใช่ อนุญาติ), สังเกต (ไม่ใช่ สังเกตุ), ผัดไทย (ไม่ใช่ ผัดไทย์)|คำสมาส เช่น ราชการ, วิทยาศาสตร์ ส่วนคำสนธิ เช่น มหรรณพ|คำเขมรที่ใช้ในภาษาไทย เช่น ถนน, เสด็จ, ตรัส, เผชิญ");
+X(4,"5. ประวัติศาสตร์ไทยและภูมิภาคอาเซียน","พ.ศ. 2482 เปลี่ยนชื่อประเทศจาก สยาม เป็น ไทย สมัยจอมพล ป. พิบูลสงคราม|เมืองหลวงอาเซียน: ไทย กรุงเทพฯ, ลาว เวียงจันทน์, กัมพูชา พนมเปญ, เมียนมา เนปยีดอ, เวียดนาม ฮานอย, มาเลเซีย กัวลาลัมเปอร์, อินโดนีเซีย จาการ์ตา, ฟิลิปปินส์ มะนิลา|อาเซียนก่อตั้ง พ.ศ. 2510 ที่กรุงเทพฯ ด้วยปฏิญญากรุงเทพ");
+X(4,"6. เศรษฐศาสตร์และเศรษฐกิจพอเพียง","เศรษฐกิจพอเพียง 3 ห่วง: ความพอประมาณ, ความมีเหตุผล, ภูมิคุ้มกันที่ดี และ 2 เงื่อนไข: ความรู้ คุณธรรม|GDP คือมูลค่ารวมของสินค้าและบริการที่ผลิตภายในประเทศในช่วงเวลาหนึ่ง|เงินเฟ้อ คือราคาสินค้าโดยรวมสูงขึ้นต่อเนื่อง|ธนาคารแห่งประเทศไทยทำหน้าที่ธนาคารกลาง ดูแลนโยบายการเงิน");
+
+function openSummary(i){
+ curSum=i;
+ $("sumSearch").value="";
+ renderSummary();
+ show("summary");
+}
+function renderSummary(){
+ const d=SUMMARY[curSum],q=$("sumSearch").value.trim().toLowerCase();
+ $("sumTitle").textContent="สรุปเนื้อหาเจาะลึก — "+d.subject;
+ $("sumChips").innerHTML=SUBJECTS.map((s,i)=>`<button class="chip${i===curSum?" on":""}" onclick="openSummary(${i})">${s}</button>`).join("");
+ let shown=0,total=0,html="";
+ d.sections.forEach(sec=>{
+  total+=sec.items.length;
+  const headHit=q&&sec.h.toLowerCase().includes(q);
+  const items=q?sec.items.filter(t=>headHit||t.toLowerCase().includes(q)):sec.items;
+  if(!items.length)return;
+  shown+=items.length;
+  html+=`<details class="sec"${q?" open":""}><summary>${esc(sec.h)} <span class="muted">(${items.length})</span></summary><ul class="sumList">`+
+   items.map(t=>`<li>${esc(t)}</li>`).join("")+`</ul></details>`;
+ });
+ $("sumCount").textContent=q?`พบ ${shown} หัวข้อจาก ${total}`:`${d.sections.length} หมวดหลัก รวม ${total} หัวข้อย่อย`;
+ $("sumBody").innerHTML=html||'<p class="muted" style="padding:20px 0;text-align:center">ไม่พบข้อความที่ค้นหา</p>';
+}
+function toggleSections(open){
+ document.querySelectorAll("#sumBody details").forEach(x=>{x.open=open});
+}
+
+/* ต้อนรับ & Leaderboard */
+let welcomeFlash=null;
+function greetWord(){
+ const h=new Date().getHours();
+ if(h>=5&&h<12)return "อรุณสวัสดิ์";
+ if(h>=12&&h<17)return "สวัสดีตอนบ่าย";
+ if(h>=17&&h<21)return "สวัสดีตอนเย็น";
+ return "สวัสดีตอนค่ำ";
+}
+function renderWelcome(){
+ const u=currentUser?getUsers()[currentUser]:null;
+ const h=loadHistory();
+ const n=h.length;
+ const best=n?Math.max(...h.map(r=>r.pct)):0;
+ const avg=n?Math.round(h.reduce((s,r)=>s+r.pct,0)/n*10)/10:0;
+ const last=n?h[n-1].pct:0;
+ 
+ $("greetTime").textContent=greetWord();
+ $("greetName").textContent=u?u.name:"ผู้เยี่ยมชมทั่วไป";
+ $("schoolBadge").textContent=u?(u.school||"นักเรียน MTTS"):"ผู้เยี่ยมชม";
+ 
+ const av = $("userAvatar");
+ if(u && u.avatar && u.avatar.startsWith("data:image")){
+  av.innerHTML = `<img src="${u.avatar}" alt="profile">`;
+ }else{
+  av.textContent = u?(u.avatar||"🎖️"):"🎖️";
+ }
+
+ let sub;
+ if(welcomeFlash)sub=welcomeFlash;
+ else if(!n)sub=u?"ยังไม่มีประวัติทำสอบในระบบ เริ่มฝึกจากชุดที่ 1 ได้เลย!":"เข้าสู่ระบบเพื่อเก็บสะสมคะแนนขึ้นกระดานอันดับ (Leaderboard)";
+ else if(best>=80)sub="ยอดเยี่ยมมาก! คะแนนสูงอยู่ในเกณฑ์สอบติดแน่!";
+ else if(best>=60)sub="ผลงานดี ทบทวนวิชาอ่อนเพิ่มเติมอีกนิด!";
+ else sub="ทบทวนสรุปเนื้อหาลึกซึ้ง แล้วลองทำข้อสอบใหม่อีกครั้ง";
+ $("greetSub").textContent=sub;
+ $("welcomeStats").innerHTML=
+  `<div class="stat">ทำข้อสอบแล้ว<b>${n} ครั้ง</b></div>`+
+  `<div class="stat">คะแนนสูงสุด<b>${n?best+"%":"-"}</b></div>`+
+  `<div class="stat">คะแนนเฉลี่ย<b>${n?avg+"%":"-"}</b></div>`+
+  `<div class="stat">ล่าสุด<b>${n?last+"%":"-"}</b></div>`;
+ $("introCard").classList.toggle("hidden",lsGet("mtts_intro_seen")==="1");
+}
+function dismissIntro(){lsSet("mtts_intro_seen","1");$("introCard").classList.add("hidden")}
+
+/* Leaderboard */
+function renderLeaderboard(){
+ let allRank=[];
+ try{
+  const users = getUsers();
+  Object.keys(users).forEach(k=>{
+   const uHist = JSON.parse(lsGet("mtts_history_u_"+k)||"[]");
+   uHist.forEach(item=>{
+    allRank.push({...item, username: users[k].name, school: users[k].school||"MTTS Cadet", avatar: users[k].avatar});
+   });
+  });
+ }catch(e){}
+ 
+ // จัดเรียงตาม คะแนน (%) มากไปน้อย -> เวลาที่ใช้ น้อยไปมาก
+ allRank.sort((a,b)=>{
+  if(b.pct !== a.pct) return b.pct - a.pct;
+  return a.time.localeCompare(b.time);
+ });
+
+ const lb = $("leaderboardBody");
+ if(!allRank.length){
+  lb.innerHTML = '<tr><td colspan="6" style="text-align:center" class="muted">ยังไม่มีข้อมูลคะแนนในกระดานอันดับ</td></tr>';
+  return;
+ }
+
+ lb.innerHTML = allRank.slice(0,10).map((r,idx)=>{
+  let badgeCls = idx===0?"r-1":idx===1?"r-2":idx===2?"r-3":"";
+  let badgeHtml = badgeCls?`<span class="rank-badge ${badgeCls}">${idx+1}</span>`: (idx+1);
+  return `<tr>
+   <td>${badgeHtml}</td>
+   <td><b>${esc(r.username)}</b></td>
+   <td><span class="muted" style="font-size:12px">${esc(r.school)}</span></td>
+   <td>ชุด ${r.set}</td>
+   <td><b style="color:var(--purple)">${r.score}/${r.total} (${r.pct}%)</b></td>
+   <td>${esc(r.time)}</td>
+  </tr>`;
+ }).join("");
+}
+
+function loadHistory(){
+ try{return JSON.parse(lsGet(histKey())||"[]")}catch(e){return []}
+}
+function saveHistory(h){lsSet(histKey(),JSON.stringify(h))}
+function renderHistory(){
+ renderWelcome();
+ let h=loadHistory(),box=$("history");
+ if(!h.length){box.textContent="ยังไม่มีประวัติการสอบ";return}
+ box.innerHTML=h.slice().reverse().slice(0,10).map(r=>
+  `<div class="review-item"><b>ชุดที่ ${r.set} (แนวปี ${r.year})</b> — ${r.score}/${r.total} (${r.pct}%)<br><span class="muted">${esc(r.date)} · ใช้เวลา ${esc(r.time)}</span></div>`
+ ).join("");
+}
+
+let clearArmed=false,clearT=null;
+function clearHistory(){
+ const btn=$("clearBtn");
+ if(!clearArmed){
+  clearArmed=true;btn.textContent="กดอีกครั้งเพื่อยืนยันการล้างประวัติ";
+  clearT=setTimeout(()=>{clearArmed=false;btn.textContent="ล้างประวัติ"},4000);
+  return;
+ }
+ clearTimeout(clearT);clearArmed=false;btn.textContent="ล้างประวัติ";
+ lsDel(histKey());
+ renderHistory();renderLeaderboard();
+}
+
+/* ระบบทำข้อสอบ */
+function startExam(){
+ setNo=parseInt($("setSelect").value,10)||0;
+ questions=buildSet(setNo);
+ answers=new Array(questions.length).fill(-1);
+ current=0;finished=false;seconds=TOTAL_SECONDS;welcomeFlash=null;
+ $("setTitle").textContent=`ชุดที่ ${setNo+1} — แนวปี ${YEARS[setNo]}`;
+ $("timer").textContent=fmt(seconds);
+ clearInterval(timer);
+ timer=setInterval(()=>{
+  seconds--;
+  $("timer").textContent=fmt(Math.max(seconds,0));
+  if(seconds<=0){clearInterval(timer);finish(true)}
+ },1000);
+ show("exam");
+ render();
+}
+
+function render(){
+ let q=questions[current];
+ $("subjectName").textContent=q.subject;
+ $("gradeName").textContent="ม."+q.grade+" · ระดับ"+LV[q.lv];
+ $("counter").textContent=`ข้อ ${current+1} / ${questions.length}`;
+ $("bar").style.width=((current+1)/questions.length*100)+"%";
+ $("question").textContent=`${current+1}. ${q.text}`;
+ let box=$("options");
+ box.innerHTML="";
+ q.choices.forEach((c,idx)=>{
+  let b=document.createElement("button");
+  b.className="opt"+(answers[current]===idx?" chosen":"");
+  b.textContent=`${"กขคง"[idx]}. ${c}`;
+  b.onclick=()=>{answers[current]=idx;render()};
+  box.appendChild(b);
+ });
+ $("feedback").classList.add("hidden");
+ $("confirmBox").classList.add("hidden");
+ $("prevBtn").disabled=current===0;
+ const isLast=current===questions.length-1;
+ $("submitBtn").classList.toggle("hidden",!isLast);
+ $("submitHint").classList.toggle("hidden",isLast);
+ $("nextBtn").disabled=current===questions.length-1;
+}
+
+function move(d){
+ let n=current+d;
+ if(n<0||n>=questions.length)return;
+ current=n;
+ render();
+ window.scrollTo(0,0);
+}
+
+function finish(auto){
+ if(finished)return;
+ if(auto===true){doFinish(true);return}
+ let left=answers.filter(a=>a===-1).length;
+ $("confirmText").textContent=left?`ยังไม่ได้ตอบ ${left} ข้อ ต้องการส่งข้อสอบหรือไม่`:"ต้องการส่งข้อสอบทันทีหรือไม่";
+ $("confirmBox").classList.remove("hidden");
+}
+function cancelFinish(){$("confirmBox").classList.add("hidden")}
+function doFinish(){
+ if(finished)return;
+ $("confirmBox").classList.add("hidden");
+ finished=true;
+ clearInterval(timer);
+
+ let score=0,per={};
+ SUBJECTS.forEach(s=>per[s]={got:0,total:0});
+ questions.forEach((q,i)=>{
+  per[q.subject].total++;
+  if(answers[i]===q.answer){score++;per[q.subject].got++}
+ });
+ let total=questions.length;
+ let pct=Math.round(score/total*1000)/10;
+ let used=fmt(TOTAL_SECONDS-Math.max(seconds,0));
+
+ const u=currentUser?getUsers()[currentUser]:null;
+ $("resultUserSchool").textContent = u? (u.name + " (" + u.school + ")") : "ผู้เยี่ยมชมทั่วไป";
+ const rAv = $("resultAvatar");
+ if(u && u.avatar && u.avatar.startsWith("data:image")){
+  rAv.innerHTML = `<img src="${u.avatar}" alt="profile">`;
+ }else{
+  rAv.textContent = u?(u.avatar||"🎖️"):"🎖️";
+ }
+
+ $("score").textContent=`${score} / ${total} (${pct}%)`;
+ $("timeUsed").textContent=`เวลาที่ใช้ทำสอบ: ${used}`;
+ $("subjectScores").innerHTML=SUBJECTS.map((s,i)=>{
+  let p=per[s],pc=Math.round(p.got/p.total*100);
+  let note=pc<60?'<span class="bad">ควรทบทวนวิชานี้เพิ่มเติม</span>':'<span class="good">ทำได้ดีมาก</span>';
+  return `<div class="review-item"><div class="row"><b>${s}</b><span>${p.got} / ${p.total} (${pc}%)</span></div>${note}<button class="wide soft" onclick="openSummary(${i})" style="margin-top:6px">อ่านสรุป ${s}</button></div>`;
+ }).join("");
+
+ let h=loadHistory();
+ h.push({set:setNo+1,year:YEARS[setNo],score,total,pct,time:used,date:new Date().toLocaleString("th-TH")});
+ saveHistory(h.slice(-30));
+ renderLeaderboard();
+ show("result");
+}
+
+function showReview(){
+ $("reviewList").innerHTML=questions.map((q,i)=>{
+  let a=answers[i],ok=a===q.answer;
+  return `<div class="review-item">
+   <b>${i+1}. [${q.subject} ม.${q.grade} · ${LV[q.lv]}]</b> ${esc(q.text)}<br>
+   <span class="${ok?"good":"bad"}">คำตอบของคุณ: ${a===-1?"ไม่ได้ตอบ":esc(q.choices[a])}</span><br>
+   <span class="good">เฉลย: ${esc(q.choices[q.answer])}</span><br>
+   <span class="muted">${esc(q.explain)}</span>
+  </div>`;
+ }).join("");
+ show("review");
+}
+
+function goHome(){
+ clearInterval(timer);
+ renderHistory();
+ renderLeaderboard();
+ show("home");
+}
+
+/* เริ่มต้นระบบ */
+initAuth();
+$("sumButtons").innerHTML=SUBJECTS.map((s,i)=>`<button class="soft" onclick="openSummary(${i})">${s}</button>`).join("");
+renderHistory();
+renderLeaderboard();
+</script>
+</body>
+</html>
