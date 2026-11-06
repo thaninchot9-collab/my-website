@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MTTS EXAM</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap">
+<style>
+:root{
+ --bg:#f7f5fb;--card:#ffffff;--ink:#302344;--muted:#6f6280;--line:#e5daf5;
+ --purple:#7545b5;--deep:#4c287f;--light:#f3edff;--onpurple:#ffffff;
+ --soft:#eee5f8;--softink:#4c287f;--hdr1:#ffffff;--hdr2:#eee4ff;
+ --green:#23865a;--greenbg:#e7f7ed;--greenink:#17633e;
+ --red:#d44c65;--redbg:#fff0f2;--redink:#a52f46;--track:#eee8f5;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+ --bg:#17121f;--card:#221a2e;--ink:#ece5f6;--muted:#a597b8;--line:#3a2d4d;
+ --purple:#9a6fe0;--deep:#c9b0f5;--light:#2d2240;--onpurple:#ffffff;
+ --soft:#33264a;--softink:#d9c8f7;--hdr1:#221a2e;--hdr2:#2d2240;
+ --green:#4cc38a;--greenbg:#173626;--greenink:#8fe0b6;
+ --red:#e5738a;--redbg:#3b1b25;--redink:#f2a3b2;--track:#33264a;color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#17121f;--card:#221a2e;--ink:#ece5f6;--muted:#a597b8;--line:#3a2d4d;
+ --purple:#9a6fe0;--deep:#c9b0f5;--light:#2d2240;--onpurple:#ffffff;
+ --soft:#33264a;--softink:#d9c8f7;--hdr1:#221a2e;--hdr2:#2d2240;
+ --green:#4cc38a;--greenbg:#173626;--greenink:#8fe0b6;
+ --red:#e5738a;--redbg:#3b1b25;--redink:#f2a3b2;--track:#33264a;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Thai',Arial,sans-serif;
+ padding-block:12px 24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{background:linear-gradient(135deg,var(--hdr1),var(--hdr2));padding:24px 15px;text-align:center;border:1px solid var(--line);border-radius:17px;max-width:850px;margin:0 auto}
+header h1{margin:0;color:var(--deep);font-size:29px;letter-spacing:1px}
+header p{color:var(--muted);margin:8px 0}
+main{max-width:850px;margin:auto;padding:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:17px;margin:13px 0}
+h2,h3{color:var(--deep)}
+button,select{font:inherit;font-size:15px;border-radius:10px;padding:12px}
+button{border:0;background:var(--purple);color:var(--onpurple);font-weight:bold;cursor:pointer}
+button.soft{background:var(--soft);color:var(--softink)}
+button.danger{background:var(--red);color:#fff}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,select:focus-visible{outline:3px solid var(--purple);outline-offset:2px}
+select{width:100%;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.wide{width:100%;margin-top:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat{background:var(--light);padding:12px;border-radius:10px;min-width:0}
+.stat b{display:block;color:var(--deep);margin-top:5px}
+.muted{color:var(--muted);font-size:13px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.badge{display:inline-block;background:var(--light);color:var(--deep);padding:6px 10px;border-radius:20px;font-size:12px;font-weight:bold}
+.hidden{display:none!important}
+.progress{height:9px;background:var(--track);border-radius:10px;overflow:hidden;margin:12px 0}
+#bar{height:100%;width:0;background:var(--purple);transition:width .2s}
+#question{font-size:19px;line-height:1.7;margin:20px 0;overflow-wrap:anywhere}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);margin:9px 0;font-weight:normal;overflow-wrap:anywhere}
+.opt.chosen{background:var(--light);border:2px solid var(--purple);color:var(--deep);font-weight:bold}
+.opt.correct{background:var(--greenbg);border-color:var(--green);color:var(--greenink)}
+.opt.wrong{background:var(--redbg);border-color:var(--red);color:var(--redink)}
+.confirm{background:var(--light);padding:13px;border-radius:10px;margin-top:12px;line-height:1.7}
+.confirm p{margin:0 0 8px}
+.nav{display:flex;gap:9px;margin-top:15px}
+.nav button{flex:1}
+#timer{color:var(--deep);font-weight:bold;font-variant-numeric:tabular-nums}
+.review-item{border-bottom:1px solid var(--line);padding:12px 0;line-height:1.7;overflow-wrap:anywhere}
+.scoreText{color:var(--purple)}
+.good{color:var(--green)}
+.bad{color:var(--red)}
+.copyright{max-width:850px;margin:18px auto 0;text-align:center;color:var(--muted);font-size:13px}
+input{display:block;width:100%;font:inherit;font-size:15px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);margin:4px 0 10px}
+input:focus-visible{outline:3px solid var(--purple);outline-offset:2px}
+.lbl{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+.tabs{display:flex;gap:8px;margin:10px 0}
+.tab{flex:1;background:var(--soft);color:var(--softink)}
+.tab.on{background:var(--purple);color:var(--onpurple)}
+.msg{min-height:1.4em;margin:8px 0 0;color:var(--red);font-size:14px}
+.msg.ok{color:var(--green)}
+.sumList{margin:6px 0 14px;padding-left:22px;line-height:1.8}
+.sumList li{overflow-wrap:anywhere}
+.eyebrow{margin:0;color:var(--purple);font-weight:bold;font-size:13px;letter-spacing:.5px}
+.welcome h2{margin:4px 0 6px}
+.welcome .grid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-top:12px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.chip{background:var(--soft);color:var(--softink);padding:8px 12px;font-size:14px}
+.chip.on{background:var(--purple);color:var(--onpurple)}
+.sec{border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:0 14px;background:var(--card)}
+.sec summary{cursor:pointer;padding:12px 0;font-weight:bold;color:var(--deep);line-height:1.5;overflow-wrap:anywhere}
+.sec summary:focus-visible{outline:3px solid var(--purple);outline-offset:2px;border-radius:6px}
+.sec[open] summary{border-bottom:1px solid var(--line);margin-bottom:6px}
+.toolrow{display:flex;gap:8px;flex-wrap:wrap}
+.toolrow button{flex:1;min-width:120px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>MTTS EXAM</h1>
+<p>คลังข้อสอบจำลองโรงเรียนช่างฝีมือทหาร</p>
+<span class="badge">WHITE &amp; PURPLE EDITION</span>
+</header>
+
+<main>
+<section id="home">
+<div class="card welcome" id="welcomeCard">
+<p class="eyebrow" id="greetTime"></p>
+<h2 id="greetName"></h2>
+<p class="muted" id="greetSub" role="status"></p>
+<div class="grid" id="welcomeStats"></div>
+</div>
+
+<div class="card hidden" id="introCard">
+<h3>เริ่มต้นใช้งานใน 4 ขั้นตอน</h3>
+<ol class="sumList">
+<li>สมัครสมาชิกด้วยชื่อผู้ใช้กับ PIN หรือข้ามไปทำแบบผู้เยี่ยมชม</li>
+<li>อ่านสรุปเนื้อหาแต่ละวิชาก่อนสอบ ค้นหาคำที่ต้องการได้</li>
+<li>เลือกชุดข้อสอบแล้วกดเริ่ม มีเวลา 3 ชั่วโมงต่อ 200 ข้อ</li>
+<li>ส่งข้อสอบที่ข้อสุดท้าย ดูคะแนนรายวิชาและเฉลยทุกข้อ</li>
+</ol>
+<button class="wide" onclick="dismissIntro()">เข้าใจแล้ว เริ่มเลย</button>
+</div>
+
+<div class="card" id="accountCard">
+<h3>บัญชีผู้ใช้</h3>
+<div id="loggedOut">
+<p class="muted">สมัครด้วยชื่อผู้ใช้กับ PIN ตัวเลข ไม่ต้องใช้อีเมล ข้อมูลเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น ลืม PIN แล้วกู้คืนไม่ได้ หรือจะทำข้อสอบแบบผู้เยี่ยมชมโดยไม่เข้าสู่ระบบก็ได้</p>
+<div class="tabs">
+<button id="tabLogin" class="tab on" onclick="authMode('login')">เข้าสู่ระบบ</button>
+<button id="tabReg" class="tab" onclick="authMode('register')">สมัครสมาชิก</button>
+</div>
+<label class="lbl" for="uName">ชื่อผู้ใช้ (3-20 ตัว)</label>
+<input id="uName" autocomplete="username" maxlength="20" placeholder="เช่น somchai01">
+<label class="lbl" for="uPin">รหัส PIN (ตัวเลข 4-6 หลัก)</label>
+<input id="uPin" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password">
+<div id="pin2Wrap" class="hidden">
+<label class="lbl" for="uPin2">ยืนยันรหัส PIN</label>
+<input id="uPin2" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password">
+</div>
+<button class="wide" id="authBtn" onclick="submitAuth()">เข้าสู่ระบบ</button>
+<p id="authMsg" class="msg" role="status"></p>
+</div>
+<div id="loggedIn" class="hidden">
+<div class="row"><span>สวัสดี <b id="whoName"></b></span><button class="soft" onclick="logout()">ออกจากระบบ</button></div>
+<p class="muted">คะแนนที่ทำจากนี้จะบันทึกในบัญชีนี้</p>
+</div>
+</div>
+
+<div class="card">
+<h2>เลือกชุดข้อสอบ</h2>
+<p class="muted">ข้อสอบใหม่ 200 ข้อต่อชุด รวม 5 วิชา</p>
+<select id="setSelect">
+<option value="0">ชุดที่ 1 — แนวปี 2562</option>
+<option value="1">ชุดที่ 2 — แนวปี 2563</option>
+<option value="2">ชุดที่ 3 — แนวปี 2564</option>
+<option value="3">ชุดที่ 4 — แนวปี 2565</option>
+<option value="4">ชุดที่ 5 — แนวปี 2566</option>
+</select>
+<div class="grid" style="margin-top:15px">
+<div class="stat">คณิตศาสตร์<b>50 ข้อ</b></div>
+<div class="stat">วิทยาศาสตร์<b>50 ข้อ</b></div>
+<div class="stat">ภาษาอังกฤษ<b>50 ข้อ</b></div>
+<div class="stat">ภาษาไทย<b>25 ข้อ</b></div>
+<div class="stat">สังคมศึกษา<b>25 ข้อ</b></div>
+<div class="stat">รวม<b>200 ข้อ</b></div>
+</div>
+<button class="wide" onclick="startExam()">เริ่มทำข้อสอบ</button>
+</div>
+
+<div class="card">
+<h3>สรุปเนื้อหาแต่ละวิชา</h3>
+<p class="muted">สรุปตามหัวข้อ แยก 5 วิชา แตะหัวข้อเพื่อขยาย และค้นหาคำได้</p>
+<div class="grid" id="sumButtons"></div>
+</div>
+
+<div class="card">
+<h3>ประวัติคะแนน</h3>
+<div id="history" class="muted">ยังไม่มีประวัติ</div>
+<button class="wide soft" id="clearBtn" onclick="clearHistory()">ล้างประวัติ</button>
+</div>
+<div class="card">
+<h3>ระดับเนื้อหา</h3>
+<p class="muted">ทุกชุดกระจายเนื้อหาตั้งแต่ ม.1 ถึง ม.5 ในทั้ง 5 วิชา</p>
+</div>
+</section>
+
+<section id="summary" class="hidden">
+<div class="card">
+<h2 id="sumTitle"></h2>
+<div class="chips" id="sumChips"></div>
+<label class="lbl" for="sumSearch">ค้นหาในสรุป</label>
+<input id="sumSearch" type="search" placeholder="เช่น พีทาโกรัส, passive, อริยสัจ" oninput="renderSummary()">
+<p class="muted" id="sumCount" role="status"></p>
+<div class="toolrow">
+<button class="soft" onclick="toggleSections(true)">ขยายทั้งหมด</button>
+<button class="soft" onclick="toggleSections(false)">ย่อทั้งหมด</button>
+</div>
+<div id="sumBody"></div>
+<button class="wide" onclick="goHome()">กลับหน้าหลัก</button>
+</div>
+</section>
+
+<section id="exam" class="hidden">
+<div class="card">
+<div class="row">
+<strong id="setTitle"></strong>
+<strong id="timer">03:00:00</strong>
+</div>
+<div class="progress"><div id="bar"></div></div>
+<div class="row">
+<span id="subjectName" class="badge"></span>
+<span id="gradeName" class="badge"></span>
+<span id="counter" class="muted"></span>
+</div>
+<div id="question"></div>
+<div id="options"></div>
+<div id="feedback" class="hidden"></div>
+<div class="nav">
+<button id="prevBtn" class="soft" onclick="move(-1)">ย้อนกลับ</button>
+<button id="nextBtn" onclick="move(1)">ข้อถัดไป</button>
+</div>
+<div id="confirmBox" class="confirm hidden"><p id="confirmText"></p><div class="nav"><button class="soft" onclick="cancelFinish()">ทำต่อ</button><button class="danger" onclick="doFinish(false)">ส่งข้อสอบ</button></div></div>
+<p id="submitHint" class="muted" style="text-align:center;margin:12px 0 0">ปุ่มส่งข้อสอบจะแสดงที่ข้อสุดท้าย</p>
+<button id="submitBtn" class="wide danger hidden" onclick="finish()">ส่งข้อสอบ</button>
+</div>
+</section>
+
+<section id="result" class="hidden">
+<div class="card">
+<h2>ผลการสอบ</h2>
+<h1 id="score" class="scoreText"></h1>
+<p id="timeUsed" class="muted"></p>
+<div id="subjectScores"></div>
+<button class="wide" onclick="showReview()">ดูเฉลยทุกข้อ</button>
+<button class="wide soft" onclick="goHome()">กลับหน้าหลัก</button>
+</div>
+</section>
+
+<section id="review" class="hidden">
+<div class="card">
+<h2>เฉลยและตรวจคำตอบ</h2>
+<div id="reviewList"></div>
+<button class="wide" onclick="goHome()">กลับหน้าหลัก</button>
+</div>
+</section>
+</main>
+<footer class="copyright">© thaninchot example · สงวนลิขสิทธิ์</footer>
+
+
+<script>
+const SUBJECTS=["คณิตศาสตร์","วิทยาศาสตร์","ภาษาอังกฤษ","ภาษาไทย","สังคมศึกษา"];
+const YEARS=[2562,2563,2564,2565,2566];
+const COUNTS=[50,50,50,25,25];
+const TOTAL_SECONDS=10800;
+
+let questions=[],answers=[],current=0;
+let seconds=TOTAL_SECONDS,timer=null,setNo=0,finished=false;
+
+/* เครื่องมือสร้างข้อสอบ */
+function rand(seed,min,max){
+ let x=Math.abs(Math.sin(seed*127.1+311.7)*43758.5453);
+ return min+Math.floor((x%1)*(max-min+1));
+}
+function makeQ(subject,grade,text,correct,wrong,explain,id){
+ // กันตัวเลือกซ้ำกับคำตอบหรือซ้ำกันเอง
+ let uniq=[];
+ wrong.forEach(w=>{ if(w!==correct && !uniq.includes(w)) uniq.push(w); });
+ let k=1;
+ while(uniq.length<3){
+  let n=parseFloat(correct);
+  let extra=isNaN(n)?(correct+" "+k):String(n+k+1);
+  if(extra!==correct && !uniq.includes(extra)) uniq.push(extra);
+  k++;
+ }
+ uniq=uniq.slice(0,3);
+ let choices=[correct,...uniq];
+ let seed=id*13+grade*7;
+ for(let i=choices.length-1;i>0;i--){
+  let j=rand(seed+i,0,i);
+  [choices[i],choices[j]]=[choices[j],choices[i]];
+ }
+ return {subject,grade,text,choices,answer:choices.indexOf(correct),explain,id};
+}
+
+/* คณิตศาสตร์ ม.1-ม.5 */
+function mathQuestion(i,set){
+ let grade=Math.floor(i/10)+1;
+ let n=i%10;
+ let s=set+1;
+ let a=rand(i*17+s*101,3,19);
+ let b=rand(i*23+s*71,2,15);
+ let correct,wrong,explain,text;
+
+ if(grade===1){
+  switch(n){
+   case 0:
+    text=`จงหาผลบวกของ ${a+s} และ ${b+2*s}`;
+    correct=String(a+b+3*s);
+    wrong=[String(a+b+3*s+3),String(a*b),String(a+b)];
+    explain="นำจำนวนทั้งสองมาบวกกัน";break;
+   case 1:
+    text=`จงหาผลต่างของ ${a*3+s} และ ${a+s}`;
+    correct=String(a*2);
+    wrong=[String(a),String(a*3),String(a*2+2)];
+    explain="นำจำนวนแรกตั้งแล้วลบจำนวนที่สอง";break;
+   case 2:
+    text=`จำนวนใดเป็นตัวประกอบของ ${a*b*2}`;
+    correct=String(a);
+    wrong=[String(a*b*2+1),String(a*b*2+2),String(a*b*2+3)];
+    explain="ตัวประกอบคือจำนวนที่หารจำนวนที่กำหนดได้ลงตัว";break;
+   case 3:
+    text=`${a*2+s} มีค่าเท่าใดเมื่อปัดเป็นจำนวนเต็มสิบที่ใกล้ที่สุด`;
+    correct=String(Math.round((a*2+s)/10)*10);
+    wrong=[String(Math.floor((a*2+s)/10)*10),String(a*2+s),String(a*10)];
+    explain="พิจารณาหลักหน่วยเพื่อปัดเศษ";break;
+   case 4:
+    text=`จงหาค่า ${a}²`;
+    correct=String(a*a);
+    wrong=[String(a*2),String(a*a+1),String(a*a-2)];
+    explain="ยกกำลังสองคือการนำจำนวนนั้นคูณตัวเอง";break;
+   default:
+    text=`ถ้า x + ${a} = ${a+b} แล้ว x เท่ากับเท่าใด`;
+    correct=String(b);
+    wrong=[String(a),String(a+b),String(b+1)];
+    explain="ย้ายจำนวนที่บวกอยู่ไปอีกข้างโดยเปลี่ยนเป็นการลบ";
+  }
+ }else if(grade===2){
+  switch(n){
+   case 0:{
+    let part=a*10+s*5,whole=a*100;
+    let pct=Math.round(part/whole*1000)/10;
+    text=`${part} คิดเป็นร้อยละเท่าใดของ ${whole}`;
+    correct=pct+"%";
+    wrong=[(pct+5)+"%",(pct*2)+"%",(Math.max(pct-3,1))+"%"];
+    explain="ร้อยละ = (ส่วนที่สนใจ ÷ จำนวนทั้งหมด) × 100";break;}
+   case 1:
+    text=`อัตราส่วน ${a}:${b} มีจำนวนส่วนรวมเท่าใด`;
+    correct=String(a+b);
+    wrong=[String(a*b),String(a+b+1),String(a+b+2)];
+    explain="นำจำนวนส่วนทั้งสองมาบวกกัน";break;
+   case 2:
+    text=`จงหาค่าเฉลี่ยของ ${a}, ${a+2}, ${a+4}`;
+    correct=String(a+2);
+    wrong=[String(a+1),String(a+3),String(a+4)];
+    explain="ค่าเฉลี่ย = ผลรวมของข้อมูล ÷ จำนวนข้อมูล";break;
+   case 3:
+    text=`สี่เหลี่ยมผืนผ้ากว้าง ${a} ซม. ยาว ${b} ซม. มีพื้นที่เท่าใด`;
+    correct=String(a*b)+" ตารางซม.";
+    wrong=[String(2*(a+b))+" ตารางซม.",String(a+b)+" ตารางซม.",String(a*b+2)+" ตารางซม."];
+    explain="พื้นที่สี่เหลี่ยมผืนผ้า = กว้าง × ยาว";break;
+   case 4:
+    text=`สี่เหลี่ยมจัตุรัสด้านละ ${a} ซม. มีเส้นรอบรูปเท่าใด`;
+    correct=String(4*a)+" ซม.";
+    wrong=[String(a*a)+" ซม.",String(2*a)+" ซม.",String(3*a)+" ซม."];
+    explain="เส้นรอบรูปสี่เหลี่ยมจัตุรัส = 4 × ความยาวด้าน";break;
+   default:
+    text=`ถ้า 3x = ${a*3} แล้ว x มีค่าเท่าใด`;
+    correct=String(a);
+    wrong=[String(a+1),String(a*3),String(a-1)];
+    explain="หารทั้งสองข้างด้วย 3";
+  }
+ }else if(grade===3){
+  switch(n){
+   case 0:
+    text=`ถ้า 2x + ${a} = ${2*b+a} แล้ว x เท่ากับเท่าใด`;
+    correct=String(b);
+    wrong=[String(b+1),String(a),String(2*b)];
+    explain="ย้ายค่าคงที่แล้วหารด้วยสัมประสิทธิ์ของ x";break;
+   case 1:
+    text=`รถเดินทาง ${a*5} กิโลเมตรใน ${a} ชั่วโมง มีอัตราเร็วเท่าใด`;
+    correct="5 กม./ชม.";
+    wrong=["10 กม./ชม.","15 กม./ชม.","20 กม./ชม."];
+    explain="อัตราเร็ว = ระยะทาง ÷ เวลา";break;
+   case 2:
+    text=`จงหาค่า √${a*a}`;
+    correct=String(a);
+    wrong=[String(a+1),String(a-1),String(a*2)];
+    explain="รากที่สองคือจำนวนที่คูณตัวเองแล้วได้จำนวนเดิม";break;
+   case 3:
+    text=`สามเหลี่ยมมีฐาน ${a} ซม. สูง ${b*2} ซม. มีพื้นที่เท่าใด`;
+    correct=String(a*b)+" ตารางซม.";
+    wrong=[String(a*b*2)+" ตารางซม.",String(a+b*2)+" ตารางซม.",String(a*b+5)+" ตารางซม."];
+    explain="พื้นที่สามเหลี่ยม = 1/2 × ฐาน × สูง";break;
+   default:
+    text=`ถ้า x² = ${a*a} และ x เป็นจำนวนบวก x มีค่าเท่าใด`;
+    correct=String(a);
+    wrong=[String(-a),String(a+2),String(a*a)];
+    explain="รากที่สองของจำนวนบวกมีสองค่า แต่โจทย์กำหนดให้เป็นจำนวนบวก";
+  }
+ }else if(grade===4){
+  switch(n){
+   case 0:
+    text=`จงแก้สมการ 4x - ${a} = ${4*b-a}`;
+    correct=String(b);
+    wrong=[String(b+1),String(a),String(4*b)];
+    explain="บวก a ทั้งสองข้าง แล้วหารด้วย 4";break;
+   case 1:
+    text=`ลำดับเลขคณิต 3, 7, 11, 15 พจน์ที่ 8 คือเท่าใด`;
+    correct="31";
+    wrong=["27","29","35"];
+    explain="ลำดับมีผลต่างร่วม 4 ใช้ aₙ = a₁ + (n-1)d";break;
+   case 2:
+    text=`โยนเหรียญ 1 เหรียญ 1 ครั้ง ความน่าจะเป็นที่จะออกหัวคือเท่าใด`;
+    correct="1/2";
+    wrong=["1/4","1/3","1"];
+    explain="ผลลัพธ์ที่ต้องการมี 1 จากผลลัพธ์ที่เป็นไปได้ 2 แบบ";break;
+   case 3:
+    text=`จงหาค่า 2³ × 2²`;
+    correct="32";
+    wrong=["16","64","12"];
+    explain="ฐานเหมือนกันคูณกันให้นำเลขชี้กำลังมาบวกกัน";break;
+   default:
+    text=`วงกลมรัศมี ${a} หน่วย มีเส้นผ่านศูนย์กลางเท่าใด`;
+    correct=String(2*a);
+    wrong=[String(a),String(4*a),String(a*a)];
+    explain="เส้นผ่านศูนย์กลาง = 2 × รัศมี";
+  }
+ }else{
+  switch(n){
+   case 0:
+    text=`จงแยกตัวประกอบ x² - ${a*a}`;
+    correct=`(x - ${a})(x + ${a})`;
+    wrong=[`(x - ${a})²`,`(x + ${a})²`,`x(x - ${a})`];
+    explain="ใช้สูตรผลต่างกำลังสอง a²-b² = (a-b)(a+b)";break;
+   case 1:
+    text=`ถ้า f(x) = 2x + ${a} แล้ว f(${b}) มีค่าเท่าใด`;
+    correct=String(2*b+a);
+    wrong=[String(2*b),String(a+b),String(2*a+b)];
+    explain="แทนค่า x ด้วยจำนวนที่กำหนด";break;
+   case 2:
+    text=`เงินต้น ${a*100} บาท ดอกเบี้ยอย่างง่าย 10% ต่อปี เป็นเวลา 1 ปี ได้ดอกเบี้ยเท่าใด`;
+    correct=String(a*10)+" บาท";
+    wrong=[String(a)+" บาท",String(a*100)+" บาท",String(a*20)+" บาท"];
+    explain="ดอกเบี้ยอย่างง่าย = เงินต้น × อัตราดอกเบี้ย × เวลา";break;
+   case 3:{
+    let p=Math.min(a%3+1,3);
+    text=`จงหาค่า log₁₀(${Math.pow(10,p)})`;
+    correct=String(p);
+    wrong=["0","1","2","4"].filter(x=>x!==String(p)).slice(0,3);
+    explain="ลอการิทึมฐานสิบถามว่า 10 ยกกำลังเท่าใดจึงได้จำนวนที่กำหนด";break;}
+   default:
+    text=`แก้สมการ x² - ${2*a}x + ${a*a} = 0`;
+    correct=String(a);
+    wrong=[String(a+1),String(-a),String(2*a)];
+    explain="แยกตัวประกอบได้เป็น (x - a)² = 0 ดังนั้น x = a";
+  }
+ }
+ return makeQ("คณิตศาสตร์",grade,text,correct,wrong,explain,100000+set*1000+i);
+}
+
+/* วิทยาศาสตร์ ม.1-ม.5 */
+const science=[
+[
+ ["ส่วนใดของเซลล์ทำหน้าที่ควบคุมการทำงานของเซลล์","นิวเคลียส",["เยื่อหุ้มเซลล์","ไซโทพลาซึม","ผนังเซลล์"],"นิวเคลียสเป็นศูนย์ควบคุมการทำงานของเซลล์"],
+ ["เครื่องมือใดใช้วัดอุณหภูมิ","เทอร์มอมิเตอร์",["บารอมิเตอร์","แอมมิเตอร์","โวลต์มิเตอร์"],"เทอร์มอมิเตอร์ใช้วัดอุณหภูมิ"],
+ ["สารใดมีสถานะเป็นแก๊สที่อุณหภูมิห้อง","ออกซิเจน",["เหล็ก","น้ำแข็ง","เกลือ"],"ออกซิเจนเป็นแก๊สที่อุณหภูมิห้อง"],
+ ["อวัยวะใดทำหน้าที่สูบฉีดเลือด","หัวใจ",["ปอด","ตับ","ไต"],"หัวใจทำหน้าที่สูบฉีดเลือด"],
+ ["พืชดูดน้ำจากดินผ่านส่วนใดเป็นหลัก","ราก",["ใบ","ดอก","ผล"],"รากทำหน้าที่ดูดน้ำและแร่ธาตุ"]
+],
+[
+ ["การเปลี่ยนสถานะจากของแข็งเป็นของเหลวเรียกว่าอะไร","การหลอมเหลว",["การระเหย","การควบแน่น","การระเหิด"],"การหลอมเหลวคือการเปลี่ยนจากของแข็งเป็นของเหลว"],
+ ["แรงเสียดทานมีทิศทางอย่างไรเมื่อเทียบกับการเคลื่อนที่","ต้านการเคลื่อนที่",["ไปทางเดียวกันเสมอ","ตั้งฉากเสมอ","ไม่มีทิศทาง"],"แรงเสียดทานต้านการเคลื่อนที่หรือแนวโน้มการเคลื่อนที่"],
+ ["หน่วยของความหนาแน่นคือข้อใด","กิโลกรัมต่อลูกบาศก์เมตร",["นิวตัน","วัตต์","แอมแปร์"],"ความหนาแน่นคือมวลต่อปริมาตร"],
+ ["แก๊สใดจำเป็นต่อการเผาไหม้ทั่วไป","ออกซิเจน",["ไนโตรเจน","ฮีเลียม","คาร์บอนไดออกไซด์"],"ออกซิเจนช่วยให้เกิดการเผาไหม้"],
+ ["อวัยวะใดแลกเปลี่ยนแก๊สในมนุษย์","ถุงลมปอด",["หลอดอาหาร","กระเพาะอาหาร","ไต"],"ถุงลมปอดเป็นบริเวณแลกเปลี่ยนแก๊ส"]
+],
+[
+ ["ความเร็วคำนวณจากอะไร","ระยะทางหารด้วยเวลา",["เวลาหารด้วยระยะทาง","มวลคูณความเร่ง","แรงหารด้วยพื้นที่"],"ความเร็วเฉลี่ย = ระยะทาง ÷ เวลา"],
+ ["หน่วยของแรงคืออะไร","นิวตัน",["จูล","วัตต์","โวลต์"],"แรงมีหน่วยเป็นนิวตัน"],
+ ["สารละลายที่มีค่า pH ต่ำกว่า 7 มีสมบัติอย่างไร","เป็นกรด",["เป็นเบส","เป็นกลาง","เป็นโลหะ"],"สารที่มี pH ต่ำกว่า 7 เป็นกรด"],
+ ["ส่วนใดของพืชเป็นบริเวณสังเคราะห์ด้วยแสงเป็นหลัก","ใบ",["ราก","ดอก","เมล็ด"],"ใบมีคลอโรฟิลล์ช่วยรับพลังงานแสง"],
+ ["พันธุกรรมถ่ายทอดผ่านสิ่งใด","ยีน",["แร่ธาตุ","น้ำ","แป้ง"],"ยีนเป็นหน่วยของการถ่ายทอดลักษณะทางพันธุกรรม"]
+],
+[
+ ["กฎของโอห์มเขียนความสัมพันธ์ได้อย่างไร","V = IR",["V = I/R","V = R/I","V = I + R"],"กฎของโอห์มคือแรงดันไฟฟ้าเท่ากับกระแสคูณความต้านทาน"],
+ ["พลังงานจลน์ขึ้นอยู่กับสิ่งใด","มวลและอัตราเร็ว",["สีและรูปร่าง","อุณหภูมิเท่านั้น","ปริมาตรเท่านั้น"],"พลังงานจลน์ขึ้นอยู่กับมวลและกำลังสองของอัตราเร็ว"],
+ ["ปฏิกิริยาที่ปล่อยความร้อนออกสู่สิ่งแวดล้อมเรียกว่าอะไร","ปฏิกิริยาคายความร้อน",["ปฏิกิริยาดูดความร้อน","การกลั่น","การระเหิด"],"ปฏิกิริยาคายความร้อนปล่อยพลังงานความร้อน"],
+ ["DNA มีหน้าที่สำคัญอย่างไร","เก็บข้อมูลทางพันธุกรรม",["สร้างพลังงานโดยตรง","ย่อยอาหาร","ลำเลียงออกซิเจน"],"DNA เป็นสารพันธุกรรมที่เก็บข้อมูลของสิ่งมีชีวิต"],
+ ["ระบบนิเวศประกอบด้วยสิ่งใด","สิ่งมีชีวิตและสิ่งไม่มีชีวิต",["สัตว์เท่านั้น","พืชเท่านั้น","สิ่งไม่มีชีวิตเท่านั้น"],"ระบบนิเวศประกอบด้วยสิ่งมีชีวิตและสิ่งแวดล้อม"]
+],
+[
+ ["กฎการเคลื่อนที่ข้อที่สองของนิวตันเกี่ยวข้องกับสมการใด","F = ma",["E = mc²","V = IR","P = W/t"],"แรงลัพธ์เท่ากับมวลคูณความเร่ง"],
+ ["การเปลี่ยนแปลงนิวเคลียสของอะตอมเรียกว่าอะไร","ปฏิกิริยานิวเคลียร์",["ปฏิกิริยาการละลาย","การระเหย","การควบแน่น"],"เป็นการเปลี่ยนแปลงที่เกิดขึ้นในนิวเคลียส"],
+ ["คลื่นแม่เหล็กไฟฟ้าชนิดใดมีความยาวคลื่นสั้นมาก","รังสีแกมมา",["คลื่นวิทยุ","ไมโครเวฟ","อินฟราเรด"],"รังสีแกมมามีความยาวคลื่นสั้นและพลังงานสูง"],
+ ["หลักการอนุรักษ์พลังงานกล่าวว่าอย่างไร","พลังงานไม่สูญหายแต่เปลี่ยนรูปได้",["พลังงานเกิดขึ้นเองได้","พลังงานหายไปได้","พลังงานมีค่าเป็นศูนย์เสมอ"],"พลังงานรวมคงที่ในระบบปิด"],
+ ["ตัวเร่งปฏิกิริยามีผลอย่างไร","เพิ่มอัตราการเกิดปฏิกิริยา",["ทำให้ปฏิกิริยาหยุด","เพิ่มมวลสารตั้งต้น","เปลี่ยนผลิตภัณฑ์เสมอ"],"ตัวเร่งปฏิกิริยาช่วยลดพลังงานก่อกัมมันต์"]
+]
+];
+function scienceQuestion(i,set){
+ let grade=Math.floor(i/10)+1,n=i%10;
+ let f=science[grade-1][n%5];
+ let variants=[
+  "ข้อใดอธิบายได้ถูกต้องเกี่ยวกับ",
+  "จากหลักวิทยาศาสตร์ เรื่อง",
+  "ความรู้เรื่อง",
+  "ในการศึกษาวิทยาศาสตร์เกี่ยวกับ",
+  "ข้อใดกล่าวถึง"
+ ];
+ let stem=variants[(n+set)%variants.length];
+ let text=`${stem} ${f[0]} (โจทย์ประยุกต์ระดับ ม.${grade} ชุด ${set+1})`;
+ return makeQ("วิทยาศาสตร์",grade,text,f[1],f[2],f[3],200000+set*1000+i);
+}
+
+/* ภาษาอังกฤษ */
+const englishBank=[
+ ["She ___ to school every day.","goes",["go","going","gone"],"ประธานเอกพจน์บุรุษที่สามใช้ goes"],
+ ["They ___ playing football now.","are",["is","am","be"],"They ใช้ are"],
+ ["I ___ my homework yesterday.","finished",["finish","finishes","finishing"],"yesterday บอกเหตุการณ์ในอดีต"],
+ ["He has lived here ___ 2020.","since",["for","at","on"],"since ใช้กับจุดเริ่มต้นของเวลา"],
+ ["There ___ many students in the room.","are",["is","am","be"],"many students เป็นพหูพจน์"],
+ ["The opposite of ancient is ___.","modern",["old","historic","past"],"modern มีความหมายตรงข้ามกับ ancient"],
+ ["A person who teaches students is a ___.","teacher",["doctor","driver","farmer"],"teacher หมายถึงครู"],
+ ["What is the past tense of write?","wrote",["written","writing","writes"],"อดีตของ write คือ wrote"],
+ ["Choose the correct article: ___ apple.","an",["a","the","no article"],"apple ขึ้นต้นด้วยเสียงสระ จึงใช้ an"],
+ ["If it rains, we ___ at home.","will stay",["stayed","staying","stays"],"ประโยคเงื่อนไขแบบที่หนึ่งใช้ will กับผลที่จะเกิด"]
+];
+function englishQuestion(i,set){
+ let grade=Math.floor(i/10)+1,n=i%10;
+ let f=englishBank[n];
+ let contexts=[
+  "Choose the best answer.",
+  "Complete the sentence correctly.",
+  "Select the correct grammatical form.",
+  "Choose the word or phrase that makes the sentence correct.",
+  "Read the sentence and choose the best answer."
+ ];
+ let text=contexts[(n+set)%5]+" "+f[0]+` [Level M.${grade} / Set ${set+1}]`;
+ return makeQ("ภาษาอังกฤษ",grade,text,f[1],f[2],f[3],300000+set*1000+i);
+}
+
+/* ภาษาไทย */
+const thaiBank=[
+ ["ข้อใดเป็นคำนาม","โรงเรียน",["เดิน","สวย","เร็ว"],"โรงเรียนเป็นคำนาม"],
+ ["คำใดเป็นคำกริยา","วิเคราะห์",["หนังสือ","ความสุข","โรงงาน"],"วิเคราะห์เป็นคำกริยา"],
+ ["คำว่า ขยัน มีความหมายตรงข้ามกับคำใด","เกียจคร้าน",["อดทน","พยายาม","ตั้งใจ"],"ขยันตรงข้ามกับเกียจคร้าน"],
+ ["ข้อใดเป็นประโยคคำถาม","เหตุใดเธอจึงมาสาย",["ฉันไปโรงเรียน","เขาอ่านหนังสือ","วันนี้อากาศดี"],"ประโยคคำถามต้องการคำตอบ"],
+ ["ข้อใดสะกดถูกต้อง","อนุญาต",["อนุญาติ","อณุญาต","อนุญาติ์"],"รูปสะกดที่ถูกต้องคือ อนุญาต"],
+ ["คำใดเป็นคำสรรพนาม","พวกเรา",["โต๊ะ","วิ่ง","รวดเร็ว"],"พวกเราใช้แทนผู้พูดและผู้อื่น"],
+ ["ข้อใดเป็นคำวิเศษณ์","รวดเร็ว",["นักเรียน","อ่าน","โต๊ะ"],"รวดเร็วขยายลักษณะการกระทำ"],
+ ["ข้อใดเป็นคำบุพบท","บน",["วิ่ง","สวย","ฉัน"],"บนแสดงความสัมพันธ์ด้านสถานที่"],
+ ["สำนวน น้ำขึ้นให้รีบตัก หมายถึงอะไร","เมื่อมีโอกาสควรรีบทำ",["ทำงานช้า ๆ","รอให้ผู้อื่นทำ","หลีกเลี่ยงโอกาส"],"สำนวนนี้สอนให้ใช้โอกาสให้เป็นประโยชน์"],
+ ["คำว่า เมตตา หมายถึงอะไร","ความปรารถนาให้ผู้อื่นเป็นสุข",["ความโกรธ","ความอิจฉา","ความประมาท"],"เมตตาคือความปรารถนาดีต่อผู้อื่น"]
+];
+function thaiQuestion(i,set){
+ let grade=Math.floor(i/5)+1,n=i%10;
+ let f=thaiBank[(n+set*3)%10];
+ let forms=[
+  "พิจารณาหลักภาษาไทยต่อไปนี้",
+  "ข้อใดใช้ภาษาไทยได้ถูกต้องเกี่ยวกับ",
+  "จากความรู้ด้านภาษาไทย",
+  "จงเลือกคำตอบที่ถูกต้อง",
+  "อ่านข้อความและพิจารณา"
+ ];
+ let text=`${forms[(n+set)%5]} ${f[0]} (ระดับ ม.${grade} ชุด ${set+1})`;
+ return makeQ("ภาษาไทย",grade,text,f[1],f[2],f[3],400000+set*1000+i);
+}
+
+/* สังคมศึกษา */
+const socialBank=[
+ ["ประเทศไทยตั้งอยู่ในทวีปใด","เอเชีย",["ยุโรป","แอฟริกา","อเมริกาใต้"],"ประเทศไทยตั้งอยู่ในทวีปเอเชีย"],
+ ["เมืองหลวงของประเทศไทยคือเมืองใด","กรุงเทพมหานคร",["เชียงใหม่","ภูเก็ต","ขอนแก่น"],"กรุงเทพมหานครเป็นเมืองหลวงของไทย"],
+ ["วันรัฐธรรมนูญตรงกับวันที่เท่าใด","10 ธันวาคม",["5 ธันวาคม","12 สิงหาคม","23 ตุลาคม"],"วันรัฐธรรมนูญตรงกับวันที่ 10 ธันวาคม"],
+ ["เงินที่รัฐจัดเก็บจากประชาชนเรียกว่าอะไร","ภาษี",["กำไร","เงินฝาก","ดอกเบี้ย"],"ภาษีเป็นรายได้ของรัฐ"],
+ ["ประเทศไทยมีการปกครองระบอบใด","ประชาธิปไตยอันมีพระมหากษัตริย์ทรงเป็นประมุข",["สาธารณรัฐ","สมบูรณาญาสิทธิราชย์","เผด็จการ"],"เป็นระบอบการปกครองของประเทศไทย"],
+ ["หลักธรรมสำคัญที่กล่าวถึงทุกข์และเหตุแห่งทุกข์คืออะไร","อริยสัจ 4",["เบญจศีล","ไตรลักษณ์","สังคหวัตถุ 4"],"อริยสัจ 4 เป็นหลักธรรมสำคัญในพระพุทธศาสนา"],
+ ["แผนที่ใช้สัญลักษณ์แทนสิ่งต่าง ๆ เพื่ออะไร","ช่วยสื่อความหมายของพื้นที่",["ใช้แทนภาษา","ใช้แทนเงิน","ใช้แทนเวลา"],"สัญลักษณ์ช่วยให้เข้าใจข้อมูลบนแผนที่"],
+ ["อุปสงค์หมายถึงอะไร","ความต้องการซื้อสินค้าและบริการ",["ความต้องการขายสินค้า","ภาษีที่รัฐเก็บ","ต้นทุนการผลิต"],"อุปสงค์คือความต้องการซื้อสินค้าและบริการของผู้บริโภค"],
+ ["สถาบันใดใช้อำนาจนิติบัญญัติ","รัฐสภา",["ศาล","คณะรัฐมนตรี","กองทัพ"],"รัฐสภาเป็นผู้ใช้อำนาจนิติบัญญัติ"],
+ ["อาเซียนมีสำนักงานเลขาธิการตั้งอยู่ที่เมืองใด","จาการ์ตา",["กรุงเทพมหานคร","มะนิลา","สิงคโปร์"],"สำนักงานเลขาธิการอาเซียนตั้งอยู่ที่จาการ์ตา ประเทศอินโดนีเซีย"]
+];
+function socialQuestion(i,set){
+ let grade=Math.floor(i/5)+1,n=i%10;
+ let f=socialBank[(n+set*3)%10];
+ let forms=[
+  "ข้อใดถูกต้องเกี่ยวกับ",
+  "ตามความรู้สังคมศึกษา",
+  "จงพิจารณาข้อความต่อไปนี้",
+  "จงเลือกคำตอบที่ถูกต้อง",
+  "จากเนื้อหาสังคมศึกษา"
+ ];
+ let text=`${forms[(n+set)%5]} ${f[0]} (ระดับ ม.${grade} ชุด ${set+1})`;
+ return makeQ("สังคมศึกษา",grade,text,f[1],f[2],f[3],500000+set*1000+i);
+}
+
+/* สร้างชุดข้อสอบ */
+const GEN=[mathQuestion,scienceQuestion,englishQuestion,thaiQuestion,socialQuestion];
+function buildSet(set){
+ let list=[];
+ GEN.forEach((fn,si)=>{
+  for(let i=0;i<COUNTS[si];i++) list.push(fn(i,set));
+ });
+ return list;
+}
+
+/* ตัวช่วย */
+function $(id){return document.getElementById(id)}
+function show(id){
+ ["home","summary","exam","result","review"].forEach(s=>$(s).classList.add("hidden"));
+ $(id).classList.remove("hidden");
+ window.scrollTo(0,0);
+}
+function fmt(sec){
+ let h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;
+ return [h,m,s].map(v=>String(v).padStart(2,"0")).join(":");
+}
+function esc(t){
+ return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+/* ที่เก็บข้อมูลในเบราว์เซอร์ */
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}
+function lsDel(k){try{localStorage.removeItem(k)}catch(e){}}
+
+/* บัญชีผู้ใช้ (ไม่ใช้อีเมล: ชื่อผู้ใช้ + PIN ตัวเลข เก็บในเบราว์เซอร์เครื่องนี้) */
+let currentUser=null,authModeVal="login";
+function getUsers(){try{return JSON.parse(lsGet("mtts_users")||"{}")}catch(e){return {}}}
+function saveUsers(u){return lsSet("mtts_users",JSON.stringify(u))}
+function weakHash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return (h>>>0).toString(16)}
+async function hashPin(salt,pin,method){
+ if(method==="s"){
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(salt+":"+pin));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+ }
+ return weakHash(salt+":"+pin);
+}
+function bestMethod(){return (window.crypto&&crypto.subtle)?"s":"w"}
+function makeSalt(){
+ try{const a=new Uint8Array(8);crypto.getRandomValues(a);return Array.from(a).map(b=>b.toString(16).padStart(2,"0")).join("")}
+ catch(e){return Math.random().toString(36).slice(2)+Date.now().toString(36)}
+}
+function authMsg(t,ok){const m=$("authMsg");m.textContent=t||"";m.className="msg"+(ok?" ok":"")}
+function authMode(m){
+ authModeVal=m;
+ $("tabLogin").classList.toggle("on",m==="login");
+ $("tabReg").classList.toggle("on",m==="register");
+ $("pin2Wrap").classList.toggle("hidden",m!=="register");
+ $("authBtn").textContent=m==="login"?"เข้าสู่ระบบ":"สมัครสมาชิก";
+ $("uPin").autocomplete=m==="login"?"current-password":"new-password";
+ authMsg("");
+}
+async function submitAuth(){
+ const name=$("uName").value.trim(),pin=$("uPin").value;
+ if(!/^[\p{L}\p{N}_]{3,20}$/u.test(name)){authMsg("ชื่อผู้ใช้ต้องยาว 3-20 ตัว ใช้ตัวอักษร ตัวเลข หรือ _ เท่านั้น");return}
+ if(!/^\d{4,6}$/.test(pin)){authMsg("PIN ต้องเป็นตัวเลข 4-6 หลัก");return}
+ const key=name.toLowerCase(),users=getUsers();
+ try{
+  if(authModeVal==="register"){
+   if(users[key]){authMsg("ชื่อผู้ใช้นี้ถูกใช้แล้ว ลองชื่ออื่น");return}
+   if($("uPin2").value!==pin){authMsg("PIN ที่ยืนยันไม่ตรงกัน");return}
+   const salt=makeSalt(),method=bestMethod();
+   users[key]={name,salt,method,hash:await hashPin(salt,pin,method),created:Date.now()};
+   if(!saveUsers(users)){authMsg("บันทึกบัญชีไม่ได้ เบราว์เซอร์อาจปิดการเก็บข้อมูลไว้");return}
+  }else{
+   const u=users[key];
+   if(!u){authMsg("ไม่พบชื่อผู้ใช้นี้ ถ้ายังไม่มีบัญชีให้กดสมัครสมาชิก");return}
+   if(u.method==="s"&&!(window.crypto&&crypto.subtle)){authMsg("เบราว์เซอร์นี้ตรวจ PIN ไม่ได้ ลองเปิดผ่านลิงก์ https");return}
+   if(await hashPin(u.salt,pin,u.method)!==u.hash){authMsg("PIN ไม่ถูกต้อง");return}
+  }
+ }catch(e){authMsg("เกิดข้อผิดพลาด ลองใหม่อีกครั้ง");return}
+ lsSet("mtts_session",key);
+ currentUser=key;
+ welcomeFlash=authModeVal==="register"?"สมัครสมาชิกสำเร็จ ยินดีต้อนรับสู่ MTTS EXAM":"ยินดีต้อนรับกลับ เข้าสู่ระบบเรียบร้อย";
+ $("uPin").value="";$("uPin2").value="";authMsg("");
+ updateAccountUI();renderHistory();
+}
+function logout(){
+ lsDel("mtts_session");currentUser=null;welcomeFlash=null;
+ $("uName").value="";
+ updateAccountUI();renderHistory();
+}
+function updateAccountUI(){
+ const u=currentUser?getUsers()[currentUser]:null;
+ $("loggedOut").classList.toggle("hidden",!!u);
+ $("loggedIn").classList.toggle("hidden",!u);
+ if(u)$("whoName").textContent=u.name;
+}
+function initAuth(){
+ const s=lsGet("mtts_session");
+ if(s&&getUsers()[s])currentUser=s;
+ updateAccountUI();
+}
+function histKey(){return currentUser?"mtts_history_u_"+currentUser:"mtts_history"}
+
+/* สรุปเนื้อหาแต่ละวิชา */
+const SUMMARY=[
+{subject:"คณิตศาสตร์",sections:[
+ {h:"จำนวนเต็มและลำดับการคำนวณ",items:[
+  "บวกลบจำนวนเต็ม: เครื่องหมายเหมือนกันให้บวกค่าแล้วใช้เครื่องหมายเดิม เครื่องหมายต่างกันให้ลบค่าแล้วใช้เครื่องหมายของจำนวนที่ค่าสัมบูรณ์มากกว่า",
+  "คูณหาร: เครื่องหมายเหมือนกันได้บวก ต่างกันได้ลบ เช่น (−3)(−4) = 12, (−12) ÷ 4 = −3",
+  "ลบจำนวนลบเท่ากับบวก: a − (−b) = a + b",
+  "ลำดับการคำนวณ: วงเล็บ → เลขยกกำลังและราก → คูณและหาร (ซ้ายไปขวา) → บวกและลบ (ซ้ายไปขวา)",
+  "ค่าสัมบูรณ์ |a| คือระยะจาก 0 ไม่เป็นลบเสมอ เช่น |−5| = 5",
+  "ปัดเศษ: ตัวเลขหลักถัดไป 5 ขึ้นไปปัดขึ้น ต่ำกว่า 5 ปัดลง เช่น 47 ปัดเป็นสิบได้ 50"]},
+ {h:"ตัวประกอบ ห.ร.ม. ค.ร.น. จำนวนเฉพาะ",items:[
+  "ตัวประกอบของ n คือจำนวนที่หาร n ลงตัว เช่น ตัวประกอบของ 12 คือ 1, 2, 3, 4, 6, 12",
+  "จำนวนเฉพาะ: มีตัวประกอบเพียง 2 ตัวคือ 1 กับตัวมันเอง เช่น 2, 3, 5, 7, 11, 13, 17, 19, 23 (2 เป็นจำนวนเฉพาะคู่ตัวเดียว และ 1 ไม่ใช่จำนวนเฉพาะ)",
+  "การแยกตัวประกอบเฉพาะ: 60 = 2² × 3 × 5",
+  "ห.ร.ม. คือจำนวนมากที่สุดที่หารทุกจำนวนลงตัว ค.ร.น. คือจำนวนน้อยที่สุดที่ทุกจำนวนหารลงตัว",
+  "สำหรับสองจำนวน a, b: ห.ร.ม. × ค.ร.น. = a × b",
+  "ตัวหารลงตัว: 2 ลงท้ายคู่, 3 ผลบวกหลักหารด้วย 3 ลงตัว, 5 ลงท้าย 0 หรือ 5, 9 ผลบวกหลักหารด้วย 9 ลงตัว, 10 ลงท้าย 0"]},
+ {h:"เศษส่วน ทศนิยม และเลขยกกำลัง",items:[
+  "บวกลบเศษส่วน: ทำตัวส่วนให้เท่ากันก่อน แล้วบวกลบเฉพาะตัวเศษ",
+  "คูณเศษส่วน: เศษคูณเศษ ส่วนคูณส่วน หารเศษส่วน: กลับเศษส่วนตัวหารแล้วคูณ",
+  "ทศนิยม: ตั้งหลักให้ตรงกันเวลาบวกลบ คูณแล้วนับตำแหน่งทศนิยมรวมกัน",
+  "aᵐ × aⁿ = aᵐ⁺ⁿ , aᵐ ÷ aⁿ = aᵐ⁻ⁿ , (aᵐ)ⁿ = aᵐⁿ , (ab)ⁿ = aⁿbⁿ",
+  "a⁰ = 1 (เมื่อ a ≠ 0) , a⁻ⁿ = 1/aⁿ",
+  "สัญกรณ์วิทยาศาสตร์: A × 10ⁿ เมื่อ 1 ≤ A < 10 เช่น 45,000 = 4.5 × 10⁴",
+  "รากที่สอง: √(a²) = a เมื่อ a ≥ 0 , √(ab) = √a × √b , √(a/b) = √a / √b",
+  "จำนวนตรรกยะเขียนเป็น a/b ได้ (ทศนิยมซ้ำหรือจบ) จำนวนอตรรกยะเขียนไม่ได้ เช่น √2, π"]},
+ {h:"สมการและอสมการเชิงเส้น",items:[
+  "สมการ ax + b = c: ย้ายค่าคงที่ไปอีกข้าง แล้วหารด้วย a ได้ x = (c − b)/a",
+  "ตรวจคำตอบเสมอโดยแทนค่า x กลับในสมการ",
+  "อสมการ: เมื่อคูณหรือหารด้วยจำนวนลบ ต้องกลับเครื่องหมาย เช่น −2x < 6 ได้ x > −3",
+  "คำตอบอสมการเขียนเป็นช่วงบนเส้นจำนวน: จุดทึบ = รวมค่านั้น (≤ ≥) จุดโปร่ง = ไม่รวม (< >)",
+  "โจทย์ปัญหา: กำหนดตัวแปรจากสิ่งที่ถาม เขียนสมการจากเงื่อนไข แล้วแก้",
+  "โจทย์อายุ: สองคนห่างกันกี่ปีจะห่างเท่าเดิมเสมอ",
+  "โจทย์งาน: ถ้าคนแรกทำเสร็จใน a วัน คนที่สองใน b วัน ทำพร้อมกันเสร็จใน (a × b)/(a + b) วัน",
+  "โจทย์ผสมและอัตราเร็ว: s = vt (ระยะทาง = อัตราเร็ว × เวลา) , พบกันเมื่อวิ่งสวนทางใช้ผลบวกอัตราเร็ว"]},
+ {h:"ร้อยละ กำไร ขาดทุน ดอกเบี้ย",items:[
+  "ร้อยละ = (ส่วนที่สนใจ ÷ ทั้งหมด) × 100",
+  "กำไร = ราคาขาย − ต้นทุน , ขาดทุน = ต้นทุน − ราคาขาย",
+  "ร้อยละของกำไร = (กำไร ÷ ต้นทุน) × 100",
+  "ส่วนลด: ราคาหลังลด = ราคาเดิม × (100 − ร้อยละที่ลด) ÷ 100",
+  "ดอกเบี้ยอย่างง่าย I = P r t (เงินต้น × อัตรา × เวลา) , เงินรวม = P + I",
+  "ดอกเบี้ยทบต้น: A = P (1 + r)ⁿ เมื่อ r เป็นอัตราต่องวด n เป็นจำนวนงวด",
+  "ภาษีมูลค่าเพิ่ม 7%: ราคารวมภาษี = ราคาก่อนภาษี × 1.07"]},
+ {h:"อัตราส่วน สัดส่วน การแปรผัน",items:[
+  "อัตราส่วน a : b เขียนเป็นเศษส่วน a/b ได้ ตัดทอนด้วยตัวร่วมได้",
+  "สัดส่วน a/b = c/d ได้ a × d = b × c (คูณไขว้)",
+  "แบ่งตามอัตราส่วน a : b ของจำนวน N: ส่วนแรก = N × a/(a + b)",
+  "แปรผันตรง y = kx (x เพิ่ม y เพิ่มในอัตราเดียวกัน) , y/x คงที่",
+  "แปรผกผัน y = k/x (x เพิ่ม y ลด) , xy คงที่ เช่น คนมากขึ้นทำงานเสร็จเร็วขึ้น",
+  "มาตราส่วนแผนที่: ระยะจริง = ระยะบนแผนที่ × ตัวส่วนของมาตราส่วน"]},
+ {h:"สถิติ",items:[
+  "ค่าเฉลี่ย = ผลรวมของข้อมูล ÷ จำนวนข้อมูล",
+  "มัธยฐาน: เรียงข้อมูลจากน้อยไปมากแล้วดูค่ากลาง (ถ้ามีข้อมูลคู่ตัว เฉลี่ยสองค่ากลาง)",
+  "ฐานนิยม: ค่าที่ซ้ำมากที่สุด (อาจมีมากกว่าหนึ่งค่าหรือไม่มีเลย)",
+  "พิสัย = ค่าสูงสุด − ค่าต่ำสุด",
+  "ส่วนเบี่ยงเบนมาตรฐานบอกการกระจาย ค่ามากแปลว่าข้อมูลกระจายมาก",
+  "ถ้าเพิ่มค่าคงที่ให้ข้อมูลทุกตัว ค่าเฉลี่ยเพิ่มตาม แต่ส่วนเบี่ยงเบนมาตรฐานไม่เปลี่ยน"]},
+ {h:"พหุนามและการแยกตัวประกอบ",items:[
+  "(a + b)² = a² + 2ab + b² , (a − b)² = a² − 2ab + b²",
+  "ผลต่างกำลังสอง: a² − b² = (a − b)(a + b)",
+  "ผลบวกและผลต่างกำลังสาม: a³ + b³ = (a + b)(a² − ab + b²) , a³ − b³ = (a − b)(a² + ab + b²)",
+  "ดึงตัวร่วมก่อนเสมอ เช่น 6x² + 9x = 3x(2x + 3)",
+  "ไตรนามกำลังสอง x² + (p + q)x + pq = (x + p)(x + q) โดยหาสองจำนวนที่บวกกันได้ตัวกลาง คูณกันได้ตัวท้าย",
+  "การหารพหุนาม: ใช้ตั้งหารยาว หรือทฤษฎีบทเศษเหลือ f(a) คือเศษเมื่อหาร f(x) ด้วย x − a"]},
+ {h:"สมการกำลังสอง",items:[
+  "รูปทั่วไป ax² + bx + c = 0 (a ≠ 0)",
+  "แก้ด้วยการแยกตัวประกอบ: ทำให้ได้ผลคูณเท่ากับ 0 แล้วให้แต่ละตัวประกอบเป็น 0",
+  "สูตร: x = (−b ± √(b² − 4ac)) / 2a",
+  "ดิสคริมิแนนต์ D = b² − 4ac : D > 0 ได้ 2 คำตอบจริงต่างกัน, D = 0 ได้คำตอบซ้ำ, D < 0 ไม่มีคำตอบจริง",
+  "ผลบวกของราก = −b/a , ผลคูณของราก = c/a",
+  "กราฟพาราโบลา y = ax² + bx + c จุดยอดอยู่ที่ x = −b/2a , a > 0 เปิดบน a < 0 เปิดล่าง"]},
+ {h:"เรขาคณิตระนาบ",items:[
+  "มุมรวมภายในสามเหลี่ยม = 180° , มุมภายนอก = ผลบวกของมุมภายในที่ไม่ประชิด",
+  "ผลบวกมุมภายในรูปหลายเหลี่ยม n ด้าน = (n − 2) × 180°",
+  "เส้นขนานถูกเส้นตัด: มุมแย้งเท่ากัน, มุมภายในที่อยู่ข้างเดียวกันรวมกัน 180°, มุมแย้งภายนอกเท่ากัน",
+  "ทฤษฎีบทพีทาโกรัส: a² + b² = c² เมื่อ c เป็นด้านตรงข้ามมุมฉาก (ชุด 3-4-5, 5-12-13, 8-15-17)",
+  "สามเหลี่ยมคล้าย: มุมเท่ากัน ด้านที่สมนัยกันเป็นอัตราส่วนเดียวกัน",
+  "เส้นรอบวงกลม = 2πr , พื้นที่วงกลม = πr² (ใช้ π ≈ 3.14 หรือ 22/7)",
+  "มุมที่จุดศูนย์กลางเป็นสองเท่าของมุมที่เส้นรอบวงที่รองรับส่วนโค้งเดียวกัน",
+  "มุมในครึ่งวงกลมเป็นมุมฉาก"]},
+ {h:"พื้นที่และปริมาตร",items:[
+  "พื้นที่: สี่เหลี่ยมจัตุรัส a² , ผืนผ้า กว้าง × ยาว , สามเหลี่ยม ½ × ฐาน × สูง",
+  "สี่เหลี่ยมคางหมู ½ × (ด้านคู่ขนานรวมกัน) × สูง , ขนมเปียกปูน ½ × d₁ × d₂ , สี่เหลี่ยมด้านขนาน ฐาน × สูง",
+  "ปริมาตร: ลูกบาศก์ a³ , ทรงสี่เหลี่ยมมุมฉาก กว้าง × ยาว × สูง , ปริซึม = พื้นที่ฐาน × สูง",
+  "ทรงกระบอก V = πr²h , กรวย V = ⅓πr²h , พีระมิด V = ⅓ × พื้นที่ฐาน × สูง , ทรงกลม V = (4/3)πr³",
+  "พื้นที่ผิวทรงกลม = 4πr² , พื้นที่ผิวข้างทรงกระบอก = 2πrh",
+  "หน่วย: 1 ม³ = 1,000 ลิตร , 1 ลิตร = 1,000 ซม³ , 1 ม² = 10,000 ซม²"]},
+ {h:"ตรีโกณมิติ",items:[
+  "sin θ = ตรงข้าม / ด้านตรงข้ามมุมฉาก , cos θ = ประชิด / ด้านตรงข้ามมุมฉาก , tan θ = ตรงข้าม / ประชิด",
+  "sin 30° = ½ , cos 30° = √3/2 , tan 30° = 1/√3",
+  "sin 45° = cos 45° = √2/2 , tan 45° = 1",
+  "sin 60° = √3/2 , cos 60° = ½ , tan 60° = √3",
+  "sin²θ + cos²θ = 1 , tan θ = sin θ / cos θ",
+  "มุมก้มและมุมเงย: วัดจากแนวระดับ ใช้หาความสูงหรือระยะทางด้วย tan"]},
+ {h:"พิกัดและเส้นตรง",items:[
+  "ระยะระหว่างสองจุด = √[(x₂ − x₁)² + (y₂ − y₁)²]",
+  "จุดกึ่งกลาง = ((x₁ + x₂)/2 , (y₁ + y₂)/2)",
+  "ความชัน m = (y₂ − y₁)/(x₂ − x₁)",
+  "สมการเส้นตรง y = mx + c (c คือจุดตัดแกน y) , รูปจุดกับความชัน y − y₁ = m(x − x₁)",
+  "เส้นตรงขนานกันความชันเท่ากัน , ตั้งฉากกัน m₁ × m₂ = −1",
+  "ระบบสมการสองตัวแปร: แก้ด้วยการแทนค่าหรือการกำจัดตัวแปร"]},
+ {h:"เซตและตรรกศาสตร์",items:[
+  "ยูเนียน A ∪ B (อยู่ใน A หรือ B) , อินเตอร์เซกชัน A ∩ B (อยู่ทั้งคู่) , คอมพลีเมนต์ A′ (ไม่อยู่ใน A)",
+  "n(A ∪ B) = n(A) + n(B) − n(A ∩ B)",
+  "จำนวนสับเซตของเซตที่มี n สมาชิก = 2ⁿ",
+  "p → q (ถ้า p แล้ว q) สมมูลกับ ~q → ~p (คอนทราโพซิทีฟ)",
+  "นิเสธ: ~(p และ q) = ~p หรือ ~q , ~(p หรือ q) = ~p และ ~q"]},
+ {h:"การนับและความน่าจะเป็น",items:[
+  "หลักการคูณ: ทำงานหลายขั้นตอนต่อเนื่อง คูณจำนวนวิธีแต่ละขั้น",
+  "n! = n(n − 1)(n − 2)...1 และ 0! = 1",
+  "เรียงสับเปลี่ยน P(n, r) = n!/(n − r)! (ลำดับสำคัญ)",
+  "จัดหมู่ C(n, r) = n!/[r!(n − r)!] (ลำดับไม่สำคัญ)",
+  "ความน่าจะเป็น P(E) = n(E)/n(S) มีค่า 0 ถึง 1",
+  "P(A′) = 1 − P(A) , P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
+  "เหตุการณ์อิสระ P(A ∩ B) = P(A) × P(B)",
+  "โยนเหรียญ n ครั้งมีผลลัพธ์ทั้งหมด 2ⁿ , ลูกเต๋า 2 ลูกมี 36 แบบ"]},
+ {h:"ลำดับและอนุกรม",items:[
+  "ลำดับเลขคณิต: aₙ = a₁ + (n − 1)d (d คือผลต่างร่วม)",
+  "ผลบวก n พจน์แรกของเลขคณิต Sₙ = n(a₁ + aₙ)/2",
+  "ลำดับเรขาคณิต: aₙ = a₁ rⁿ⁻¹ (r คืออัตราส่วนร่วม)",
+  "ผลบวกเรขาคณิต Sₙ = a₁(1 − rⁿ)/(1 − r) เมื่อ r ≠ 1",
+  "ผลบวกอนันต์ของเรขาคณิต S = a₁/(1 − r) เมื่อ |r| < 1",
+  "ผลบวก 1 + 2 + ... + n = n(n + 1)/2"]},
+ {h:"ฟังก์ชัน เลขชี้กำลัง ลอการิทึม",items:[
+  "ฟังก์ชัน f(x): แต่ละ x ได้ค่า y เพียงค่าเดียว โดเมนคือค่า x ที่ใช้ได้ เรนจ์คือค่า y ที่ออกมา",
+  "ฟังก์ชันเชิงเส้น f(x) = mx + c , ฟังก์ชันกำลังสอง f(x) = ax² + bx + c",
+  "ลอการิทึม: logₐ x = y หมายถึง aʸ = x",
+  "logₐ(xy) = logₐ x + logₐ y , logₐ(x/y) = logₐ x − logₐ y , logₐ xⁿ = n logₐ x",
+  "logₐ a = 1 , logₐ 1 = 0 , log₁₀ 10ᵏ = k",
+  "สมการเลขชี้กำลัง: ทำฐานให้เท่ากันแล้วเทียบเลขชี้กำลัง"]}
+]},
+{subject:"วิทยาศาสตร์",sections:[
+ {h:"เซลล์และการทำงานของเซลล์",items:[
+  "เยื่อหุ้มเซลล์ควบคุมการผ่านเข้าออก , ผนังเซลล์พบในพืช ให้ความแข็งแรง",
+  "นิวเคลียสเก็บสารพันธุกรรมและควบคุมการทำงานของเซลล์",
+  "ไมโทคอนเดรียสร้างพลังงาน (ATP) , คลอโรพลาสต์สังเคราะห์ด้วยแสง (เฉพาะพืชและสาหร่าย)",
+  "ไรโบโซมสร้างโปรตีน , กอลจิบอดีบรรจุและส่งสาร , แวคิวโอลเก็บน้ำและสาร",
+  "การแพร่: สารเคลื่อนจากที่ความเข้มข้นสูงไปต่ำ , ออสโมซิส: น้ำผ่านเยื่อเลือกผ่าน",
+  "ไมโทซิส: แบ่งเซลล์ร่างกาย ได้ 2 เซลล์เหมือนเดิม , ไมโอซิส: สร้างเซลล์สืบพันธุ์ ได้ 4 เซลล์ จำนวนโครโมโซมลดครึ่ง",
+  "ลำดับการจัดระบบ: เซลล์ → เนื้อเยื่อ → อวัยวะ → ระบบอวัยวะ → สิ่งมีชีวิต"]},
+ {h:"พืช",items:[
+  "สังเคราะห์ด้วยแสง: CO₂ + H₂O → น้ำตาลกลูโคส + O₂ ต้องมีแสงและคลอโรฟิลล์",
+  "ไซเลมลำเลียงน้ำและแร่ธาตุขึ้น , โฟลเอ็มลำเลียงอาหารที่สร้างจากใบ",
+  "ปากใบเป็นที่คายน้ำและแลกเปลี่ยนแก๊ส",
+  "ราก: ดูดน้ำและแร่ธาตุ , ลำต้น: ค้ำจุนและลำเลียง , ใบ: สังเคราะห์ด้วยแสง",
+  "ดอกสมบูรณ์เพศมีเกสรเพศผู้และเพศเมีย การผสมเกสรเกิดที่ยอดเกสรเพศเมีย",
+  "การตอบสนองของพืช: โน้มเข้าหาแสง (โฟโทโทรปิซึม) รากเติบโตตามแรงโน้มถ่วง"]},
+ {h:"ร่างกายมนุษย์",items:[
+  "ย่อยอาหาร: ปาก → หลอดอาหาร → กระเพาะอาหาร → ลำไส้เล็ก (ดูดซึมสารอาหาร) → ลำไส้ใหญ่ (ดูดน้ำ)",
+  "ตับสร้างน้ำดีช่วยย่อยไขมัน , ตับอ่อนสร้างเอนไซม์ย่อยและอินซูลิน",
+  "สารอาหาร: คาร์โบไฮเดรต โปรตีน ไขมัน วิตามิน เกลือแร่ น้ำ",
+  "ระบบหายใจ: อากาศผ่านจมูก หลอดลม ปอด ถุงลมแลกเปลี่ยนแก๊ส",
+  "หัวใจ 4 ห้อง ห้องบนรับเลือด ห้องล่างสูบฉีดเลือด , หลอดเลือดแดงนำเลือดออกจากหัวใจ หลอดเลือดดำนำกลับ",
+  "เม็ดเลือดแดงนำออกซิเจน (ฮีโมโกลบิน) , เม็ดเลือดขาวป้องกันเชื้อโรค , เกล็ดเลือดช่วยให้เลือดแข็งตัว",
+  "ไตกรองของเสียและสร้างปัสสาวะ",
+  "ระบบประสาท: สมอง ไขสันหลัง เส้นประสาท , รีเฟลกซ์ตอบสนองเร็วโดยผ่านไขสันหลัง",
+  "ฮอร์โมน: อินซูลินลดน้ำตาลในเลือด , ต่อมไทรอยด์ควบคุมเมตาบอลิซึม"]},
+ {h:"พันธุกรรมและวิวัฒนาการ",items:[
+  "DNA เป็นสารพันธุกรรมอยู่ในโครโมโซม ยีนคือหน่วยพันธุกรรม มนุษย์มี 46 โครโมโซม (23 คู่)",
+  "ลักษณะเด่น (ตัวพิมพ์ใหญ่) แสดงออกเมื่อมีแอลลีลอย่างน้อยหนึ่งตัว ลักษณะด้อย (ตัวพิมพ์เล็ก) แสดงเมื่อเป็น aa",
+  "Aa × Aa ได้ลูกลักษณะเด่น : ลักษณะด้อย = 3 : 1 และจีโนไทป์ AA : Aa : aa = 1 : 2 : 1",
+  "กลุ่มเลือดระบบ ABO: A, B, AB, O (O ให้ได้ทุกกลุ่ม AB รับได้ทุกกลุ่ม)",
+  "การกลายพันธุ์เปลี่ยนแปลง DNA ทำให้เกิดความหลากหลาย",
+  "วิวัฒนาการตามทฤษฎีของดาร์วิน: การคัดเลือกโดยธรรมชาติ สิ่งมีชีวิตที่เหมาะสมกว่าอยู่รอดและสืบทอดลักษณะ"]},
+ {h:"ระบบนิเวศและสิ่งแวดล้อม",items:[
+  "ระบบนิเวศ = สิ่งมีชีวิต + สิ่งไม่มีชีวิตที่ปฏิสัมพันธ์กัน",
+  "ผู้ผลิต (พืช) , ผู้บริโภค (สัตว์) , ผู้ย่อยสลาย (เห็ด รา แบคทีเรีย)",
+  "พลังงานถ่ายทอดตามห่วงโซ่อาหารเหลือประมาณ 10% ในแต่ละลำดับขั้น",
+  "ความสัมพันธ์: ภาวะได้ประโยชน์ร่วมกัน (เช่น ไลเคน) , ภาวะปรสิต , ภาวะล่าเหยื่อ , การแก่งแย่ง",
+  "วัฏจักรคาร์บอน น้ำ ไนโตรเจน หมุนเวียนสารในระบบนิเวศ",
+  "ก๊าซเรือนกระจก (CO₂, CH₄) ทำให้โลกร้อนขึ้น , ชั้นโอโซนป้องกันรังสี UV"]},
+ {h:"สสารและสถานะ",items:[
+  "สถานะ: ของแข็ง (รูปร่างและปริมาตรคงที่) ของเหลว (ปริมาตรคงที่) แก๊ส (ไม่คงที่ทั้งคู่)",
+  "การเปลี่ยนสถานะ: หลอมเหลว (แข็ง → เหลว) , แข็งตัว , ระเหย (เหลว → แก๊ส) , ควบแน่น , ระเหิด (แข็ง → แก๊สโดยตรง)",
+  "ความหนาแน่น = มวล ÷ ปริมาตร หน่วย กก./ลบ.ม. หรือ ก./ซม.³ น้ำมีความหนาแน่น 1 ก./ซม.³",
+  "ธาตุ: ประกอบด้วยอะตอมชนิดเดียว , สารประกอบ: ธาตุรวมกันด้วยพันธะเคมี , สารผสม: ไม่เกิดพันธะ",
+  "การแยกสาร: กรอง (ของแข็งออกจากของเหลว) , กลั่น (ต่างจุดเดือด) , ตกผลึก , โครมาโทกราฟี (ต่างการเคลื่อนที่)",
+  "การเปลี่ยนแปลงทางกายภาพไม่เกิดสารใหม่ , การเปลี่ยนแปลงทางเคมีเกิดสารใหม่ (เกิดแก๊ส ตะกอน สีเปลี่ยน ความร้อน)"]},
+ {h:"อะตอมและตารางธาตุ",items:[
+  "โปรตอน (+) และนิวตรอน (0) อยู่ในนิวเคลียส , อิเล็กตรอน (−) อยู่รอบนิวเคลียส",
+  "เลขอะตอม = จำนวนโปรตอน , เลขมวล = โปรตอน + นิวตรอน",
+  "อะตอมเป็นกลางมีโปรตอนเท่ากับอิเล็กตรอน",
+  "ไอโซโทป: เลขอะตอมเท่ากันแต่เลขมวลต่างกัน",
+  "ตารางธาตุ: แถวนอนคือคาบ แถวตั้งคือหมู่ ธาตุหมู่เดียวกันมีสมบัติคล้ายกัน",
+  "หมู่ 1A โลหะแอลคาไล , หมู่ 7A ฮาโลเจน , หมู่ 8A แก๊สเฉื่อย",
+  "โลหะนำไฟฟ้าและความร้อน ตีเป็นแผ่นได้ , อโลหะไม่นำไฟฟ้า (ยกเว้นแกรไฟต์)"]},
+ {h:"พันธะเคมี กรด-เบส ปฏิกิริยา",items:[
+  "พันธะไอออนิก: โลหะ + อโลหะ ถ่ายโอนอิเล็กตรอน เช่น NaCl",
+  "พันธะโคเวเลนต์: อโลหะ + อโลหะ ใช้อิเล็กตรอนร่วมกัน เช่น H₂O, CO₂",
+  "pH < 7 เป็นกรด , pH = 7 เป็นกลาง , pH > 7 เป็นเบส",
+  "กรด + เบส → เกลือ + น้ำ (ปฏิกิริยาสะเทิน)",
+  "กระดาษลิตมัส: กรดเปลี่ยนน้ำเงินเป็นแดง , เบสเปลี่ยนแดงเป็นน้ำเงิน",
+  "สมการเคมีต้องดุลให้จำนวนอะตอมแต่ละชนิดทั้งสองข้างเท่ากัน (กฎทรงมวล)",
+  "ปฏิกิริยาคายความร้อนปล่อยความร้อนออก , ปฏิกิริยาดูดความร้อนรับความร้อนเข้า",
+  "ปัจจัยที่เพิ่มอัตราเร็วปฏิกิริยา: เพิ่มอุณหภูมิ ความเข้มข้น พื้นที่ผิว หรือใช้ตัวเร่งปฏิกิริยา",
+  "การเผาไหม้ต้องมีเชื้อเพลิง ออกซิเจน และความร้อน (สามเหลี่ยมไฟ)"]},
+ {h:"โมลและเคมีอินทรีย์",items:[
+  "1 โมล = 6.02 × 10²³ อนุภาค (เลขอาโวกาโดร)",
+  "จำนวนโมล = มวล (กรัม) ÷ มวลโมเลกุลหรือมวลอะตอม",
+  "แก๊ส 1 โมลที่ STP มีปริมาตร 22.4 ลิตร",
+  "ความเข้มข้น (โมลาร์) = จำนวนโมลตัวละลาย ÷ ปริมาตรสารละลาย (ลิตร)",
+  "ไฮโดรคาร์บอน: มีเทน CH₄ , อีเทน C₂H₆ , โพรเพน C₃H₈ , บิวเทน C₄H₁₀",
+  "พอลิเมอร์เกิดจากมอนอเมอร์หลายตัวต่อกัน เช่น พอลิเอทิลีน"]},
+ {h:"แรงและการเคลื่อนที่",items:[
+  "ระยะทางเป็นสเกลาร์ การกระจัดเป็นเวกเตอร์ , อัตราเร็ว = ระยะทาง ÷ เวลา",
+  "ความเร่ง a = (v − u)/t",
+  "สมการการเคลื่อนที่: v = u + at , s = ut + ½at² , v² = u² + 2as",
+  "วัตถุตกอย่างอิสระมีความเร่ง g ≈ 9.8 ม./วินาที² (ใช้ 10 ในโจทย์ทั่วไป)",
+  "กฎของนิวตัน: ข้อ 1 ความเฉื่อย , ข้อ 2 F = ma , ข้อ 3 แรงกิริยา-ปฏิกิริยามีขนาดเท่ากันทิศตรงข้าม",
+  "น้ำหนัก W = mg (หน่วยนิวตัน) , แรงเสียดทาน f = μN ต้านการเคลื่อนที่",
+  "โมเมนตัม p = mv , แรงลัพธ์เป็นศูนย์วัตถุอยู่นิ่งหรือเคลื่อนที่ความเร็วคงที่"]},
+ {h:"งาน พลังงาน ความดัน",items:[
+  "งาน W = Fs (แรงในแนวการเคลื่อนที่) หน่วยจูล , กำลัง P = W/t หน่วยวัตต์",
+  "พลังงานจลน์ Eₖ = ½mv² , พลังงานศักย์โน้มถ่วง Eₚ = mgh",
+  "กฎการอนุรักษ์พลังงาน: พลังงานรวมในระบบปิดคงที่ เปลี่ยนรูปได้เท่านั้น",
+  "ความดัน P = F/A (นิวตันต่อตารางเมตร = ปาสกาล) , ความดันของเหลว P = ρgh",
+  "แรงลอยตัวเท่ากับน้ำหนักของของเหลวที่ถูกแทนที่ (หลักอาร์คิมีดีส) วัตถุลอยเมื่อความหนาแน่นน้อยกว่าของเหลว",
+  "เครื่องกลอย่างง่าย: คาน รอก พื้นเอียง ช่วยทดแรง , ได้เปรียบเชิงกล = แรงต้าน ÷ แรงที่ใช้"]},
+ {h:"ความร้อน คลื่น แสง เสียง",items:[
+  "ความร้อน Q = mcΔT , การถ่ายโอนความร้อน: นำความร้อน การพา การแผ่รังสี",
+  "สมดุลความร้อน: ความร้อนที่สารร้อนสูญเสียเท่ากับที่สารเย็นรับ",
+  "คลื่น v = fλ (อัตราเร็ว = ความถี่ × ความยาวคลื่น) , ความถี่ = 1/คาบ",
+  "เสียงเป็นคลื่นกลตามยาว ต้องการตัวกลาง เดินทางในอากาศประมาณ 340 ม./วินาที",
+  "ระดับเสียงสูงต่ำขึ้นกับความถี่ , ความดังขึ้นกับแอมพลิจูด",
+  "แสง: มุมตกกระทบเท่ากับมุมสะท้อน , การหักเหเมื่อผ่านตัวกลางต่างกัน",
+  "เลนส์นูนรวมแสง เลนส์เว้ากระจายแสง , กระจกนูนให้ภาพเสมือนเล็กลง",
+  "คลื่นแม่เหล็กไฟฟ้า (ความยาวคลื่นมาก → น้อย): วิทยุ ไมโครเวฟ อินฟราเรด แสงขาว อัลตราไวโอเลต เอกซเรย์ แกมมา"]},
+ {h:"ไฟฟ้าและแม่เหล็ก",items:[
+  "กฎของโอห์ม V = IR , กำลังไฟฟ้า P = VI",
+  "วงจรอนุกรม: กระแสเท่ากัน R รวม = R₁ + R₂ , วงจรขนาน: แรงดันเท่ากัน 1/R = 1/R₁ + 1/R₂",
+  "พลังงานไฟฟ้า = กำลัง × เวลา (หน่วยกิโลวัตต์-ชั่วโมงหรือยูนิต)",
+  "ประจุเหมือนกันผลักกัน ต่างกันดูดกัน",
+  "แม่เหล็ก: ขั้วเหมือนผลักกัน ขั้วต่างดูดกัน , กระแสไฟฟ้าทำให้เกิดสนามแม่เหล็ก",
+  "หม้อแปลงไฟฟ้าเปลี่ยนแรงดันกระแสสลับ , ไดนาโมเปลี่ยนพลังงานกลเป็นไฟฟ้า"]},
+ {h:"ฟิสิกส์นิวเคลียร์",items:[
+  "รังสีแอลฟา (He) ทะลุทะลวงต่ำ , เบตา (อิเล็กตรอน) ปานกลาง , แกมมา (คลื่นแม่เหล็กไฟฟ้า) ทะลุทะลวงสูงสุด",
+  "ครึ่งชีวิตคือเวลาที่สารกัมมันตรังสีลดลงเหลือครึ่งหนึ่ง",
+  "ฟิชชันแบ่งนิวเคลียสใหญ่ , ฟิวชันรวมนิวเคลียสเล็ก (ปฏิกิริยาบนดวงอาทิตย์)",
+  "ปฏิกิริยานิวเคลียร์เปลี่ยนแปลงที่นิวเคลียส ให้พลังงานสูง"]},
+ {h:"โลกและอวกาศ",items:[
+  "โครงสร้างโลก: เปลือกโลก เนื้อโลก แก่นโลก (ชั้นนอกเหลว ชั้นในแข็ง)",
+  "หิน 3 ประเภท: อัคนี (แข็งตัวจากแมกมา) ตะกอน (ทับถมกัน) แปรสภาพ (เปลี่ยนจากความร้อนความดัน)",
+  "แผ่นเปลือกโลกเคลื่อนที่ ทำให้เกิดแผ่นดินไหว ภูเขาไฟ และเทือกเขา",
+  "บรรยากาศชั้นล่างสุดคือโทรโพสเฟียร์ (เกิดสภาพอากาศ) ชั้นโอโซนอยู่ในสตราโทสเฟียร์",
+  "ฤดูกาลเกิดจากแกนโลกเอียง 23.5° ขณะโคจรรอบดวงอาทิตย์ , กลางวันกลางคืนเกิดจากการหมุนรอบตัวเอง",
+  "ข้างขึ้นข้างแรมเกิดจากตำแหน่งดวงจันทร์ต่อโลกและดวงอาทิตย์",
+  "สุริยุปราคา: ดวงจันทร์บังดวงอาทิตย์ (เกิดวันขึ้น 1 ค่ำ) , จันทรุปราคา: โลกบังแสงอาทิตย์ไปตกดวงจันทร์ (เกิดวันเพ็ญ)",
+  "ดาวเคราะห์ 8 ดวง: พุธ ศุกร์ โลก อังคาร พฤหัสบดี เสาร์ ยูเรนัส เนปจูน",
+  "ดวงอาทิตย์เป็นดาวฤกษ์ ให้พลังงานจากปฏิกิริยาฟิวชัน"]},
+ {h:"ทักษะกระบวนการทางวิทยาศาสตร์",items:[
+  "ขั้นตอน: สังเกต ตั้งสมมติฐาน ออกแบบการทดลอง ทดลอง วิเคราะห์ข้อมูล สรุปผล",
+  "ตัวแปรต้น คือสิ่งที่เปลี่ยนแปลงโดยผู้ทดลอง , ตัวแปรตาม คือผลที่เกิดขึ้น , ตัวแปรควบคุม คือสิ่งที่ต้องคงที่",
+  "เครื่องมือวัด: เทอร์มอมิเตอร์ (อุณหภูมิ) , กระบอกตวง (ปริมาตร) , เครื่องชั่ง (มวล) , แอมมิเตอร์ (กระแส) , โวลต์มิเตอร์ (แรงดัน)",
+  "ความปลอดภัยในห้องปฏิบัติการ: สวมแว่นตาและเสื้อกาวน์ ห้ามชิมสาร เทกรดลงน้ำ ไม่ใช่เทน้ำลงกรด"]}
+]},
+{subject:"ภาษาอังกฤษ",sections:[
+ {h:"Tenses (กาล)",items:[
+  "Present simple: ใช้กับความจริงและกิจวัตร เช่น She goes to school every day. (he/she/it เติม s หรือ es)",
+  "Present continuous: is/am/are + V-ing ใช้กับสิ่งที่กำลังเกิดขึ้น เช่น They are playing football now.",
+  "Present perfect: have/has + V3 เชื่อมอดีตกับปัจจุบัน เช่น He has lived here since 2020.",
+  "Present perfect continuous: have/has been + V-ing เช่น I have been studying for two hours.",
+  "Past simple: ใช้กับเหตุการณ์ที่จบแล้ว มีคำบอกเวลาอดีต เช่น I finished my homework yesterday.",
+  "Past continuous: was/were + V-ing เช่น I was reading when he called.",
+  "Past perfect: had + V3 เหตุการณ์ที่เกิดก่อนอีกเหตุการณ์ในอดีต เช่น She had left before I arrived.",
+  "Future: will + V1 (ตัดสินใจขณะพูด) , be going to + V1 (วางแผนไว้แล้ว) , present continuous (นัดหมายแน่นอน)",
+  "since + จุดเริ่มต้นของเวลา (since 2020) , for + ช่วงเวลา (for three years)",
+  "คำบอกเวลาที่ช่วยจำ: always, usually, every day (present simple) ; now, at the moment (continuous) ; ago, yesterday, last week (past simple) ; already, yet, just, ever, never (perfect)"]},
+ {h:"Parts of speech และ Articles",items:[
+  "Noun (คำนาม) , Pronoun (สรรพนาม) , Verb (กริยา) , Adjective (คุณศัพท์) , Adverb (กริยาวิเศษณ์) , Preposition (บุพบท) , Conjunction (สันธาน) , Interjection (อุทาน)",
+  "Adjective ขยาย noun (a beautiful flower) , Adverb ขยาย verb, adjective, adverb (She sings beautifully.)",
+  "a + เสียงพยัญชนะ (a book, a university) , an + เสียงสระ (an apple, an hour) , the ใช้กับสิ่งที่เฉพาะเจาะจงหรือพูดถึงแล้ว",
+  "นามนับได้: much ไม่ใช้ ต้องใช้ many , few , a few ; นามนับไม่ได้: much , little , a little",
+  "some ใช้ในประโยคบอกเล่า , any ใช้ในประโยคปฏิเสธและคำถาม",
+  "คำสรรพนาม: I/me/my/mine/myself , he/him/his/his/himself , they/them/their/theirs/themselves"]},
+ {h:"Subject-verb agreement และ There is/are",items:[
+  "ประธานเอกพจน์ใช้กริยาเอกพจน์: He plays. , ประธานพหูพจน์ใช้ play: They play.",
+  "everyone, everybody, each, nobody, something เป็นเอกพจน์: Everyone is here.",
+  "neither / either ... เอกพจน์ , both ... พหูพจน์",
+  "A and B ใช้พหูพจน์ , A or B / either A or B / neither A nor B กริยาตามประธานตัวที่ใกล้ที่สุด",
+  "There is + เอกพจน์หรือนามนับไม่ได้ , There are + พหูพจน์: There are many students in the room.",
+  "คำบอกจำนวน: a number of + พหูพจน์ , the number of + เอกพจน์"]},
+ {h:"Comparison (การเปรียบเทียบ)",items:[
+  "คำสั้น: taller than , the tallest ; คำยาว: more beautiful than , the most beautiful",
+  "ไม่ปกติ: good – better – best , bad – worse – worst , far – farther/further – farthest/furthest",
+  "as + adjective + as (เท่ากัน) , not as ... as (ไม่เท่า) เช่น He is as tall as his brother.",
+  "the + comparative, the + comparative: The more you study, the better you do.",
+  "ก่อน superlative ใช้ the เสมอ และตามด้วย in/of: the tallest in the class"]},
+ {h:"Modals (กริยาช่วย)",items:[
+  "can/could (ความสามารถ ขออนุญาต) , may/might (ความเป็นไปได้ ขออนุญาตสุภาพ) , will/would",
+  "must (จำเป็น มั่นใจว่า) , have to (จำเป็นจากสถานการณ์) , should/ought to (ควร)",
+  "mustn't (ห้าม) ต่างจาก don't have to (ไม่จำเป็นต้อง)",
+  "Modal + V1 เสมอ ไม่ต้องเติม s : She can swim.",
+  "Would you like ... / Could you please ... ใช้ขอหรือเสนออย่างสุภาพ",
+  "Modal perfect: should have + V3 (ควรทำแล้วแต่ไม่ได้ทำ) , must have + V3 (คงจะเป็นอย่างนั้น)"]},
+ {h:"Passive voice (ประโยคกรรม)",items:[
+  "โครงสร้าง: S + be + V3 (+ by agent) เช่น The letter was written by Tom.",
+  "Present simple passive: is/am/are + V3 , Past simple passive: was/were + V3",
+  "Present perfect passive: has/have been + V3 , Future passive: will be + V3",
+  "Modal passive: can/must/should + be + V3",
+  "ย้ายกรรมมาเป็นประธาน และกริยาเปลี่ยนตามกาลเดิม"]},
+ {h:"Conditionals (ประโยคเงื่อนไข)",items:[
+  "Zero: If + present, present (ความจริง) : If you heat ice, it melts.",
+  "First: If + present, will + V1 (เป็นไปได้ในอนาคต) : If it rains, we will stay at home.",
+  "Second: If + past, would + V1 (ไม่จริงในปัจจุบัน) : If I were rich, I would travel. (ใช้ were กับทุกประธาน)",
+  "Third: If + past perfect, would have + V3 (ไม่จริงในอดีต) : If I had studied, I would have passed.",
+  "unless = if ... not : Unless you hurry, you will be late.",
+  "wish + past (อยากให้ปัจจุบันต่างไป) : I wish I had a car."]},
+ {h:"Relative clauses และ Reported speech",items:[
+  "who (คน) , which (สิ่งของ) , that (คนหรือสิ่งของ) , whose (ความเป็นเจ้าของ) , where (สถานที่) , when (เวลา)",
+  "The man who lives next door is a doctor.",
+  "Reported speech: ย้อนกาลหนึ่งขั้น present → past , will → would , can → could",
+  "เปลี่ยนคำบอกเวลา: today → that day , tomorrow → the next day , now → then",
+  "เปลี่ยนสรรพนามให้เหมาะกับผู้พูด เช่น He said that he was tired.",
+  "Reported question: ไม่ใช้โครงสร้างคำถาม : He asked where I lived."]},
+ {h:"Gerund, Infinitive, Question tags",items:[
+  "กริยาที่ตามด้วย V-ing: enjoy, avoid, finish, mind, keep, suggest เช่น She enjoys reading.",
+  "กริยาที่ตามด้วย to + V1: want, decide, hope, plan, promise, learn, refuse",
+  "stop + V-ing (หยุดทำ) ต่างจาก stop + to V (หยุดเพื่อไปทำ)",
+  "หลัง preposition ใช้ V-ing : interested in learning",
+  "Question tag: ประโยคบอกเล่าใช้ tag ปฏิเสธ (He is tall, isn't he?) ประโยคปฏิเสธใช้ tag บอกเล่า (You don't smoke, do you?)",
+  "Wh-questions: who, what, when, where, why, which, whose, how (how many, how much, how long, how often)"]},
+ {h:"Prepositions และ Phrasal verbs",items:[
+  "เวลา: at (เวลาเจาะจง at 5 pm) , on (วัน on Monday) , in (เดือน ปี ช่วงวัน in May, in the morning)",
+  "สถานที่: at (จุด) , in (ภายใน) , on (บนพื้นผิว) , under, between, next to, in front of, behind",
+  "การเคลื่อนที่: to, from, into, out of, across, through, along",
+  "look for (มองหา) , look after (ดูแล) , give up (เลิก) , turn on/off (เปิด/ปิด) , put on (สวม) , take off (ถอด)",
+  "get up (ตื่น) , find out (ค้นพบ) , run out of (หมด) , come back (กลับ) , set up (ก่อตั้ง)",
+  "คำคู่ที่มักใช้: good at, interested in, afraid of, depend on, listen to, arrive at/in"]},
+ {h:"Vocabulary และ Conversation",items:[
+  "ตรงข้าม: ancient ↔ modern , increase ↔ decrease , allow ↔ forbid , expensive ↔ cheap",
+  "คำที่สับสนบ่อย: affect (กริยา) / effect (นาม) , lose / loose , its / it's , there / their / they're",
+  "ทักทายและแนะนำตัว: How do you do? , Nice to meet you.",
+  "ขอบคุณและตอบ: Thank you. → You're welcome. / Not at all.",
+  "ขอโทษและตอบ: I'm sorry. → That's all right. / Never mind.",
+  "เสนอความช่วยเหลือ: Can I help you? / Would you like some help? → Yes, please. / No, thanks.",
+  "ขอร้อง: Could you open the window, please? → Sure. / Certainly.",
+  "ถามทาง: How can I get to ...? , Turn left/right, go straight ahead, it's on your left.",
+  "ถามเวลา: What time is it? , ใช้ o'clock, half past, quarter to/past"]},
+ {h:"กลยุทธ์ทำข้อสอบ",items:[
+  "Error identification: หาที่ผิดเรื่องประธาน-กริยา กาล คำบุพบท และรูปคำ",
+  "Reading: อ่านคำถามก่อน แล้วหาคำตอบในบทความ สังเกตคำ main idea, detail, inference, vocabulary in context",
+  "ตัดตัวเลือกที่ผิดไวยากรณ์หรือความหมายออกก่อน",
+  "ข้อบทสนทนา: ดูประโยคก่อนและหลังช่องว่างเพื่อเลือกประโยคที่เหมาะ"]}
+]},
+{subject:"ภาษาไทย",sections:[
+ {h:"พยัญชนะ สระ วรรณยุกต์",items:[
+  "พยัญชนะไทย 44 รูป แบ่งเป็นอักษรสูง 11 ตัว อักษรกลาง 9 ตัว อักษรต่ำ 24 ตัว",
+  "อักษรกลาง: ก จ ฎ ฏ ด ต บ ป อ",
+  "วรรณยุกต์มี 4 รูป: ไม้เอก ไม้โท ไม้ตรี ไม้จัตวา และ 5 เสียง: สามัญ เอก โท ตรี จัตวา",
+  "คำเป็น: อักษรกลางผันได้ 5 เสียง , อักษรสูงผันได้ 3 เสียง (จัตวา เอก โท) , อักษรต่ำผันได้ 3 เสียง (สามัญ โท ตรี)",
+  "สระไทย 21 รูป 32 เสียง แบ่งเป็นสระเดี่ยว สระประสม และสระเกิน",
+  "ตัวสะกด 8 มาตรา: แม่ กก กด กบ กง กน กม เกย เกอว",
+  "คำที่ใช้ ฤ อ่านออกเสียงต่างกัน เช่น ฤดู (รึ) ฤๅษี (รือ-)",
+  "การใช้ ใ และ ไ : ใ ใช้กับคำจำนวนจำกัด (20 คำ) นอกนั้นใช้ ไ เช่น ไกล ไฟ ไหม้"]},
+ {h:"การสะกดคำ",items:[
+  "คำที่มักเขียนผิด: อนุญาต , ผัดไทย , สังเกต , เอกลักษณ์ , สัมภาษณ์ , บัญชี , กฎ , ปรากฏ , อุทิศ",
+  "ร หัน: สรร พรรค ธรรม กรรม , บรร (บรรทัด บรรจุ)",
+  "ศ ษ ส: ศ เช่น ศาลา ศึกษา , ษ เช่น เกษตร อภิเษก , ส เช่น สนุก สมุทร",
+  "ณ และ น: ณ มักใช้ในคำที่มาจากบาลีสันสกฤต เช่น คุณ กรุณา",
+  "ฑ ฒ: ฑ เช่น บัณฑิต , ฒ เช่น วุฒิ",
+  "คำที่ใช้ ซ หรือ ศ ษ ส แยกตามที่มาของคำ ควรจำทีละคำ"]},
+ {h:"ชนิดของคำ 7 ชนิด",items:[
+  "คำนาม: ชื่อคน สัตว์ สิ่งของ สถานที่ เช่น ครู แมว โรงเรียน",
+  "คำสรรพนาม: ใช้แทนนาม เช่น ฉัน เธอ เขา พวกเรา ท่าน",
+  "คำกริยา: บอกอาการหรือสภาพ เช่น วิ่ง กิน เป็น มี",
+  "คำวิเศษณ์: ขยายนาม กริยา วิเศษณ์ เช่น สวย เร็ว มาก",
+  "คำบุพบท: เชื่อมคำบอกความสัมพันธ์ เช่น ใน บน แก่ ของ จาก",
+  "คำสันธาน: เชื่อมประโยคหรือคำ เช่น และ แต่ หรือ เพราะ ดังนั้น",
+  "คำอุทาน: บอกอารมณ์ เช่น โอ้โฮ ว้าย"]},
+ {h:"การสร้างคำและชนิดของคำ",items:[
+  "คำมูล: คำที่ไม่ประกอบด้วยคำอื่น เช่น พ่อ แม่ ตา",
+  "คำประสม: คำมูลรวมกันเกิดความหมายใหม่ เช่น รถไฟ แม่น้ำ ลูกเสือ",
+  "คำซ้อน: คำที่มีความหมายเหมือนหรือคล้ายกัน เช่น เสื้อผ้า บ้านเรือน ขัดข้อง",
+  "คำซ้ำ: เช่น เด็ก ๆ ดี ๆ (ไม้ยมก)",
+  "คำสมาส: คำบาลีสันสกฤตรวมกัน เช่น ราชการ ภูมิศาสตร์ สุขภาพ",
+  "คำสนธิ: คำสมาสที่กลมกลืนเสียง เช่น นเรศวร ราเชนทร์ มหรรณพ",
+  "คำพ้องรูป: เขียนเหมือนกันอ่านต่างกัน เช่น เพลา",
+  "คำพ้องเสียง: อ่านเหมือนกันเขียนต่างกัน เช่น กาล กาฬ กาญจน์",
+  "คำที่มาจากภาษาต่างประเทศ: จีน (ก๋วยเตี๋ยว) อังกฤษ (คอมพิวเตอร์) เขมร (ถนน) บาลีสันสกฤต (ธรรม)"]},
+ {h:"ประโยค",items:[
+  "ส่วนประกอบ: ภาคประธาน (ผู้กระทำ) + ภาคแสดง (กริยา กรรม ส่วนขยาย)",
+  "ประโยคความเดียว: มีประธานและกริยาเดียว เช่น นักเรียนอ่านหนังสือ",
+  "ประโยคความรวม: ประโยคความเดียวรวมกันด้วยสันธาน เช่น เขาอ่านหนังสือและฟังเพลง",
+  "ประโยคความซ้อน: มีประโยคย่อยทำหน้าที่ขยายด้วย ที่ ซึ่ง อัน ว่า เช่น คนที่มาสายถูกเรียกพบ",
+  "ประเภทตามเจตนา: บอกเล่า ปฏิเสธ คำถาม ขอร้อง/คำสั่ง",
+  "ข้อผิดพลาดบ่อย: ใช้คำฟุ่มเฟือย , ใช้คำผิดความหมาย , ลำดับคำผิด , ประโยคขาดประธานหรือกริยา , ใช้ ซึ่ง อัน ที่ ผิดตำแหน่ง"]},
+ {h:"ระดับภาษาและคำราชาศัพท์",items:[
+  "ระดับภาษา: พิธีการ , ทางการ , กึ่งทางการ , สนทนา (ไม่เป็นทางการ) , กันเอง",
+  "ราชาศัพท์: คำนามใช้ พระ นำหน้าตามพระยศ เช่น พระหัตถ์ พระบาท พระเกศา",
+  "คำกริยาราชาศัพท์: ทรง + กริยา เช่น ทรงพระดำเนิน ทรงม้า เสด็จ ประทับ รับสั่ง",
+  "คำที่ใช้กับพระภิกษุ: ฉัน (กิน) จำวัด (นอน) อาพาธ (ป่วย) มรณภาพ (ตาย)",
+  "ภาษาถิ่น: เหนือ อีสาน ใต้ ภาคกลาง ใช้ต่างกันทั้งเสียงและคำ"]},
+ {h:"การอ่านและการเขียน",items:[
+  "การจับใจความ: หาประโยคใจความสำคัญ มักอยู่ต้นหรือท้ายย่อหน้า",
+  "ข้อความตรง กับ ข้อความโดยนัย (ความหมายแฝง) ต้องแยกให้ออก",
+  "การสรุปความ ย่อความ ต้องคงใจความสำคัญไม่ใส่ความเห็น",
+  "การเขียนย่อหน้า: ประโยคใจความ (ประโยคหลัก) + ประโยคขยายความ",
+  "การเขียนจดหมาย: จดหมายกิจธุระใช้ภาษาทางการ มีเรื่อง เรียน อ้างถึง",
+  "การพูดต่อที่ประชุมชน ต้องเตรียมเนื้อหา ใช้ภาษาสุภาพ ตรงประเด็น"]},
+ {h:"โวหารและการใช้ภาษา",items:[
+  "บรรยายโวหาร: เล่าเหตุการณ์ตามลำดับ",
+  "พรรณนาโวหาร: ให้เห็นภาพ ใช้ภาพพจน์",
+  "อธิบายโวหาร: ให้ความรู้ ความเข้าใจ",
+  "สาธกโวหาร: ยกตัวอย่างประกอบ",
+  "เทศนาโวหาร: ชี้แนะให้ปฏิบัติดี",
+  "ภาพพจน์: อุปมา (เหมือน ดุจ ราวกับ) , อุปลักษณ์ (เป็น คือ) , บุคลาธิษฐาน , อติพจน์ (กล่าวเกินจริง) , สัญลักษณ์"]},
+ {h:"วรรณคดีและฉันทลักษณ์",items:[
+  "กลอนแปด: วรรคละ 8 คำ มีสัมผัสในวรรคและสัมผัสระหว่างบท (ท้ายวรรคสุดท้ายสัมผัสกับวรรคสามของบทถัดไป)",
+  "โคลงสี่สุภาพ: บทละ 4 บาท บังคับเอก 7 แห่ง โท 4 แห่ง",
+  "กาพย์ยานี 11: วรรคหน้า 5 คำ วรรคหลัง 6 คำ , กาพย์ฉบัง 16: 6-4-6 , กาพย์สุรางคนางค์ 28: บาทละ 7 คำ",
+  "พระอภัยมณี ผลงานสุนทรภู่ (กลอนสุภาพ) , นิราศภูเขาทอง ผลงานสุนทรภู่",
+  "รามเกียรติ์ พระราชนิพนธ์ในรัชกาลที่ 1 , อิเหนา พระราชนิพนธ์รัชกาลที่ 2",
+  "ลิลิตพระลอ เป็นวรรณคดียอดเยี่ยมด้านลิลิต , สามัคคีเภทคำฉันท์ ผลงานชิต บุรทัต",
+  "ขุนช้างขุนแผน เป็นเสภา มีหลายสำนวน เล่าเรื่องผู้ชายสองคนแย่งนางวันทอง",
+  "คุณค่าวรรณคดี: ด้านอารมณ์ ด้านสังคม ด้านภาษา ด้านคุณธรรม"]},
+ {h:"สำนวน สุภาษิต คำพังเพย",items:[
+  "น้ำขึ้นให้รีบตัก: เมื่อมีโอกาสควรรีบทำ",
+  "น้ำท่วมปาก: พูดไม่ได้เพราะเกรงกลัวหรือกระดากปาก",
+  "เข็นครกขึ้นภูเขา: ทำสิ่งที่ยากลำบากมาก",
+  "ขี่ช้างจับตั๊กแตน: ลงทุนมากแต่ได้ผลน้อย",
+  "กำแพงมีหู ประตูมีช่อง: ความลับย่อมรั่วไหลได้",
+  "ตัวใครตัวมัน: ต่างคนต่างเอาตัวรอด",
+  "ปลาตายน้ำตื้น: ตกต่ำเพราะความประมาท",
+  "สุภาษิตสอนใจ: ความพยายามอยู่ที่ไหน ความสำเร็จอยู่ที่นั่น (สอนให้พยายาม) , ช้า ๆ ได้พร้าสองเล่มงาม (สอนให้ละเอียดรอบคอบ)"]},
+ {h:"ความหมายคำ",items:[
+  "เมตตา: ความปรารถนาให้ผู้อื่นเป็นสุข , กรุณา: สงสารอยากช่วยให้พ้นทุกข์ , มุทิตา: ยินดีเมื่อผู้อื่นได้ดี , อุเบกขา: วางใจเป็นกลาง",
+  "ขยัน ตรงข้าม เกียจคร้าน , ประหยัด ตรงข้าม ฟุ่มเฟือย , ซื่อสัตย์ ตรงข้าม คดโกง",
+  "วิเคราะห์: แยกแยะเพื่อหาความจริง , สังเคราะห์: นำมารวมให้เกิดสิ่งใหม่",
+  "นัยยะ ความหมายแฝง , ปรัชญา ความรู้ที่ใช้เหตุผลหาความจริง",
+  "คำเปรียบเทียบ: ขาวเหมือนสำลี ดำเหมือนหมึก เร็วเหมือนจรวด"]}
+]},
+{subject:"สังคมศึกษา",sections:[
+ {h:"พระพุทธศาสนา",items:[
+  "ไตรสรณคมน์: พระพุทธ พระธรรม พระสงฆ์ , ศีล 5: ไม่ฆ่า ไม่ลักทรัพย์ ไม่ประพฤติผิดในกาม ไม่พูดเท็จ ไม่ดื่มสุรา",
+  "อริยสัจ 4: ทุกข์ สมุทัย (เหตุแห่งทุกข์) นิโรธ (ความดับทุกข์) มรรค (ทางดับทุกข์)",
+  "มรรคมีองค์ 8: ปัญญา (สัมมาทิฏฐิ สัมมาสังกัปปะ) ศีล (สัมมาวาจา สัมมากัมมันตะ สัมมาอาชีวะ) สมาธิ (สัมมาวายามะ สัมมาสติ สัมมาสมาธิ)",
+  "ไตรลักษณ์: อนิจจัง (ไม่เที่ยง) ทุกขัง (ทนอยู่ไม่ได้) อนัตตา (ไม่ใช่ตัวตน)",
+  "พรหมวิหาร 4: เมตตา กรุณา มุทิตา อุเบกขา",
+  "สังคหวัตถุ 4: ทาน ปิยวาจา อัตถจริยา สมานัตตตา",
+  "อิทธิบาท 4: ฉันทะ วิริยะ จิตตะ วิมังสา , ฆราวาสธรรม 4: สัจจะ ทมะ ขันติ จาคะ",
+  "วันสำคัญ: มาฆบูชา (กลางเดือน 3) วิสาขบูชา (กลางเดือน 6 ประสูติ ตรัสรู้ ปรินิพพาน) อาสาฬหบูชา (กลางเดือน 8 ปฐมเทศนา) เข้าพรรษา (แรม 1 ค่ำเดือน 8)",
+  "ศาสนาอื่น: อิสลาม (พระเจ้า อัลลอฮ์ ศาสดามุฮัมมัด คัมภีร์อัลกุรอาน) คริสต์ (พระเยซู คัมภีร์ไบเบิล) ฮินดู ซิกข์"]},
+ {h:"หน้าที่พลเมืองและวัฒนธรรม",items:[
+  "หน้าที่พลเมืองไทย: เสียภาษี ไปเลือกตั้ง ปฏิบัติตามกฎหมาย รับราชการทหาร ป้องกันประเทศ",
+  "สิทธิ: ได้รับการคุ้มครองชีวิต ทรัพย์สิน เสรีภาพในการนับถือศาสนา เสรีภาพในการแสดงความคิดเห็น",
+  "บรรทัดฐานทางสังคม: วิถีชาวบ้าน (ไม่รุนแรง) , จารีต (ผิดแล้วถูกประณาม) , กฎหมาย (มีบทลงโทษ)",
+  "สถาบันทางสังคม: ครอบครัว การศึกษา ศาสนา เศรษฐกิจ การเมืองการปกครอง",
+  "มารยาทไทย: การไหว้ ผู้น้อยไหว้ผู้ใหญ่ก่อน การแสดงความเคารพพระสงฆ์ ไหว้ระดับต่างกัน",
+  "ภูมิปัญญาท้องถิ่น และวัฒนธรรมประเพณีไทย เช่น สงกรานต์ ลอยกระทง"]},
+ {h:"รัฐธรรมนูญและการปกครอง",items:[
+  "การปกครองของไทย: ประชาธิปไตยอันมีพระมหากษัตริย์ทรงเป็นประมุข",
+  "เปลี่ยนแปลงการปกครอง 24 มิถุนายน 2475 รัฐธรรมนูญฉบับแรกประกาศใช้ 10 ธันวาคม 2475 (วันรัฐธรรมนูญ)",
+  "อำนาจอธิปไตย 3 อำนาจ: นิติบัญญัติ (รัฐสภา: สภาผู้แทนราษฎรและวุฒิสภา) บริหาร (คณะรัฐมนตรี) ตุลาการ (ศาล)",
+  "นายกรัฐมนตรีเป็นหัวหน้าฝ่ายบริหาร , ศาลมี ศาลรัฐธรรมนูญ ศาลยุติธรรม ศาลปกครอง ศาลทหาร",
+  "องค์กรอิสระ: คณะกรรมการการเลือกตั้ง (กกต.) , ป.ป.ช. , ผู้ตรวจการแผ่นดิน , คณะกรรมการตรวจเงินแผ่นดิน",
+  "การปกครองส่วนภูมิภาค: จังหวัด (ผู้ว่าราชการจังหวัด) อำเภอ (นายอำเภอ) ตำบล (กำนัน) หมู่บ้าน (ผู้ใหญ่บ้าน)",
+  "การปกครองส่วนท้องถิ่น: อบจ. เทศบาล อบต. กรุงเทพมหานคร เมืองพัทยา",
+  "การเลือกตั้งโดยตรง เสรี เป็นธรรม เป็นหน้าที่สำคัญของพลเมือง"]},
+ {h:"กฎหมายในชีวิตประจำวัน",items:[
+  "ลำดับศักดิ์ของกฎหมาย: รัฐธรรมนูญ → พระราชบัญญัติ (พ.ร.บ.) และพระราชกำหนด (พ.ร.ก.) → พระราชกฤษฎีกา → กฎกระทรวง → ข้อบัญญัติท้องถิ่น",
+  "กฎหมายแพ่ง: เกี่ยวกับสิทธิหน้าที่ของเอกชน เช่น สัญญา มรดก ครอบครัว",
+  "กฎหมายอาญา: การกระทำที่เป็นความผิดต่อรัฐและสังคม โทษมี ประหารชีวิต จำคุก กักขัง ปรับ ริบทรัพย์สิน",
+  "เด็กอายุไม่เกิน 12 ปีที่กระทำความผิดไม่ต้องรับโทษทางอาญา",
+  "บรรลุนิติภาวะเมื่ออายุ 20 ปีบริบูรณ์ หรือสมรสตามกฎหมาย",
+  "ผู้เยาว์ทำนิติกรรมต้องได้รับความยินยอมจากผู้แทนโดยชอบธรรม",
+  "สิทธิผู้บริโภค: ได้รับข้อมูลที่ถูกต้อง เลือกซื้อสินค้า ได้รับความปลอดภัย ได้รับการชดเชย"]},
+ {h:"เศรษฐศาสตร์เบื้องต้น",items:[
+  "ปัญหาพื้นฐาน: ทรัพยากรมีจำกัด แต่ความต้องการไม่จำกัด จึงต้องเลือก (ต้นทุนค่าเสียโอกาส)",
+  "ปัจจัยการผลิต 4: ที่ดิน (ค่าเช่า) แรงงาน (ค่าจ้าง) ทุน (ดอกเบี้ย) ผู้ประกอบการ (กำไร)",
+  "อุปสงค์: ความต้องการซื้อ ราคาสูงขึ้นอุปสงค์ลดลง , อุปทาน: ปริมาณสินค้าที่ผู้ขายเสนอขาย ราคาสูงขึ้นอุปทานเพิ่มขึ้น",
+  "ราคาดุลยภาพ: จุดที่อุปสงค์เท่ากับอุปทาน , อุปสงค์ > อุปทาน ราคาสูงขึ้น , อุปสงค์ < อุปทาน ราคาลดลง",
+  "ระบบเศรษฐกิจ: แบบทุนนิยม (เอกชนเป็นเจ้าของ) สังคมนิยม (รัฐเป็นเจ้าของ) แบบผสม (ไทยใช้แบบผสม)",
+  "ภาษีทางตรง: ภาษีเงินได้บุคคลธรรมดา , ภาษีทางอ้อม: ภาษีมูลค่าเพิ่ม (VAT 7%) ภาษีสรรพสามิต",
+  "เงินเฟ้อ: ราคาสินค้าโดยทั่วไปสูงขึ้น เงินมีค่าน้อยลง , เงินฝืด: ราคาลดลง",
+  "ธนาคารแห่งประเทศไทยเป็นธนาคารกลาง ออกธนบัตร ดูแลนโยบายการเงิน",
+  "ผลิตภัณฑ์มวลรวมในประเทศ (GDP) มูลค่าสินค้าและบริการที่ผลิตภายในประเทศในช่วงเวลาหนึ่ง"]},
+ {h:"เศรษฐกิจพอเพียงและการเงินส่วนบุคคล",items:[
+  "เศรษฐกิจพอเพียง ตามพระราชดำริของพระบาทสมเด็จพระบรมชนกาธิเบศร มหาภูมิพลอดุลยเดชมหาราช บรมนาถบพิตร",
+  "3 ห่วง: พอประมาณ มีเหตุผล มีภูมิคุ้มกันในตัวที่ดี",
+  "2 เงื่อนไข: ความรู้ และคุณธรรม",
+  "การออม: เก็บส่วนที่เหลือจากรายจ่าย , การลงทุน: นำเงินไปสร้างผลตอบแทน",
+  "สหกรณ์: องค์กรที่สมาชิกร่วมกันตั้งเพื่อช่วยเหลือกัน เช่น สหกรณ์ออมทรัพย์ สหกรณ์การเกษตร",
+  "การทำบัญชีรายรับรายจ่ายช่วยวางแผนการเงิน"]},
+ {h:"ประวัติศาสตร์ไทย",items:[
+  "สุโขทัย: พ่อขุนศรีอินทราทิตย์ตั้งอาณาจักร (ราว พ.ศ. 1792) , พ่อขุนรามคำแหงมหาราช ประดิษฐ์ลายสือไทย (พ.ศ. 1826) ปกครองแบบพ่อปกครองลูก",
+  "อยุธยา: พระเจ้าอู่ทอง (สมเด็จพระรามาธิบดีที่ 1) ตั้งกรุงศรีอยุธยา พ.ศ. 1893 ปกครองด้วยจตุสดมภ์ เวียง วัง คลัง นา",
+  "เสียกรุงศรีอยุธยาครั้งที่ 1 พ.ศ. 2112 ครั้งที่ 2 พ.ศ. 2310",
+  "สมเด็จพระนเรศวรมหาราช กอบกู้เอกราช ยุทธหัตถี พ.ศ. 2135 (วันกองทัพไทย 25 มกราคม)",
+  "ธนบุรี: สมเด็จพระเจ้าตากสินมหาราช กอบกู้เอกราช พ.ศ. 2310 ตั้งกรุงธนบุรี",
+  "รัตนโกสินทร์: รัชกาลที่ 1 สถาปนากรุงรัตนโกสินทร์ พ.ศ. 2325 ตั้งกรุงเทพมหานครเป็นเมืองหลวง",
+  "รัชกาลที่ 4: สนธิสัญญาเบาว์ริง พ.ศ. 2398 เปิดการค้าเสรี",
+  "รัชกาลที่ 5 (พระปิยมหาราช): เลิกทาส ปฏิรูปการปกครอง จัดตั้งกระทรวง ปรับปรุงการศึกษา สร้างทางรถไฟ",
+  "รัชกาลที่ 6: ตราพระราชบัญญัติประถมศึกษา เข้าร่วมสงครามโลกครั้งที่ 1 พ.ศ. 2460",
+  "การเปลี่ยนแปลงการปกครอง 24 มิถุนายน 2475 ในรัชกาลที่ 7",
+  "สงครามโลกครั้งที่ 2: ญี่ปุ่นเข้าสู่ไทย 8 ธันวาคม 2484 มีขบวนการเสรีไทย"]},
+ {h:"ประวัติศาสตร์สากล",items:[
+  "สงครามโลกครั้งที่ 1 (พ.ศ. 2457-2461) , สงครามโลกครั้งที่ 2 (พ.ศ. 2482-2488)",
+  "การปฏิวัติอุตสาหกรรมเริ่มในอังกฤษ ใช้เครื่องจักรไอน้ำ",
+  "การปฏิวัติฝรั่งเศส ค.ศ. 1789 เสรีภาพ เสมอภาค ภราดรภาพ",
+  "การล่าอาณานิคมในเอเชีย ไทยเป็นประเทศเดียวในอาเซียนที่ไม่ตกเป็นอาณานิคม",
+  "สงครามเย็น: การแข่งขันระหว่างสหรัฐอเมริกาและสหภาพโซเวียต",
+  "สหประชาชาติ (UN) ตั้งเมื่อ 24 ตุลาคม 2488 เพื่อรักษาสันติภาพและความมั่นคง",
+  "การเปลี่ยนศักราช: พ.ศ. = ค.ศ. + 543"]},
+ {h:"ภูมิศาสตร์ประเทศไทย",items:[
+  "ตั้งอยู่ในเอเชียตะวันออกเฉียงใต้ มีพื้นที่ประมาณ 513,000 ตร.กม. มี 77 จังหวัด (รวมกรุงเทพมหานคร)",
+  "6 ภาค: เหนือ ตะวันออกเฉียงเหนือ กลาง ตะวันออก ตะวันตก ใต้",
+  "ภูมิอากาศแบบร้อนชื้น มี 3 ฤดู: ร้อน ฝน หนาว , ลมมรสุมตะวันตกเฉียงใต้นำฝนมา (พ.ค.–ต.ค.) , ลมมรสุมตะวันออกเฉียงเหนือนำความหนาวมา (ต.ค.–ก.พ.)",
+  "แม่น้ำสำคัญ: เจ้าพระยา (เกิดจากแม่น้ำปิง วัง ยม น่าน) , โขง มูล ชี , ท่าจีน แม่กลอง",
+  "ยอดเขาสูงสุดคือดอยอินทนนท์ (จังหวัดเชียงใหม่) สูงประมาณ 2,565 เมตร",
+  "ทรัพยากรธรรมชาติ: ป่าไม้ ดิน น้ำ แร่ธาตุ (ดีบุก) พลังงาน (ก๊าซธรรมชาติ)",
+  "ปัญหา: การตัดไม้ทำลายป่า น้ำท่วม ภัยแล้ง ฝุ่น PM2.5 ขยะ",
+  "ประเทศไทยใช้เวลามาตรฐาน UTC+7 (เวลาอินโดจีน) เร็วกว่า GMT 7 ชั่วโมง"]},
+ {h:"ภูมิศาสตร์ทั่วไปและแผนที่",items:[
+  "7 ทวีป: เอเชีย แอฟริกา อเมริกาเหนือ อเมริกาใต้ แอนตาร์กติกา ยุโรป ออสเตรเลีย (โอเชียเนีย)",
+  "5 มหาสมุทร: แปซิฟิก แอตแลนติก อินเดีย อาร์กติก และมหาสมุทรใต้",
+  "เส้นละติจูดวัดเหนือ-ใต้ของเส้นศูนย์สูตร (0°) , เส้นลองจิจูดวัดตะวันออก-ตะวันตกของเส้นเมริเดียนแรก (0° ที่กรีนิช)",
+  "เส้นทรอปิกออฟแคนเซอร์ 23.5° เหนือ , เส้นทรอปิกออฟแคปริคอร์น 23.5° ใต้",
+  "ทิศหลัก 4 ทิศ: เหนือ ใต้ ออก ตก และทิศรอง เช่น ตะวันออกเฉียงเหนือ",
+  "มาตราส่วนแผนที่ เช่น 1 : 50,000 หมายถึง 1 ซม. บนแผนที่ = 50,000 ซม. = 500 ม. จริง",
+  "สัญลักษณ์บนแผนที่ช่วยสื่อความหมายของพื้นที่ , เส้นชั้นความสูงยิ่งชิดกันยิ่งชัน",
+  "ภัยพิบัติ: แผ่นดินไหว สึนามิ น้ำท่วม พายุหมุน ภูเขาไฟ"]},
+ {h:"ประชาคมอาเซียนและองค์การระหว่างประเทศ",items:[
+  "อาเซียน (ASEAN) ก่อตั้ง 8 สิงหาคม 2510 (ปฏิญญากรุงเทพ) โดย 5 ประเทศ: ไทย อินโดนีเซีย มาเลเซีย ฟิลิปปินส์ สิงคโปร์",
+  "สมาชิกเดิม 10 ประเทศ เพิ่มบรูไน กัมพูชา ลาว เมียนมา เวียดนาม (ติมอร์-เลสเตเข้าร่วมในภายหลัง ควรตรวจสอบจำนวนสมาชิกล่าสุด)",
+  "สำนักงานเลขาธิการอาเซียนตั้งอยู่ที่จาการ์ตา อินโดนีเซีย",
+  "เมืองหลวง: ไทย กรุงเทพมหานคร , อินโดนีเซีย จาการ์ตา , มาเลเซีย กัวลาลัมเปอร์ , ฟิลิปปินส์ มะนิลา , สิงคโปร์ สิงคโปร์ , บรูไน บันดาร์เสรีเบกาวัน , กัมพูชา พนมเปญ , ลาว เวียงจันทน์ , เมียนมา เนปยีดอ , เวียดนาม ฮานอย",
+  "เสาหลักประชาคมอาเซียน: การเมืองความมั่นคง เศรษฐกิจ สังคมและวัฒนธรรม",
+  "องค์การการค้าโลก (WTO) ดูแลการค้าระหว่างประเทศ , APEC ความร่วมมือเศรษฐกิจเอเชีย-แปซิฟิก",
+  "องค์การอนามัยโลก (WHO) , องค์การยูนิเซฟ (UNICEF) , องค์การยูเนสโก (UNESCO)"]},
+ {h:"วันสำคัญของไทย",items:[
+  "6 เมษายน วันจักรี , 13 เมษายน วันสงกรานต์ (วันครอบครัว) , 4 พฤษภาคม วันฉัตรมงคล",
+  "12 สิงหาคม วันแม่แห่งชาติ , 5 ธันวาคม วันพ่อแห่งชาติและวันชาติ",
+  "10 ธันวาคม วันรัฐธรรมนูญ , 23 ตุลาคม วันปิยมหาราช , 16 มกราคม วันครู",
+  "25 มกราคม วันกองทัพไทย , 29 กรกฎาคม วันภาษาไทยแห่งชาติ , 18 สิงหาคม วันวิทยาศาสตร์แห่งชาติ",
+  "วันสำคัญทางศาสนาพุทธ: มาฆบูชา วิสาขบูชา อาสาฬหบูชา เข้าพรรษา ออกพรรษา"]}
+]}
+];
+
+/* แสดงสรุปเนื้อหา */
+let curSum=0;
+function openSummary(i){
+ curSum=i;
+ $("sumSearch").value="";
+ renderSummary();
+ show("summary");
+}
+function renderSummary(){
+ const d=SUMMARY[curSum],q=$("sumSearch").value.trim().toLowerCase();
+ $("sumTitle").textContent="สรุป"+d.subject;
+ $("sumChips").innerHTML=SUBJECTS.map((s,i)=>`<button class="chip${i===curSum?" on":""}" onclick="openSummary(${i})">${s}</button>`).join("");
+ let shown=0,total=0,html="";
+ d.sections.forEach(sec=>{
+  total+=sec.items.length;
+  const headHit=q&&sec.h.toLowerCase().includes(q);
+  const items=q?sec.items.filter(t=>headHit||t.toLowerCase().includes(q)):sec.items;
+  if(!items.length)return;
+  shown+=items.length;
+  html+=`<details class="sec"${q?" open":""}><summary>${esc(sec.h)} <span class="muted">(${items.length})</span></summary><ul class="sumList">`+
+   items.map(t=>`<li>${esc(t)}</li>`).join("")+`</ul></details>`;
+ });
+ $("sumCount").textContent=q?`พบ ${shown} รายการจาก ${total}`:`${d.sections.length} หัวข้อ รวม ${total} รายการ`;
+ $("sumBody").innerHTML=html||'<p class="muted">ไม่พบข้อความที่ค้นหา</p>';
+}
+function toggleSections(open){
+ document.querySelectorAll("#sumBody details").forEach(x=>{x.open=open});
+}
+
+/* ระบบต้อนรับ */
+let welcomeFlash=null;
+function greetWord(){
+ const h=new Date().getHours();
+ if(h>=5&&h<12)return "อรุณสวัสดิ์";
+ if(h>=12&&h<17)return "สวัสดีตอนบ่าย";
+ if(h>=17&&h<21)return "สวัสดีตอนเย็น";
+ return "สวัสดีตอนค่ำ";
+}
+function renderWelcome(){
+ const u=currentUser?getUsers()[currentUser]:null;
+ const h=loadHistory();
+ const n=h.length;
+ const best=n?Math.max(...h.map(r=>r.pct)):0;
+ const avg=n?Math.round(h.reduce((s,r)=>s+r.pct,0)/n*10)/10:0;
+ const last=n?h[n-1].pct:0;
+ $("greetTime").textContent=greetWord();
+ $("greetName").textContent="ยินดีต้อนรับ "+(u?u.name:"ผู้เยี่ยมชม");
+ let sub;
+ if(welcomeFlash)sub=welcomeFlash;
+ else if(!n)sub=u?"ยังไม่มีประวัติการสอบในบัญชีนี้ เริ่มจากชุดที่ 1 ได้เลย":"เข้าสู่ระบบเพื่อบันทึกคะแนนของคุณ หรือทำข้อสอบแบบผู้เยี่ยมชมได้เลย";
+ else if(best>=80)sub="ผลงานยอดเยี่ยม รักษาฟอร์มนี้ไว้";
+ else if(best>=60)sub="ทำได้ดี ทบทวนวิชาที่ยังพลาดแล้วลองชุดถัดไป";
+ else sub="ค่อย ๆ ฝึกต่อไป อ่านสรุปเนื้อหาก่อนทำข้อสอบจะช่วยได้";
+ $("greetSub").textContent=sub;
+ $("welcomeStats").innerHTML=
+  `<div class="stat">ทำข้อสอบแล้ว<b>${n} ครั้ง</b></div>`+
+  `<div class="stat">คะแนนสูงสุด<b>${n?best+"%":"-"}</b></div>`+
+  `<div class="stat">คะแนนเฉลี่ย<b>${n?avg+"%":"-"}</b></div>`+
+  `<div class="stat">ครั้งล่าสุด<b>${n?last+"%":"-"}</b></div>`;
+ $("introCard").classList.toggle("hidden",lsGet("mtts_intro_seen")==="1");
+}
+function dismissIntro(){lsSet("mtts_intro_seen","1");$("introCard").classList.add("hidden")}
+
+/* ประวัติคะแนน */
+function loadHistory(){
+ try{return JSON.parse(lsGet(histKey())||"[]")}catch(e){return []}
+}
+function saveHistory(h){lsSet(histKey(),JSON.stringify(h))}
+function renderHistory(){
+ renderWelcome();
+ let h=loadHistory(),box=$("history");
+ if(!h.length){box.textContent="ยังไม่มีประวัติ";return}
+ box.innerHTML=h.slice().reverse().slice(0,10).map(r=>
+  `<div class="review-item"><b>ชุดที่ ${r.set} (แนวปี ${r.year})</b> — ${r.score}/${r.total} (${r.pct}%)<br><span class="muted">${esc(r.date)} · ใช้เวลา ${esc(r.time)}</span></div>`
+ ).join("");
+}
+let clearArmed=false,clearT=null;
+function clearHistory(){
+ const btn=$("clearBtn");
+ if(!clearArmed){
+  clearArmed=true;btn.textContent="กดอีกครั้งเพื่อยืนยันการล้างประวัติ";
+  clearT=setTimeout(()=>{clearArmed=false;btn.textContent="ล้างประวัติ"},4000);
+  return;
+ }
+ clearTimeout(clearT);clearArmed=false;btn.textContent="ล้างประวัติ";
+ lsDel(histKey());
+ renderHistory();
+}
+
+/* ทำข้อสอบ */
+function startExam(){
+ setNo=parseInt($("setSelect").value,10)||0;
+ questions=buildSet(setNo);
+ answers=new Array(questions.length).fill(-1);
+ current=0;finished=false;seconds=TOTAL_SECONDS;welcomeFlash=null;
+ $("setTitle").textContent=`ชุดที่ ${setNo+1} — แนวปี ${YEARS[setNo]}`;
+ $("timer").textContent=fmt(seconds);
+ clearInterval(timer);
+ timer=setInterval(()=>{
+  seconds--;
+  $("timer").textContent=fmt(Math.max(seconds,0));
+  if(seconds<=0){clearInterval(timer);finish(true)}
+ },1000);
+ show("exam");
+ render();
+}
+
+function render(){
+ let q=questions[current];
+ $("subjectName").textContent=q.subject;
+ $("gradeName").textContent="ระดับ ม."+q.grade;
+ $("counter").textContent=`ข้อ ${current+1} / ${questions.length}`;
+ $("bar").style.width=((current+1)/questions.length*100)+"%";
+ $("question").textContent=`${current+1}. ${q.text}`;
+ let box=$("options");
+ box.innerHTML="";
+ q.choices.forEach((c,idx)=>{
+  let b=document.createElement("button");
+  b.className="opt"+(answers[current]===idx?" chosen":"");
+  b.textContent=`${"กขคง"[idx]}. ${c}`;
+  b.onclick=()=>{answers[current]=idx;render()};
+  box.appendChild(b);
+ });
+ $("feedback").classList.add("hidden");
+ $("confirmBox").classList.add("hidden");
+ $("prevBtn").disabled=current===0;
+ const isLast=current===questions.length-1;
+ $("submitBtn").classList.toggle("hidden",!isLast);
+ $("submitHint").classList.toggle("hidden",isLast);
+ $("nextBtn").disabled=current===questions.length-1;
+}
+
+function move(d){
+ let n=current+d;
+ if(n<0||n>=questions.length)return;
+ current=n;
+ render();
+ window.scrollTo(0,0);
+}
+
+function finish(auto){
+ if(finished)return;
+ if(auto===true){doFinish(true);return}
+ let left=answers.filter(a=>a===-1).length;
+ $("confirmText").textContent=left?`ยังไม่ได้ตอบ ${left} ข้อ ต้องการส่งข้อสอบหรือไม่`:"ต้องการส่งข้อสอบหรือไม่";
+ $("confirmBox").classList.remove("hidden");
+}
+function cancelFinish(){$("confirmBox").classList.add("hidden")}
+function doFinish(){
+ if(finished)return;
+ $("confirmBox").classList.add("hidden");
+ finished=true;
+ clearInterval(timer);
+
+ let score=0,per={};
+ SUBJECTS.forEach(s=>per[s]={got:0,total:0});
+ questions.forEach((q,i)=>{
+  per[q.subject].total++;
+  if(answers[i]===q.answer){score++;per[q.subject].got++}
+ });
+ let total=questions.length;
+ let pct=Math.round(score/total*1000)/10;
+ let used=fmt(TOTAL_SECONDS-Math.max(seconds,0));
+
+ $("score").textContent=`${score} / ${total} (${pct}%)`;
+ $("timeUsed").textContent=`เวลาที่ใช้ ${used}`;
+ $("subjectScores").innerHTML=SUBJECTS.map((s,i)=>{
+  let p=per[s],pc=Math.round(p.got/p.total*100);
+  let note=pc<60?'<span class="bad">ควรทบทวนวิชานี้</span>':'<span class="good">ทำได้ดี</span>';
+  return `<div class="review-item"><div class="row"><b>${s}</b><span>${p.got} / ${p.total} (${pc}%)</span></div>${note}<button class="wide soft" onclick="openSummary(${i})">อ่านสรุป${s}</button></div>`;
+ }).join("");
+
+ let h=loadHistory();
+ h.push({set:setNo+1,year:YEARS[setNo],score,total,pct,time:used,date:new Date().toLocaleString("th-TH")});
+ saveHistory(h.slice(-30));
+ show("result");
+}
+
+function showReview(){
+ $("reviewList").innerHTML=questions.map((q,i)=>{
+  let a=answers[i],ok=a===q.answer;
+  return `<div class="review-item">
+   <b>${i+1}. [${q.subject} ม.${q.grade}]</b> ${esc(q.text)}<br>
+   <span class="${ok?"good":"bad"}">คำตอบของคุณ: ${a===-1?"ไม่ได้ตอบ":esc(q.choices[a])}</span><br>
+   <span class="good">เฉลย: ${esc(q.choices[q.answer])}</span><br>
+   <span class="muted">${esc(q.explain)}</span>
+  </div>`;
+ }).join("");
+ show("review");
+}
+
+function goHome(){
+ clearInterval(timer);
+ renderHistory();
+ show("home");
+}
+
+initAuth();
+$("sumButtons").innerHTML=SUBJECTS.map((s,i)=>`<button class="soft" onclick="openSummary(${i})">${s}</button>`).join("");
+renderHistory();
+</script>
+</body>
+</html>
